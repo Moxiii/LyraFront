@@ -7,6 +7,7 @@ import Conversations from "../screens/Conversations";
 import Projects from "../screens/Projects";
 import Contacts from "../screens/Contacts";
 import Settings from "../screens/Settings";
+import Register from "../screens/Register";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,6 +20,16 @@ export default function Navbar() {
         inactiveTintColor: "gray",
       }}
     >
+      <Tab.Screen
+        name="Enregistrer"
+        component={Register}
+        options={{
+          tabBarLabel: "Enregistrer",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="register" color={color} size={size} />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Conversations"
         component={Conversations}
