@@ -1,14 +1,19 @@
 import React from "react";
+import { useFonts } from 'expo-font';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Navbar from "./src/Components/Navbar";
 import Register from "./src/screens/Register"; 
-import Login from "./src/screens/Login"; 
+import Login from "./src/screens/Login";
 
 const Stack = createStackNavigator();
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    'NATS': require('./assets/fonts/NATS-Regular.ttf'),
+  });
+
   return (
     <NavigationContainer>
       <Stack.Navigator

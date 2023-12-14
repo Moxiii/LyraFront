@@ -12,27 +12,26 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function Register() {
   const navigation = useNavigation();
-
   const goToLoginPage = () => {
     navigation.navigate("Login");
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.titre}>Inscrivez-vous avec votre mail</Text>
+      <Text style={[styles.titre, styles.defaultText]}>Inscrivez-vous avec votre mail</Text>
       <View style={styles.inputContainer}>
-        <Text style={styles.nom}>Nom</Text>
+        <Text style={[styles.nom, styles.defaultText]}>Nom</Text>
+        <TextInput style={[styles.input]} />
+      </View>
+      <View style={styles.inputContainer}>
+        <Text style={[styles.label, styles.defaultText]}>Email</Text>
         <TextInput style={styles.input} />
       </View>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Email</Text>
-        <TextInput style={styles.input} />
+        <Text style={[styles.label, styles.defaultText]}>Mot de passe</Text>
+        <TextInput style={[styles.input]} secureTextEntry={true} />
       </View>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Mot de passe</Text>
-        <TextInput style={styles.input} secureTextEntry={true} />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Confirmation du mot de passe</Text>
+        <Text style={[styles.label, styles.defaultText]}>Confirmation du mot de passe</Text>
         <TextInput style={styles.input} secureTextEntry={true} />
       </View>
       <TouchableOpacity style={styles.button}>
@@ -48,11 +47,11 @@ export default function Register() {
           end={{ x: 1, y: 0 }}
           colors={["#040141", "#090979", "#d45a00"]}
         >
-          <Text style={styles.buttonText}>Créer un compte</Text>
+          <Text style={[styles.buttonText, styles.defaultText]}>Créer un compte</Text>
         </LinearGradient>
       </TouchableOpacity>
       <TouchableOpacity onPress={goToLoginPage}>
-        <Text style={{ color: "#3D4A7A", marginTop: 10 }}>
+        <Text style={{ color: "#3D4A7A", marginTop: 10}}>
           Vous avez déjà un compte ?
         </Text>
       </TouchableOpacity>
@@ -61,19 +60,24 @@ export default function Register() {
   );
 }
 
+
 const styles = StyleSheet.create({
+  defaultText: {
+    fontFamily: 'NATS',
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "top",
     paddingHorizontal: 35,
-    paddingTop: 50,
+    paddingTop: 15,
   },
   nom: {
     color: "#3D4A7A",
     fontWeight: "bold",
-    marginTop: 15,
+    marginTop: 10,
+    fontSize: 20,
   },
   button: {
     paddingTop: 25,
@@ -88,11 +92,11 @@ const styles = StyleSheet.create({
     paddingTop: 4,
     textAlign: "center",
     color: "#fff",
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: "bold",
   },
   titre: {
-    fontSize: 21,
+    fontSize: 25,
     color: "#3D4A7A",
     fontWeight: "bold",
     paddingTop: 40,
@@ -105,13 +109,14 @@ const styles = StyleSheet.create({
   label: {
     color: "#3D4A7A",
     fontWeight: "bold",
+    fontSize: 20,
   },
   input: {
     width: "90%",
     height: 40,
     borderBottomWidth: 1,
     borderBottomColor: "#CDD1D0",
-    fontSize: 15,
+    fontSize: 18,
     color: "black",
     outlineWidth: 0,
   },
