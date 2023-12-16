@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import Header from "../Components/Header";
 
 export default function Register() {
   const navigation = useNavigation();
@@ -17,7 +18,14 @@ export default function Register() {
   };
   return (
     <View style={styles.container}>
-      <Text style={[styles.titre, styles.defaultText]}>Connectez-vous à Georges</Text>
+      <Header
+        title="Georges"
+        showConversationIcon={true}
+        userAvatar="url_de_votre_avatar"
+      />
+      <Text style={[styles.titre, styles.defaultText]}>
+        Connectez-vous à Georges
+      </Text>
       <View style={styles.inputContainer}>
         <Text style={[styles.label, styles.defaultText]}>Email</Text>
         <TextInput style={styles.input} />
@@ -39,11 +47,13 @@ export default function Register() {
           end={{ x: 1, y: 0 }}
           colors={["#040141", "#090979", "#d45a00"]}
         >
-          <Text style={[styles.buttonText, styles.defaultText]}>Se connecter</Text>
+          <Text style={[styles.buttonText, styles.defaultText]}>
+            Se connecter
+          </Text>
         </LinearGradient>
       </TouchableOpacity>
       <TouchableOpacity onPress={goToRegisterPage}>
-        <Text style={{ color: "#3D4A7A", marginTop: 20,}}>
+        <Text style={{ color: "#3D4A7A", marginTop: 20 }}>
           Vous n'avez pas de compte ?
         </Text>
       </TouchableOpacity>
@@ -52,10 +62,9 @@ export default function Register() {
   );
 }
 
-
 const styles = StyleSheet.create({
   defaultText: {
-    fontFamily: 'NATS',
+    fontFamily: "NATS",
   },
   container: {
     flex: 1,

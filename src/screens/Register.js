@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import Header from "../Components/Header";
 
 export default function Register() {
   const navigation = useNavigation();
@@ -18,6 +19,11 @@ export default function Register() {
   };
   return (
     <View style={styles.container}>
+      <Header
+        title="Georges"
+        showConversationIcon={true}
+        userAvatar="url_de_votre_avatar"
+      />
       <Text style={[styles.titre, styles.defaultText]}>
         Inscrivez-vous avec votre mail
       </Text>
