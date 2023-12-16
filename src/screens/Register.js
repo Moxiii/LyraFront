@@ -1,4 +1,5 @@
 import React from "react";
+import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 import {
@@ -17,7 +18,9 @@ export default function Register() {
   };
   return (
     <View style={styles.container}>
-      <Text style={[styles.titre, styles.defaultText]}>Inscrivez-vous avec votre mail</Text>
+      <Text style={[styles.titre, styles.defaultText]}>
+        Inscrivez-vous avec votre mail
+      </Text>
       <View style={styles.inputContainer}>
         <Text style={[styles.nom, styles.defaultText]}>Nom</Text>
         <TextInput style={[styles.input]} />
@@ -31,7 +34,9 @@ export default function Register() {
         <TextInput style={[styles.input]} secureTextEntry={true} />
       </View>
       <View style={styles.inputContainer}>
-        <Text style={[styles.label, styles.defaultText]}>Confirmation du mot de passe</Text>
+        <Text style={[styles.label, styles.defaultText]}>
+          Confirmation du mot de passe
+        </Text>
         <TextInput style={styles.input} secureTextEntry={true} />
       </View>
       <TouchableOpacity style={styles.button}>
@@ -47,11 +52,13 @@ export default function Register() {
           end={{ x: 1, y: 0 }}
           colors={["#040141", "#090979", "#d45a00"]}
         >
-          <Text style={[styles.buttonText, styles.defaultText]}>Créer un compte</Text>
+          <Text style={[styles.buttonText, styles.defaultText]}>
+            Créer un compte
+          </Text>
         </LinearGradient>
       </TouchableOpacity>
       <TouchableOpacity onPress={goToLoginPage}>
-        <Text style={{ color: "#3D4A7A", marginTop: 10}}>
+        <Text style={{ color: "#3D4A7A", marginTop: 10 }}>
           Vous avez déjà un compte ?
         </Text>
       </TouchableOpacity>
@@ -60,10 +67,9 @@ export default function Register() {
   );
 }
 
-
 const styles = StyleSheet.create({
   defaultText: {
-    fontFamily: 'NATS',
+    fontFamily: "NATS",
   },
   container: {
     flex: 1,
