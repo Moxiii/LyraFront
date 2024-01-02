@@ -9,9 +9,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Header from "../Components/Header";
+import Header from "../components/Header";
 
-export default function Register() {
+export default function Login() {
   const navigation = useNavigation();
   const goToRegisterPage = () => {
     navigation.navigate("Register");

@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Header from "../Components/Header";
+import Header from "../components/Header";
 
 export default function Register() {
   const navigation = useNavigation();

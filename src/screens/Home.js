@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, ImageBackground } from "react-native";
-import Header from "../Components/Header";
+import Header from "../components/Header";
 
 export default function Conversations() {
   const backgroundImage = require("../../assets/img/GeorgesBG.jpeg");

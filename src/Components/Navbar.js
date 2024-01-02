@@ -3,11 +3,11 @@ import React from "react";
 import { createMaterialBottomTabNavigator } from "react-native-paper/react-navigation";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import Conversations from "../Screens/Conversations";
-import Projects from "../Screens/Projects";
-import Contacts from "../Screens/Contacts";
-import Settings from "../Screens/Settings";
-import Home from "../Screens/Home";
+import Conversations from "../screens/Conversations";
+import Projects from "../screens/Projects";
+import Contacts from "../screens/Contacts";
+import Settings from "../screens/Settings";
+import Home from "../screens/Home";
 
 const Tab = createMaterialBottomTabNavigator();
 

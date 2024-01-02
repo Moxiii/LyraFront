@@ -1,8 +1,14 @@
 import React from "react";
-import { View, Text } from "react-native";
-import Header from "../Components/Header";
+import { View, Text, Button } from "react-native";
+import Header from "../components/Header";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Conversations() {
+  const navigation = useNavigation();
+
+  const goToLogin = () => {
+    navigation.navigate("Login");
+  };
   return (
     <View>
       <Header
@@ -11,6 +17,7 @@ export default function Conversations() {
         userAvatar="url_de_votre_avatar"
       />
       <Text>Conversations Screen</Text>
+      <Button title="Se connecter" onPress={goToLogin} />
     </View>
   );
 }

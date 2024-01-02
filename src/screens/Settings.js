@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { GradientButtonThin, Input } from "../../utils/Wireframe";
-import Header from "../Components/Header";
+import Header from "../components/Header";
 
 export default function Settings() {
   return (
