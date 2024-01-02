@@ -2,11 +2,9 @@ import React from "react";
 import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { View, ImageBackground, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import Navbar from "./src/Components/Navbar";
-import { SafeAreaView } from "react-native-safe-area-context";
-
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -14,39 +12,33 @@ export default function App() {
     NATS: require("./assets/fonts/NATS-Regular.ttf"),
   });
 
+  if (!fontsLoaded) {
+    return <View />;
+  }
   return (
-    <SafeAreaView style={styles.container}>
-      <ImageBackground
-        source={require("./assets/img/GeorgesBG.jpeg")}
-        resizeMode="cover"
-        style={{ flex: 1, height: "100%" }}
-      >
-        <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName="Navbar"
-            screenOptions={{ headerShown: false }}
-          >
-            <Stack.Screen
-              name="Navbar"
-              component={Navbar}
-              options={{
-                headerShown: false,
-              }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </ImageBackground>
-    </SafeAreaView>
+    <View style={styles.root}>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Navbar"
+          screenOptions={{ headerShown: false }}
+        >
+          <Stack.Screen
+            name="Navbar"
+            component={Navbar}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: { flex: 1 },
   container: {
     flex: 1,
-  },
-  image: {
-    flex: 1,
-    height: "100%",
     justifyContent: "center",
   },
 });

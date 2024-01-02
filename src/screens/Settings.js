@@ -6,11 +6,7 @@ import Header from "../Components/Header";
 export default function Settings() {
   return (
     <View>
-      <Header
-        title="Georges"
-        showConversationIcon={true}
-        userAvatar="url_de_votre_avatar"
-      />
+      <Header title="Georges" showConversationIcon={true} />
       <Text>Settings Screen</Text>
       <GradientButtonThin label={"Test"} />
       <Input placeholder={"Username"} />

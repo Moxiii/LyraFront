@@ -3,7 +3,11 @@ import React from "react";
 import { View, Text, Image } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-const Header = ({ title, showConversationIcon, userAvatar }) => {
+const Header = ({ title, showConversationIcon, user }) => {
+  let avatar =
+    user && user.avatar
+      ? { uri: user.avatar }
+      : require("../../assets/img/ppplaceholder.png");
   return (
     <View
       style={{
@@ -14,16 +18,14 @@ const Header = ({ title, showConversationIcon, userAvatar }) => {
         backgroundColor: "#ffffff",
       }}
     >
-      {userAvatar && (
-        <Image
-          source={{ uri: userAvatar }}
-          style={{
-            width: 24,
-            height: 24,
-            borderRadius: 12,
-          }}
-        />
-      )}
+      <Image
+        source={avatar}
+        style={{
+          width: 24,
+          height: 24,
+          borderRadius: 12,
+        }}
+      />
       <Text style={{ fontSize: 18, fontWeight: "bold" }}>{title}</Text>
       {showConversationIcon && (
         <Ionicons name="chatbubbles-outline" size={24} />

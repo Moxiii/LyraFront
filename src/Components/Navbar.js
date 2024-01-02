@@ -15,7 +15,7 @@ export default function Navbar() {
   return (
     <Tab.Navigator
       initialRouteName="Conversations"
-      barStyle={{ backgroundColor: "#00A6FF" }}
+      barStyle={{ backgroundColor: "#181818", opacity: "0.2" }}
     >
       <Tab.Screen
         name="Home"

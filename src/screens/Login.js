@@ -18,11 +18,7 @@ export default function Register() {
   };
   return (
     <View style={styles.container}>
-      <Header
-        title="Georges"
-        showConversationIcon={true}
-        userAvatar="url_de_votre_avatar"
-      />
+      <Header title="Georges" showConversationIcon={true} />
       <Text style={[styles.titre, styles.defaultText]}>
         Connectez-vous à Georges
       </Text>
