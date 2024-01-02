@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import Header from "../components/Header";
 
-export default function Conversations() {
+export default function Home() {
   const backgroundImage = require("../../assets/img/GeorgesBG.jpeg");
 
   if (!backgroundImage) {
