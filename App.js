@@ -5,7 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { View, StyleSheet } from "react-native";
 
 import Navbar from "./src/components/Navbar";
-import Register from "./src/screens/Login";
+import Register from "./src/screens/Register";
 import Login from "./src/screens/Login";
 const Stack = createStackNavigator();
 

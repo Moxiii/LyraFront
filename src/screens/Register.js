@@ -1,5 +1,4 @@
 import React from "react";
-import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 import {
