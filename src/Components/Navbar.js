@@ -14,8 +14,11 @@ const Tab = createMaterialBottomTabNavigator();
 export default function Navbar() {
   return (
     <Tab.Navigator
-      initialRouteName="Conversations"
-      barStyle={{ backgroundColor: "#181818", opacity: "0.2" }}
+      initialRouteName="Login"
+      barStyle={{ backgroundColor: '#fff' }} 
+      color="#3D4A7A"
+      activeColor="#3D4A7A"
+      inactiveColor="#797C7B"
     >
       <Tab.Screen
         name="Home"
@@ -24,7 +27,9 @@ export default function Navbar() {
           tabBarLabel: "Home",
           tabBarIcon: ({ color }) => (
             <Ionicons name="home-outline" color={color} size={24} />
+            
           ),
+          tabBarIconStyle: {  borderRadius: 5 },
         }}
       />
       <Tab.Screen
@@ -44,16 +49,6 @@ export default function Navbar() {
           tabBarLabel: "Projects",
           tabBarIcon: ({ color }) => (
             <Ionicons name="briefcase-outline" color={color} size={24} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Contacts"
-        component={Contacts}
-        options={{
-          tabBarLabel: "Contacts",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="people-outline" color={color} size={24} />
           ),
         }}
       />
