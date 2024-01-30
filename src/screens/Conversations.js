@@ -12,7 +12,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
-const ChatTemplate = ({ navigation }) => {
+const Conversations = ({ navigation }) => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const [image, setImage] = useState(null);
@@ -191,4 +191,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatTemplate;
+export default Conversations;
