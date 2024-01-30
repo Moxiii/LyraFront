@@ -7,7 +7,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  Button,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
@@ -59,6 +58,14 @@ const Conversations = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+      <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+      <Ionicons
+            name="arrow"
+            size={30}
+            color="black"
+            style={styles.backIcon}
+          />
+      </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           <Ionicons
             name="arrow-back"

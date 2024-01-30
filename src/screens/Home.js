@@ -65,6 +65,9 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize:18,
   },
+  invisibleGeorgesContainer:{
+    paddingBottom:"12%",
+  },
   georges: {
     flex: 1,
     marginTop: "30%",
@@ -85,6 +88,6 @@ const styles = StyleSheet.create({
   },
   invisibleGeorgesImage: {
     width: 400,
-    height: 300,
+    height: 250,
   },
 });

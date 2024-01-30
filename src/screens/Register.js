@@ -6,23 +6,26 @@ import {
   Text,
   View,
   TextInput,
+  Image,
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Header from "../components/Header";
 
 export default function Register() {
   const navigation = useNavigation();
   const goToLoginPage = () => {
     navigation.navigate("Login");
   };
+  
+  const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
   return (
     <View style={styles.container}>
-      <Header
-        title="Georges"
-        showConversationIcon={true}
-        userAvatar="url_de_votre_avatar"
-      />
+      <View style={styles.invisibleGeorgesContainer}>
+        <Image
+          source={invisibleGeorgesImage}
+          style={styles.invisibleGeorgesImage}
+        />
+      </View>
       <Text style={[styles.titre, styles.defaultText]}>
         Inscrivez-vous avec votre mail
       </Text>
@@ -90,6 +93,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 20,
   },
+  invisibleGeorgesImage: {
+    width: 200,
+    height: 200,
+  },
   button: {
     paddingTop: 25,
     alignItems: "center",
@@ -110,11 +117,10 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: "#3D4A7A",
     fontWeight: "bold",
-    paddingTop: 40,
-    paddingBottom: 40,
+    paddingBottom: 5,
   },
   inputContainer: {
-    marginTop: 20,
+    marginTop: 10,
     width: "100%",
   },
   label: {
