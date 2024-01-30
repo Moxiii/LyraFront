@@ -176,8 +176,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
     paddingTop: 25,
-    paddingBottom: 15,
-    paddingHorizontal: 10, // Ajustement de l'espace horizontal
+    paddingBottom: 60,
+    paddingHorizontal: 10,
     borderBottomWidth: 1,
     borderTopWidth: 1,
     borderBottomColor: "rgba(0, 0, 5, 5)",

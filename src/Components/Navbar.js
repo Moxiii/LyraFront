@@ -1,7 +1,7 @@
-// Navbar.js
 import React from "react";
-import { createMaterialBottomTabNavigator } from "react-native-paper/react-navigation";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { View, StyleSheet, ImageBackground } from "react-native";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { Ionicons } from "@expo/vector-icons";
 
 import Conversations from "../Screens/Conversations";
 import Projects from "../screens/Projects";
@@ -13,55 +13,72 @@ const Tab = createMaterialBottomTabNavigator();
 
 export default function Navbar() {
   return (
-    <Tab.Navigator
-      initialRouteName="Login"
-      barStyle={{ backgroundColor: '#fff' }} 
-      color="#3D4A7A"
-      activeColor="#3D4A7A"
-      inactiveColor="#797C7B"
-    >
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          tabBarLabel: "Home",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="home-outline" color={color} size={24} />
-            
-          ),
-          tabBarIconStyle: {  borderRadius: 5 },
-        }}
-      />
-      <Tab.Screen
-        name="Conversations"
-        component={Conversations}
-        options={{
-          tabBarLabel: "Messages",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="chatbubbles-outline" color={color} size={24} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Projects"
-        component={Projects}
-        options={{
-          tabBarLabel: "Projects",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="briefcase-outline" color={color} size={24} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Settings"
-        component={Settings}
-        options={{
-          tabBarLabel: "Settings",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="cog-outline" color={color} size={24} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
+    <View style={styles.container}>
+      <ImageBackground
+        source={ require("../../assets/img/GeorgesBG.jpeg")}
+        style={styles.backgroundImage}
+      >
+        <Tab.Navigator
+          initialRouteName="Home"
+          barStyle={styles.tabBar}
+          activeColor="#3D4A7A"
+          inactiveColor="#A1A7B3"
+          labeled={false}
+        >
+          <Tab.Screen
+            name="Home"
+            component={Home}
+            options={{
+              tabBarIcon: ({ color }) => (
+                <Ionicons name="home" size={24} color={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Conversations"
+            component={Conversations}
+            options={{
+              tabBarIcon: ({ color }) => (
+                <Ionicons name="chatbubbles" size={24} color={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Projects"
+            component={Projects}
+            options={{
+              tabBarIcon: ({ color }) => (
+                <Ionicons name="briefcase" size={24} color={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Settings"
+            component={Settings}
+            options={{
+              tabBarIcon: ({ color }) => (
+                <Ionicons name="settings" size={24} color={color} />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+      </ImageBackground>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover", 
+  },
+  tabBar: {
+    height: 70,
+      backgroundColor: 'transparent',
+      borderTopWidth: 0,
+      position: 'absolute',
+  },
+});

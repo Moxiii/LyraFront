@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   linearGradient: {
     flex: 1,
     width: "100%",
-    borderRadius: 5, // Ajout d'une bordure pour voir le composant
+    borderRadius: 5, 
   },
   touchable: {
     width: "100%",
