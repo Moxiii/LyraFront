@@ -7,12 +7,15 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Button,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 
-const ChatTemplate = ({ route }) => {
+const ChatTemplate = ({ navigation }) => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
+  const [image, setImage] = useState(null);
 
   const getCurrentTime = () => {
     const now = new Date();
@@ -21,8 +24,22 @@ const ChatTemplate = ({ route }) => {
     return `${hours}:${minutes}`;
   };
 
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+      handleSend();
+    }
+  };
+
   const handleSend = () => {
-    if (inputText.trim() === "") {
+    if (inputText.trim() === "" && !image) {
       return;
     }
 
@@ -31,17 +48,24 @@ const ChatTemplate = ({ route }) => {
       text: inputText,
       sender: "user",
       time: getCurrentTime(),
+      image: image,
     };
 
     setMessages([...messages, newMessage]);
     setInputText("");
+    setImage(null);
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-      <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-          <Ionicons name="arrow-back" size={30} color="black" style={styles.backIcon} />
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Ionicons
+            name="arrow-back"
+            size={30}
+            color="black"
+            style={styles.backIcon}
+          />
         </TouchableOpacity>
         <View style={styles.leftHeader}>
           <Image
@@ -67,15 +91,26 @@ const ChatTemplate = ({ route }) => {
             ]}
           >
             <Text style={{ color: "#fff" }}>{item.text}</Text>
+            {item.image && (
+              <Image
+                source={{ uri: item.image }}
+                style={{ width: 200, height: 200 }}
+              />
+            )}
             <Text style={styles.timeText}>{item.time}</Text>
           </View>
         )}
       />
 
       <View style={styles.inputContainer}>
-        <Ionicons name="camera" size={24} color="#797C7B" style={styles.icon} />
-        <Ionicons name="mic" size={24} color="#797C7B" style={styles.icon} />
-
+        <TouchableOpacity onPress={pickImage}>
+          <Ionicons
+            name="document-outline"
+            size={24}
+            color="#797C7B"
+            style={styles.icon}
+          />
+        </TouchableOpacity>
         <TextInput
           style={styles.input}
           placeholder="Écrivez votre message..."
@@ -95,10 +130,8 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "#fff",
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingVertical: 20,
-    borderBottomColor: "rgba(0, 0, 0, 0.2)",
-    borderWidth: 1,
   },
   backIcon: {
     marginTop: "20%",
@@ -109,9 +142,9 @@ const styles = StyleSheet.create({
   },
   rightHeader: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingLeft: "10%",
-    alignItems: 'center',
+    alignItems: "center",
   },
   headerText: {
     color: "black",
@@ -127,7 +160,7 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 5,
     borderRadius: 10,
-    maxWidth: "50%",
+    maxWidth: "80%",
     backgroundColor: "#3D4A7A",
   },
   inputContainer: {
@@ -136,18 +169,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingTop: 25,
     paddingBottom: 15,
-    borderWidth: 1,
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
     borderBottomColor: "rgba(0, 0, 5, 5)",
     borderTopColor: "#EEFAF8",
   },
   input: {
     backgroundColor: "#F3F6F6",
-    color: "#797C7B",
+    color: "black",
     flex: 1,
     height: 40,
     borderRadius: 10,
     paddingHorizontal: 10,
-    marginLeft: 10,
   },
   icon: {
     marginRight: 10,
