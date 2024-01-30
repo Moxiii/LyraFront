@@ -36,6 +36,7 @@ const Conversations = ({ navigation }) => {
       handleSend();
     }
   };
+  
 
   const handleSend = () => {
     if (inputText.trim() === "" && !image) {
@@ -58,14 +59,14 @@ const Conversations = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-      <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-      <Ionicons
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Ionicons
             name="arrow"
             size={30}
             color="black"
             style={styles.backIcon}
           />
-      </TouchableOpacity>
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           <Ionicons
             name="arrow-back"
@@ -176,6 +177,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingTop: 25,
     paddingBottom: 15,
+    paddingHorizontal: 10, // Ajustement de l'espace horizontal
     borderBottomWidth: 1,
     borderTopWidth: 1,
     borderBottomColor: "rgba(0, 0, 5, 5)",
