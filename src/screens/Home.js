@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#252D4A",
     borderRadius: 16,
     marginLeft: "20%",
-    marginBottom:"20%",
+    marginBottom:"35%",
     width: 244, 
     height: 44,
   },
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     fontSize:18,
   },
   invisibleGeorgesContainer:{
-    paddingBottom:"12%",
+    paddingBottom:"20%",
   },
   georges: {
     flex: 1,

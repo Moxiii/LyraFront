@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover", 
   },
   tabBar: {
-    height: 70,
+    height: 80,
       backgroundColor: 'transparent',
       borderTopWidth: 0,
       position: 'absolute',
