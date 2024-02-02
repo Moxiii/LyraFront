@@ -11,22 +11,33 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-
 export default function Login() {
   const navigation = useNavigation();
   const goToRegisterPage = () => {
     navigation.navigate("Register");
   };
-  
+  const handleClick = (e) => {
+    e.preventDefault();
+    const student = { pseudo, email, motdepasse };
+    console.log(student);
+    fetch("http://localhost:8033/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(student),
+    }).then(() => {
+      console.log("Utilisateur connecté");
+    });
+  };
+
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
   return (
     <View style={styles.container}>
       <View style={styles.invisibleGeorgesContainer}>
-          <Image
-            source={invisibleGeorgesImage}
-            style={styles.invisibleGeorgesImage}
-          />
-        </View>
+        <Image
+          source={invisibleGeorgesImage}
+          style={styles.invisibleGeorgesImage}
+        />
+      </View>
       <Text style={[styles.titre, styles.defaultText]}>
         Connectez-vous à Georges
       </Text>
@@ -57,7 +68,7 @@ export default function Login() {
         </LinearGradient>
       </TouchableOpacity>
       <TouchableOpacity onPress={goToRegisterPage}>
-        <Text style={{ color: "#3D4A7A", marginTop: 20, marginBottom: 10, }}>
+        <Text style={{ color: "#3D4A7A", marginTop: 20, marginBottom: 10 }}>
           Vous n'avez pas de compte ?
         </Text>
       </TouchableOpacity>
@@ -93,7 +104,7 @@ const styles = StyleSheet.create({
     height: 95,
     overflow: "hidden",
   },
-  
+
   invisibleGeorgesImage: {
     width: 200,
     height: 200,

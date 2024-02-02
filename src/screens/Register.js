@@ -1,23 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   StyleSheet,
   Text,
   View,
-  TextInput,
-  Image,
   TouchableOpacity,
+  Image,
+  TextInput,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-export default function Register() {
+export default function Login() {
   const navigation = useNavigation();
   const goToLoginPage = () => {
     navigation.navigate("Login");
   };
-  
+
+  const [email, setEmail] = useState("");
+  const [motdepasse, setMotDePasse] = useState("");
+  const [pseudo, setPseudo] = useState("");
+  const [nom, setNom] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const user = { email, motdepasse, nom, pseudo };
+    console.log(user);
+    fetch("http://localhost:8033/user/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(user),
+    })
+      .then(() => {
+        console.log("Utilisateur added");
+      })
+      .catch((error) => {
+        console.error("Erreur lors de l'enregistrement :", error);
+      });
+  };
+
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
+
   return (
     <View style={styles.container}>
       <View style={styles.invisibleGeorgesContainer}>
@@ -27,27 +50,48 @@ export default function Register() {
         />
       </View>
       <Text style={[styles.titre, styles.defaultText]}>
-        Inscrivez-vous avec votre mail
+        Enregistrez-vous à Georges
       </Text>
       <View style={styles.inputContainer}>
-        <Text style={[styles.nom, styles.defaultText]}>Nom</Text>
-        <TextInput style={[styles.input]} />
-      </View>
-      <View style={styles.inputContainer}>
         <Text style={[styles.label, styles.defaultText]}>Email</Text>
-        <TextInput style={styles.input} />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={[styles.label, styles.defaultText]}>Mot de passe</Text>
-        <TextInput style={[styles.input]} secureTextEntry={true} />
+        <input
+          type="email"  
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={styles.input}
+        />
       </View>
       <View style={styles.inputContainer}>
         <Text style={[styles.label, styles.defaultText]}>
-          Confirmation du mot de passe
+          Nom d'utilisateur
         </Text>
-        <TextInput style={styles.input} secureTextEntry={true} />
+        <input
+          type="pseudo"
+          value={pseudo}
+          onChange={(e) => setPseudo(e.target.value)}
+          style={styles.input}
+        />
       </View>
-      <TouchableOpacity style={styles.button}>
+
+      <View style={styles.inputContainer}>
+        <Text style={[styles.label, styles.defaultText]}>Nom</Text>
+        <input
+          type="nom"
+          value={nom}
+          onChange={(e) => setNom(e.target.value)}
+          style={styles.input}
+        />
+      </View>
+      <View style={styles.inputContainer}>
+        <Text style={[styles.label, styles.defaultText]}>Mot de passe</Text>
+        <input
+          type="password"
+          value={motdepasse}
+          onChange={(e) => setMotDePasse(e.target.value)}
+          style={styles.input}
+        />
+      </View>
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <LinearGradient
           style={{
             ...styles.gradient,
@@ -61,12 +105,12 @@ export default function Register() {
           colors={["#040141", "#090979", "#d45a00"]}
         >
           <Text style={[styles.buttonText, styles.defaultText]}>
-            Créer un compte
+            S'enregistrer
           </Text>
         </LinearGradient>
       </TouchableOpacity>
       <TouchableOpacity onPress={goToLoginPage}>
-        <Text style={{ color: "#3D4A7A", marginTop: 10 }}>
+        <Text style={{ color: "#3D4A7A", marginTop: 20, marginBottom: 10 }}>
           Vous avez déjà un compte ?
         </Text>
       </TouchableOpacity>
@@ -85,29 +129,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "top",
     paddingHorizontal: 35,
-    paddingTop: 15,
+    paddingTop: 20,
   },
-  nom: {
-    color: "#3D4A7A",
-    fontWeight: "bold",
-    marginTop: 10,
-    fontSize: 20,
+  button: {
+    paddingTop: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 28,
+    borderRadius: 30,
+    height: 95,
+    overflow: "hidden",
   },
   invisibleGeorgesImage: {
     width: 200,
     height: 200,
   },
-  button: {
-    paddingTop: 25,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 15,
-    borderRadius: 30,
-    height: 95,
-    overflow: "hidden",
-  },
   buttonText: {
-    paddingTop: 4,
+    paddingTop: 5,
     textAlign: "center",
     color: "#fff",
     fontSize: 22,
@@ -117,11 +155,12 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: "#3D4A7A",
     fontWeight: "bold",
-    paddingBottom: 5,
+    paddingBottom: 10,
   },
   inputContainer: {
-    marginTop: 10,
+    marginTop: 5,
     width: "100%",
+    marginBottom: 15,
   },
   label: {
     color: "#3D4A7A",
@@ -131,11 +170,12 @@ const styles = StyleSheet.create({
   input: {
     width: "90%",
     height: 40,
-    borderBottomWidth: 1,
     borderBottomColor: "#CDD1D0",
     fontSize: 18,
     color: "black",
     outlineWidth: 0,
+    borderWidth: 0,
+    borderBottomWidth: 1,
   },
   gradient: {
     flex: 1,
