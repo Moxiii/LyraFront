@@ -15,7 +15,7 @@ export default function Navbar() {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={ require("../../assets/img/GeorgesBG.jpeg")}
+        source={require("../../assets/img/GeorgesBG.jpeg")}
         style={styles.backgroundImage}
       >
         <Tab.Navigator
@@ -73,12 +73,12 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     flex: 1,
-    resizeMode: "cover", 
+    resizeMode: "cover",
   },
   tabBar: {
     height: 80,
-      backgroundColor: 'transparent',
-      borderTopWidth: 0,
-      position: 'absolute',
+    backgroundColor: "transparent",
+    borderTopWidth: 0,
+    position: "absolute",
   },
 });
