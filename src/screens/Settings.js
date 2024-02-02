@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   iconBackground: {
+    opacity: "70%",
     backgroundColor: "#DEEBFF",
     borderRadius: 50,
     padding: 8,
