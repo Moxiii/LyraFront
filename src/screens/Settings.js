@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, ImageBackground, Text, Image } from "react-native";
-
+import { Ionicons } from "@expo/vector-icons";
 const backgroundImage = require("../../assets/img/fondsettings.png");
 const martin = require("../../assets/img/marting.png");
 const Settings = () => {
@@ -20,6 +20,30 @@ const Settings = () => {
               <Text style={styles.subtile}>Incoming CEO of the world.</Text>
             </View>
           </View>
+          <View style={styles.itemContainer}>
+            <View style={styles.iconBackground}>
+              <Ionicons
+                name="chatbox-ellipses-outline"
+                size={24}
+                color="black"
+                style={styles.icon}
+              />
+            </View>
+            <Text style={styles.itemText}>Notifications</Text>
+          </View>
+          <View style={styles.itemContainer}>
+            <View style={styles.iconBackground}>
+              <Ionicons
+                name="chatbox-ellipses-outline"
+                size={24}
+                color="black"
+                style={styles.icon}
+              />
+            </View>
+            <Text style={styles.itemText}>Chat</Text>
+          </View>
+          <Text>Notification</Text>
+          <Text>Help</Text>
         </View>
       </ImageBackground>
     </View>
@@ -58,14 +82,16 @@ const styles = StyleSheet.create({
   profileContainer: {
     flexDirection: "row",
     alignItems: "center",
+    borderBottomWidth: 1,
+    borderColor: "#D2D2D2",
   },
+
   background: {
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-end",
     flexDirection: "column",
   },
-
   name: {
     fontWeight: "bold",
     fontSize: 20,
@@ -85,6 +111,25 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  itemContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+    marginTop: 20,
+  },
+  iconBackground: {
+    backgroundColor: "#DEEBFF",
+    borderRadius: 50,
+    padding: 8,
+    marginRight: 10,
+  },
+  icon: {
+    color: "#797C7B",
+  },
+  itemText: {
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 
