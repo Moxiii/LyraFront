@@ -2,14 +2,14 @@ import React from "react";
 import { View, Text, StyleSheet, Image, ImageBackground } from "react-native";
 import { TouchableOpacity } from "react-native-web";
 import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 export default function Home() {
   const backgroundImage = require("../../assets/img/GeorgesBG.jpeg");
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
   const navigation = useNavigation();
-  const goToConversations= () => {
-    navigation.navigate("Conversations");
+  const goToLogin = () => {
+    navigation.navigate("Login");
   };
-
 
   if (!backgroundImage) {
     return <View />;
@@ -34,10 +34,32 @@ export default function Home() {
             style={styles.invisibleGeorgesImage}
           />
         </View>
-        <TouchableOpacity  onPress={goToConversations} style={styles.continueContainer}>
-          <Text style={styles.continue}>
-            Continuer
-          </Text>
+        <View style={styles.iconContainer}>
+          <Ionicons
+            name="logo-google"
+            size={24}
+            color="white"
+            style={styles.icon}
+          />
+          <Ionicons
+            name="logo-facebook"
+            size={24}
+            color="white"
+            style={styles.icon}
+          />
+          <Ionicons
+            name="logo-apple"
+            size={24}
+            color="white"
+            style={styles.icon}
+          />
+        </View>
+
+        <TouchableOpacity style={styles.continueContainer}>
+          <Text style={styles.continue}>S'enregister avec l'email</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={goToLogin}>
+          <Text style={styles.connecter}>Déjà un compte ? Se connecter</Text>
         </TouchableOpacity>
       </ImageBackground>
     </View>
@@ -50,23 +72,35 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-  continueContainer:{
-    justifyContent:"center",
+  connecter: {
+    fontSize: 15,
+    color: "#fff",
+    marginLeft: "25%",
+    marginBottom: "28%",
+  },
+  continueContainer: {
+    justifyContent: "center",
     alignItems: "center",
-    width:"80%",
+    width: "80%",
     backgroundColor: "#252D4A",
     borderRadius: 16,
     marginLeft: "20%",
-    marginBottom:"35%",
-    width: 244, 
+    marginBottom: "10%",
+    width: 244,
     height: 44,
   },
-  continue:{
-    color: "white",
-    fontSize:18,
+  iconContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 20,
   },
-  invisibleGeorgesContainer:{
-    paddingBottom:"20%",
+  icon: {
+    marginBottom: 18,
+    marginHorizontal: 10,
+  },
+  continue: {
+    color: "white",
+    fontSize: 18,
   },
   georges: {
     flex: 1,
@@ -87,6 +121,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   invisibleGeorgesImage: {
+    marginBottom: "10%",
     width: 400,
     height: 250,
   },

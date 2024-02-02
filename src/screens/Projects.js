@@ -5,8 +5,7 @@ import Header from "../components/Header";
 export default function Projects() {
   return (
     <View>
-      <Header title="Georges" showConversationIcon={true} />
-      <Text>Projects Screen</Text>
+    
     </View>
   );
 }
