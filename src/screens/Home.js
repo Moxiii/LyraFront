@@ -10,6 +10,9 @@ export default function Home() {
   const goToLogin = () => {
     navigation.navigate("Login");
   };
+  const goToRegister = () => {
+    navigation.navigate("Register");
+  };
 
   if (!backgroundImage) {
     return <View />;
@@ -55,7 +58,10 @@ export default function Home() {
           />
         </View>
 
-        <TouchableOpacity style={styles.continueContainer}>
+        <TouchableOpacity
+          onPress={goToRegister}
+          style={styles.continueContainer}
+        >
           <Text style={styles.continue}>S'enregister avec l'email</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={goToLogin}>
