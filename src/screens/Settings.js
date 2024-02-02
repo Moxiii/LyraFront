@@ -29,21 +29,52 @@ const Settings = () => {
                 style={styles.icon}
               />
             </View>
-            <Text style={styles.itemText}>Notifications</Text>
+            <Text style={styles.itemText}>Chat</Text>
           </View>
           <View style={styles.itemContainer}>
             <View style={styles.iconBackground}>
               <Ionicons
-                name="chatbox-ellipses-outline"
+                name="notifications-outline"
                 size={24}
                 color="black"
                 style={styles.icon}
               />
             </View>
-            <Text style={styles.itemText}>Chat</Text>
+            <Text style={styles.itemText}>Notification</Text>
+          </View>{" "}
+          <View style={styles.itemContainer}>
+            <View style={styles.iconBackground}>
+              <Ionicons
+                name="key-outline"
+                size={24}
+                color="black"
+                style={styles.icon}
+              />
+            </View>
+            <Text style={styles.itemText}>Compte</Text>
           </View>
-          <Text>Notification</Text>
-          <Text>Help</Text>
+          <View style={styles.itemContainer}>
+            <View style={styles.iconBackground}>
+              <Ionicons
+                name="help-circle-outline"
+                size={24}
+                color="black"
+                style={styles.icon}
+              />
+            </View>
+            <Text style={styles.itemText}>Aide</Text>
+          </View>
+          <View style={styles.itemContainer}>
+            <View style={styles.iconBackground}>
+              <Ionicons
+                name="people-outline"
+                size={24}
+                color="black"
+                style={styles.icon}
+              />
+            </View>
+            <Text style={styles.itemText}>Invite un ami</Text>
+          </View>
         </View>
       </ImageBackground>
     </View>
@@ -116,7 +147,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 10,
-    marginTop: 20,
+    marginTop: 40,
   },
   iconBackground: {
     backgroundColor: "#DEEBFF",
