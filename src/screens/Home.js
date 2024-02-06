@@ -9,11 +9,15 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import { useRoute } from "@react-navigation/native";
 
 export default function Home() {
   const backgroundImage = require("../../assets/img/GeorgesBG.jpeg");
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
   const navigation = useNavigation();
+  const route = useRoute();
+
+  console.log(route.name);
   const goToLogin = () => {
     navigation.navigate("Login");
   };

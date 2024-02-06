@@ -10,12 +10,15 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import { useRoute } from "@react-navigation/native";
 
 const Conversations = ({ navigation }) => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const [image, setImage] = useState(null);
+  const route = useRoute();
 
+  console.log(route.name);
   const getCurrentTime = () => {
     const now = new Date();
     const hours = now.getHours().toString().padStart(2, "0");

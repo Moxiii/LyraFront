@@ -11,7 +11,6 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function LoginRegister() {
-  const backgroundImage = require("../../assets/img/GeorgesBG.jpeg");
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
   const navigation = useNavigation();
   const goToLogin = () => {
@@ -27,54 +26,45 @@ export default function LoginRegister() {
 
   return (
     <View style={styles.root}>
-      <ImageBackground
-        source={backgroundImage}
-        resizeMode="cover"
-        style={styles.container}
-      >
-        <View style={styles.georges}>
-          <Text style={styles.title}>Georges</Text>
-          <Text style={styles.subtitle}>
-            Connecte Georges à toutes tes applications. Il fera le reste
-          </Text>
-        </View>
-        <View style={styles.invisibleGeorgesContainer}>
-          <Image
-            source={invisibleGeorgesImage}
-            style={styles.invisibleGeorgesImage}
-          />
-        </View>
-        <View style={styles.iconContainer}>
-          <Ionicons
-            name="logo-google"
-            size={24}
-            color="white"
-            style={styles.icon}
-          />
-          <Ionicons
-            name="logo-facebook"
-            size={24}
-            color="white"
-            style={styles.icon}
-          />
-          <Ionicons
-            name="logo-apple"
-            size={24}
-            color="white"
-            style={styles.icon}
-          />
-        </View>
+      <View style={styles.georges}>
+        <Text style={styles.title}>Georges</Text>
+        <Text style={styles.subtitle}>
+          Connecte Georges à toutes tes applications. Il fera le reste
+        </Text>
+      </View>
+      <View style={styles.invisibleGeorgesContainer}>
+        <Image
+          source={invisibleGeorgesImage}
+          style={styles.invisibleGeorgesImage}
+        />
+      </View>
+      <View style={styles.iconContainer}>
+        <Ionicons
+          name="logo-google"
+          size={24}
+          color="white"
+          style={styles.icon}
+        />
+        <Ionicons
+          name="logo-facebook"
+          size={24}
+          color="white"
+          style={styles.icon}
+        />
+        <Ionicons
+          name="logo-apple"
+          size={24}
+          color="white"
+          style={styles.icon}
+        />
+      </View>
 
-        <TouchableOpacity
-          onPress={goToRegister}
-          style={styles.continueContainer}
-        >
-          <Text style={styles.continue}>S'enregister avec l'email</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={goToLogin}>
-          <Text style={styles.connecter}>Déjà un compte ? Se connecter</Text>
-        </TouchableOpacity>
-      </ImageBackground>
+      <TouchableOpacity onPress={goToRegister} style={styles.continueContainer}>
+        <Text style={styles.continue}>S'enregister avec l'email</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={goToLogin}>
+        <Text style={styles.connecter}>Déjà un compte ? Se connecter</Text>
+      </TouchableOpacity>
     </View>
   );
 }
