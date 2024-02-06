@@ -36,7 +36,6 @@ const Conversations = ({ navigation }) => {
       handleSend();
     }
   };
-  
 
   const handleSend = () => {
     if (inputText.trim() === "" && !image) {
@@ -59,14 +58,6 @@ const Conversations = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Ionicons
-            name="arrow"
-            size={30}
-            color="black"
-            style={styles.backIcon}
-          />
-        </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           <Ionicons
             name="arrow-back"

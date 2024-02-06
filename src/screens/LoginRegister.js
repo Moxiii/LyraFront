@@ -10,7 +10,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function Home() {
+export default function LoginRegister() {
   const backgroundImage = require("../../assets/img/GeorgesBG.jpeg");
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
   const navigation = useNavigation();

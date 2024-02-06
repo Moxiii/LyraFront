@@ -41,7 +41,7 @@ const Settings = () => {
               />
             </View>
             <Text style={styles.itemText}>Notification</Text>
-          </View>{" "}
+          </View>
           <View style={styles.itemContainer}>
             <View style={styles.iconBackground}>
               <Ionicons
@@ -75,7 +75,14 @@ const Settings = () => {
             </View>
             <Text style={styles.itemText}>Invite un ami</Text>
           </View>
-          <Text style={{ color: "#3D4A7A", marginBottom: 10 , fontSize: 15, marginLeft: "35%"}}>
+          <Text
+            style={{
+              color: "#3D4A7A",
+              marginBottom: 10,
+              fontSize: 15,
+              marginLeft: "35%",
+            }}
+          >
             Déconnexion
           </Text>
         </View>

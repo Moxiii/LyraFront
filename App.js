@@ -2,11 +2,12 @@ import React from "react";
 import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ImageBackground } from "react-native";
 
 import Navbar from "./src/components/Navbar";
 import Register from "./src/screens/Register";
 import Login from "./src/screens/Login";
+import Home from "./src/screens/Home";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -20,20 +21,12 @@ export default function App() {
   return (
     <View style={styles.root}>
       <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Navbar"
-          screenOptions={{ headerShown: false }}
+        <ImageBackground
+          source={require("./assets/img/GeorgesBG.jpeg")}
+          style={styles.backgroundImage}
         >
-          <Stack.Screen
-            name="Navbar"
-            component={Navbar}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Register" component={Register} />
-        </Stack.Navigator>
+          <Navbar />
+        </ImageBackground>
       </NavigationContainer>
     </View>
   );
@@ -44,5 +37,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
   },
 });
