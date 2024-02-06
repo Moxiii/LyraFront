@@ -3,11 +3,11 @@ import { View, StyleSheet, ImageBackground } from "react-native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 
-import Conversations from "../Screens/Conversations";
+import Conversations from "../screens/Conversations";
 import Projects from "../screens/Projects";
 import Contacts from "../screens/Contacts";
 import Settings from "../screens/Settings";
-import Home from "../Screens/Home";
+import Home from "../screens/Home";
 
 const Tab = createMaterialBottomTabNavigator();
 
