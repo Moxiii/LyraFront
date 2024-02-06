@@ -7,8 +7,6 @@ import { View, StyleSheet, ImageBackground } from "react-native";
 import Navbar from "./src/components/Navbar";
 import Register from "./src/screens/Register";
 import Login from "./src/screens/Login";
-import Home from "./src/screens/Home";
-import Router from "./src/components/Router";
 const Stack = createStackNavigator();
 
 export default function App() {
