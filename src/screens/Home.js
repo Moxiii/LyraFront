@@ -14,6 +14,8 @@ import { useRoute } from "@react-navigation/native";
 export default function Home() {
   const backgroundImage = require("../../assets/img/GeorgesBG.jpeg");
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
+  const CEO = require("../../assets/img/marting.png");
+
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -36,48 +38,24 @@ export default function Home() {
         resizeMode="cover"
         style={styles.container}
       >
-        <View style={styles.georges}>
-          <Text style={styles.title}>Georges</Text>
-          <Text style={styles.subtitle}>
-            Connecte Georges à toutes tes applications. Il fera le reste
-          </Text>
+        <View style={styles.usercard}>
+          <Image source={CEO} style={styles.profilepic} />
+          <View style={styles.usertexts}>
+            <Text style={styles.username}>@martindvt</Text>
+            <Text style={styles.bio}>Incoming CEO of the world.</Text>
+          </View>
+          <Ionicons name="pencil" size={24} color="white" style={styles.icon} />
         </View>
-        <View style={styles.invisibleGeorgesContainer}>
+        <View style={styles.chatcard}>
           <Image
             source={invisibleGeorgesImage}
             style={styles.invisibleGeorgesImage}
           />
+          <Text style={styles.georgesmessage}>
+            Bonjour Martin, grosse journée aujourd’hui, n’hésite pas à venir me
+            voir !
+          </Text>
         </View>
-        <View style={styles.iconContainer}>
-          <Ionicons
-            name="logo-google"
-            size={24}
-            color="white"
-            style={styles.icon}
-          />
-          <Ionicons
-            name="logo-facebook"
-            size={24}
-            color="white"
-            style={styles.icon}
-          />
-          <Ionicons
-            name="logo-apple"
-            size={24}
-            color="white"
-            style={styles.icon}
-          />
-        </View>
-
-        <TouchableOpacity
-          onPress={goToRegister}
-          style={styles.continueContainer}
-        >
-          <Text style={styles.continue}>S'enregister avec l'email</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={goToLogin}>
-          <Text style={styles.connecter}>Déjà un compte ? Se connecter</Text>
-        </TouchableOpacity>
       </ImageBackground>
     </View>
   );
@@ -85,26 +63,39 @@ export default function Home() {
 
 const styles = StyleSheet.create({
   root: { flex: 1 },
+  usercard: {
+    display: "flex",
+    flexDirection: "row",
+    marginTop: "10%",
+    marginLeft: "5%",
+  },
+  profilepic: {
+    marginBottom: "10%",
+    width: 70,
+    height: 70,
+    borderRadius: "50%",
+  },
+  usertexts: {
+    marginTop: "5%",
+    marginLeft: "2%",
+  },
+  username: { color: "#fff" },
+  bio: {
+    color: "#fff",
+  },
+
+  chatcard: {
+    display: "flex",
+    flexDirection: "row",
+    backgroundColor: "rgba(105, 105, 105, 0.16)",
+    padding: "5%",
+  },
+  georgesmessage: {
+    color: "#fff",
+  },
   container: {
     flex: 1,
     justifyContent: "center",
-  },
-  connecter: {
-    fontSize: 15,
-    color: "#fff",
-    marginLeft: "25%",
-    marginBottom: "28%",
-  },
-  continueContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: "80%",
-    backgroundColor: "#252D4A",
-    borderRadius: 16,
-    marginLeft: "20%",
-    marginBottom: "10%",
-    width: 244,
-    height: 44,
   },
   iconContainer: {
     flexDirection: "row",
@@ -115,31 +106,14 @@ const styles = StyleSheet.create({
     marginBottom: 18,
     marginHorizontal: 10,
   },
-  continue: {
-    color: "white",
-    fontSize: 18,
-  },
   georges: {
     flex: 1,
     marginTop: "30%",
     alignItems: "center",
   },
-  title: {
-    fontSize: 50,
-    fontWeight: "bold",
-    color: "white",
-    textAlign: "center",
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 18,
-    color: "white",
-    textAlign: "center",
-    paddingHorizontal: 20,
-  },
   invisibleGeorgesImage: {
     marginBottom: "10%",
-    width: 400,
-    height: 250,
+    width: 70,
+    height: 70,
   },
 });
