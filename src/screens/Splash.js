@@ -12,7 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
 
 export default function Splash() {
-  const backgroundImage = require("../../assets/img/GeorgesBG.jpeg");
+  const backgroundImage = require("../../assets/img/Splash.jpg");
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
   const navigation = useNavigation();
   const route = useRoute();

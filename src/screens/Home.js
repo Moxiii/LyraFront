@@ -12,7 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
 
 export default function Home() {
-  const backgroundImage = require("../../assets/img/GeorgesBG.jpeg");
+  const backgroundImage = require("../../assets/img/Splash.jpg");
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
   const CEO = require("../../assets/img/marting.png");
 
@@ -47,14 +47,15 @@ export default function Home() {
           <Ionicons name="pencil" size={24} color="white" style={styles.icon} />
         </View>
         <View style={styles.chatcard}>
-          <Image
-            source={invisibleGeorgesImage}
-            style={styles.invisibleGeorgesImage}
-          />
+          <Image source={invisibleGeorgesImage} style={styles.chatGeorgesImg} />
           <Text style={styles.georgesmessage}>
             Bonjour Martin, grosse journée aujourd’hui, n’hésite pas à venir me
             voir !
           </Text>
+        </View>
+
+        <View style={styles.organisationcard}>
+          <Text style={styles.georgesmessage}>Todo :</Text>
         </View>
       </ImageBackground>
     </View>
@@ -89,6 +90,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "rgba(105, 105, 105, 0.16)",
     padding: "5%",
+    margin: "2%",
+    maxWidth: "100%",
+    borderRadius: "15px",
+  },
+  chatGeorgesImg: {
+    width: 50,
+    height: 50,
+    margin: 0,
+    padding: 0,
+    marginRight: "2%",
   },
   georgesmessage: {
     color: "#fff",
@@ -110,10 +121,5 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: "30%",
     alignItems: "center",
-  },
-  invisibleGeorgesImage: {
-    marginBottom: "10%",
-    width: 70,
-    height: 70,
   },
 });
