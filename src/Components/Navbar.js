@@ -1,9 +1,8 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import { createNavigator } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import Settings from "../screens/Settings";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Conversations from "../screens/Conversations";
 import Splash from "../screens/Splash";
 import Home from "../screens/Home";
 
@@ -11,11 +10,17 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
   return (
     <View
       style={{
-        backgroundColor: "rgba(43, 43, 43, 0.)",
+        backgroundColor: "rgba(43, 43, 43, 0.5)",
         height: 80,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-around",
+        borderTopWidth: 0,
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 1,
       }}
     >
       {state.routes.map((route, index) => {
@@ -33,8 +38,8 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
         const iconName =
           route.name === "Calendar"
             ? "calendar"
-            : route.name === "Settings"
-            ? "settings"
+            : route.name === "Conversations"
+            ? "chatbubble"
             : "";
 
         const onPress = () => {
@@ -77,7 +82,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                     width: 90,
                     height: 90,
                     borderRadius: 50,
-                    backgroundColor: "rgba(33, 33, 33, 0.55)",
+                    backgroundColor: "rgba(33, 33, 33, 0.9)",
                     position: "absolute",
                     top: -60,
                     right: -45,
@@ -117,7 +122,7 @@ export default function Navbar() {
       <Tab.Screen
         name="Calendar"
         component={Splash}
-        options={{ tabBarLabel: "Calendar" }}
+        options={{ tabBarLabel: "Calendrier" }}
       />
       <Tab.Screen
         name="InvisibleSpeakButton"
@@ -130,9 +135,9 @@ export default function Navbar() {
         })}
       />
       <Tab.Screen
-        name="Settings"
-        component={Settings}
-        options={{ tabBarLabel: "Settings" }}
+        name="Conversations"
+        component={Conversations}
+        options={{ tabBarLabel: "Messages" }}
       />
     </Tab.Navigator>
   );

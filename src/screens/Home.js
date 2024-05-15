@@ -7,6 +7,7 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
+import { ProgressChart } from "react-native-chart-kit";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
@@ -20,19 +21,44 @@ export default function Home() {
   const route = useRoute();
 
   console.log(route.name);
-  const goToLogin = () => {
-    navigation.navigate("Login");
-  };
-  const goToRegister = () => {
-    navigation.navigate("Register");
-  };
 
-  if (!backgroundImage) {
-    return <View />;
-  }
   const linkToChat = () => {
     navigation.navigate("Conversation");
   };
+  const chartConfig = {
+    backgroundGradientFrom: "transparent",
+    backgroundGradientTo: "transparent",
+    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // Couleur des barres
+    strokeWidth: 2,
+    barPercentage: 0.5,
+    decimalPlaces: 1,
+    propsForLabels: {
+      fontSize: 11, // Taille du texte
+      color: "#fff", // Couleur du texte
+      fontFamily: "Arial", // Police du texte
+    },
+    propsForBackgroundLines: {
+      stroke: "#ccc",
+    },
+    propsForVerticalLabels: {
+      fontSize: 10,
+      color: "#fff", // Couleur du texte vertical
+      fontFamily: "Arial", // Police du texte vertical
+    },
+    propsForHorizontalLabels: {
+      fontSize: 10,
+      color: "#fff", // Couleur du texte horizontal
+      fontFamily: "Arial", // Police du texte horizontal
+    },
+    strokeWidth: 2,
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false,
+  };
+  const data = {
+    labels: ["Travail", "Personnel", "0 catégories"],
+    data: [0.2, 0.6, 0.8],
+  };
+
   return (
     <View style={styles.root}>
       <ImageBackground
@@ -48,16 +74,36 @@ export default function Home() {
           </View>
           <Ionicons name="pencil" size={24} color="white" style={styles.icon} />
         </View>
+
         <TouchableOpacity style={styles.chatcard} onPress={linkToChat}>
           <Image source={invisibleGeorgesImage} style={styles.chatGeorgesImg} />
           <Text style={styles.georgesmessage}>
-            Bonjour Martin, grosse journée aujourd’hui, n’hésite pas à venir me
-            voir !
+            Bonjour Martin, n’hésite pas à venir me voir !
           </Text>
         </TouchableOpacity>
 
         <View style={styles.organisationcard}>
-          <Text style={styles.georgesmessage}>Todo :</Text>
+          <Text style={styles.georgesmessage}>Georges propose:</Text>
+          <Text style={styles.suggestion}>- Planifier la réunion de 10h</Text>
+          <Text style={styles.suggestion}>- Appeler le fournisseur</Text>
+          <Text style={styles.suggestion}>- Vérifier les emails</Text>
+        </View>
+
+        <View style={styles.chartcard}>
+          <Text style={styles.georgesmessage}>Catégories des TODO:</Text>
+          <View
+            style={{ alignItems: "center", marginTop: 20, marginRight: 90 }}
+          >
+            <ProgressChart
+              data={data}
+              width={410}
+              height={220}
+              strokeWidth={10}
+              radius={22}
+              chartConfig={chartConfig}
+              hideLegend={false}
+            />
+          </View>
         </View>
       </ImageBackground>
     </View>
@@ -66,62 +112,81 @@ export default function Home() {
 
 const styles = StyleSheet.create({
   root: { flex: 1 },
-  usercard: {
-    display: "flex",
-    flexDirection: "row",
-    marginTop: "10%",
-    marginLeft: "5%",
-  },
-  profilepic: {
-    marginBottom: "10%",
-    width: 70,
-    height: 70,
-    borderRadius: "50%",
-  },
-  usertexts: {
-    marginTop: "5%",
-    marginLeft: "2%",
-  },
-  username: { color: "#fff" },
-  bio: {
-    color: "#fff",
-  },
-
-  chatcard: {
-    display: "flex",
-    flexDirection: "row",
-    backgroundColor: "rgba(105, 105, 105, 0.16)",
-    padding: "5%",
-    margin: "2%",
-    maxWidth: "100%",
-    borderRadius: "15px",
-  },
-  chatGeorgesImg: {
-    width: 50,
-    height: 50,
-    margin: 0,
-    padding: 0,
-    marginRight: "2%",
-  },
-  georgesmessage: {
-    color: "#fff",
-  },
   container: {
     flex: 1,
     justifyContent: "center",
   },
-  iconContainer: {
+  usercard: {
+    display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
-    marginBottom: 20,
+    alignItems: "center",
+    marginTop: 20,
+    marginHorizontal: 20,
+  },
+  profilepic: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+  },
+  usertexts: {
+    marginLeft: 15,
+  },
+  username: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  bio: {
+    color: "#fff",
+    marginTop: 5,
   },
   icon: {
-    marginBottom: 18,
-    marginHorizontal: 10,
+    marginLeft: "auto",
+    marginRight: 20,
   },
-  georges: {
-    flex: 1,
-    marginTop: "30%",
+  chatcard: {
+    flexDirection: "row",
+    backgroundColor: "rgba(105, 105, 105, 0.16)",
+    padding: 15,
+    marginHorizontal: 20,
+    marginTop: 20,
+    borderRadius: 15,
     alignItems: "center",
+  },
+  chatGeorgesImg: {
+    width: 50,
+    height: 50,
+    marginRight: 15,
+  },
+  georgesmessage: {
+    color: "#fff",
+    flex: 1,
+    flexWrap: "wrap",
+  },
+  organisationcard: {
+    backgroundColor: "rgba(105, 105, 105, 0.16)",
+    padding: 15,
+    marginHorizontal: 20,
+    marginTop: 20,
+    borderRadius: 15,
+  },
+  suggestion: {
+    color: "#fff",
+    marginTop: 5,
+  },
+  chartcard: {
+    backgroundColor: "rgba(105, 105, 105, 0.16)",
+    padding: 15,
+    marginHorizontal: 20,
+    marginTop: 20,
+    borderRadius: 15,
+    alignItems: "center",
+  },
+  chart: {
+    marginTop: 10,
+  },
+  chartText: {
+    color: "#fff",
+    textAlign: "center",
   },
 });
