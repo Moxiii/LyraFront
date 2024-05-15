@@ -30,7 +30,9 @@ export default function Home() {
   if (!backgroundImage) {
     return <View />;
   }
-
+  const linkToChat = () => {
+    navigation.navigate("Conversation");
+  };
   return (
     <View style={styles.root}>
       <ImageBackground
@@ -46,13 +48,13 @@ export default function Home() {
           </View>
           <Ionicons name="pencil" size={24} color="white" style={styles.icon} />
         </View>
-        <View style={styles.chatcard}>
+        <TouchableOpacity style={styles.chatcard} onPress={linkToChat}>
           <Image source={invisibleGeorgesImage} style={styles.chatGeorgesImg} />
           <Text style={styles.georgesmessage}>
             Bonjour Martin, grosse journée aujourd’hui, n’hésite pas à venir me
             voir !
           </Text>
-        </View>
+        </TouchableOpacity>
 
         <View style={styles.organisationcard}>
           <Text style={styles.georgesmessage}>Todo :</Text>

@@ -7,6 +7,8 @@ import { View, StyleSheet, ImageBackground } from "react-native";
 import Navbar from "./src/components/Navbar";
 import Register from "./src/screens/Register";
 import Login from "./src/screens/Login";
+import Conversations from "./src/screens/Conversations";
+import Home from "./src/screens/Home";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -24,6 +26,8 @@ export default function App() {
           <Stack.Screen name="Navbar" component={Navbar} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="Conversation" component={Conversations} />
+          <Stack.Screen name="Home" component={Home} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
