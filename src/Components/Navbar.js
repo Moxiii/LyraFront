@@ -1,76 +1,139 @@
 import React from "react";
-import { View, StyleSheet, ImageBackground } from "react-native";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { View, Text, TouchableOpacity, Image } from "react-native";
+import { createNavigator } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-
-import Conversations from "../screens/Conversations";
-import Projects from "../screens/Projects";
-import Contacts from "../screens/Contacts";
 import Settings from "../screens/Settings";
+import Splash from "../screens/Splash";
 import Home from "../screens/Home";
 
-const Tab = createMaterialBottomTabNavigator();
+const CustomTabBar = ({ state, descriptors, navigation }) => {
+  return (
+    <View
+      style={{
+        backgroundColor: "rgba(43, 43, 43, 0.)",
+        height: 80,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-around",
+      }}
+    >
+      {state.routes.map((route, index) => {
+        const { options } = descriptors[route.key];
+        const label =
+          options.tabBarLabel !== undefined
+            ? options.tabBarLabel
+            : options.title !== undefined
+            ? options.title
+            : route.name;
+        const isFocused = state.index === index;
+        const color = isFocused
+          ? "rgba(255, 255, 255, 1)"
+          : "rgba(255, 255, 255, 0.8)";
+        const iconName =
+          route.name === "Calendar"
+            ? "calendar"
+            : route.name === "Settings"
+            ? "settings"
+            : "";
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: "tabPress",
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
+          }
+        };
+
+        const onLongPress = () => {
+          navigation.emit({
+            type: "tabLongPress",
+            target: route.key,
+          });
+        };
+
+        return (
+          <TouchableOpacity
+            key={index}
+            accessibilityRole="button"
+            accessibilityState={isFocused ? { selected: true } : {}}
+            accessibilityLabel={options.tabBarAccessibilityLabel}
+            testID={options.tabBarTestID}
+            onPress={onPress}
+            onLongPress={onLongPress}
+            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+          >
+            {iconName !== "" && (
+              <Ionicons name={iconName} size={24} color={color} />
+            )}
+            {iconName === "" && (
+              <View style={{ position: "relative" }}>
+                <View
+                  style={{
+                    width: 90,
+                    height: 90,
+                    borderRadius: 50,
+                    backgroundColor: "rgba(33, 33, 33, 0.55)",
+                    position: "absolute",
+                    top: -60,
+                    right: -45,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image
+                    source={require("../../assets/img/voicebutton256.png")}
+                    style={{ width: 50, height: 50 }}
+                  />
+                </View>
+              </View>
+            )}
+            {label !== "" && (
+              <Text style={{ color: color, fontSize: 12, marginTop: 5 }}>
+                {label}
+              </Text>
+            )}
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+};
+
+const Tab = createBottomTabNavigator();
 
 export default function Navbar() {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
-      barStyle={styles.tabBarTransparent}
-      activeColor="#3D4A7A"
-      inactiveColor="#A1A7B3"
-      labeled={false}
+      tabBar={(props) => <CustomTabBar {...props} />}
+      screenOptions={{
+        headerShown: false,
+      }}
     >
       <Tab.Screen
-        name="Home"
+        name="Calendar"
+        component={Splash}
+        options={{ tabBarLabel: "Calendar" }}
+      />
+      <Tab.Screen
+        name="InvisibleSpeakButton"
         component={Home}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="home" size={24} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Conversations"
-        component={Conversations}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="chatbubbles" size={24} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Projects"
-        component={Projects}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="briefcase" size={24} color={color} />
-          ),
-        }}
+        options={{ tabBarLabel: "" }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            /* TODO: Enregistreur vocal */
+          },
+        })}
       />
       <Tab.Screen
         name="Settings"
         component={Settings}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="settings" size={24} color={color} />
-          ),
-        }}
+        options={{ tabBarLabel: "Settings" }}
       />
     </Tab.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  tabBarTransparent: {
-    height: 80,
-    backgroundColor: "transparent",
-    borderTopWidth: 0,
-    position: "absolute",
-  },
-  tabBar: {
-    height: 80,
-    backgroundColor: "white",
-    borderTopWidth: 0,
-    position: "absolute",
-  },
-});
