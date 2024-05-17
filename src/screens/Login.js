@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 import {
@@ -12,18 +12,40 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 export default function Login() {
+  const [loginId, setLoginId] = useState("");
+  const [password, setPassword] = useState("");
   const navigation = useNavigation();
   const goToRegisterPage = () => {
     navigation.navigate("Register");
   };
   const handleClick = (e) => {
     e.preventDefault();
-    const student = { pseudo, email, motdepasse };
-    console.log(student);
-    fetch("http://localhost:8033/login", {
+
+    // Vérifier si loginId est un e-mail
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isEmail = emailRegex.test(loginId);
+
+    // Vérifier si loginId est un numéro de téléphone français
+    const phoneRegex = /^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/;
+    const isPhone = phoneRegex.test(loginId);
+
+    // Créer l'objet JSON en fonction du type de loginId
+    let jsonBody;
+    if (isEmail) {
+      jsonBody = JSON.stringify({ email: loginId, password: password });
+    } else if (isPhone) {
+      jsonBody = JSON.stringify({ phonenumber: loginId, password: password });
+    } else {
+      jsonBody = JSON.stringify({ username: loginId, password: password });
+    }
+
+    // Envoyer la requête HTTP avec l'objet JSON
+    fetch("http://localhost:8080/api/auth/login", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(student),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: jsonBody,
     }).then(() => {
       console.log("Utilisateur connecté");
     });
@@ -42,12 +64,23 @@ export default function Login() {
         Connectez-vous à Georges
       </Text>
       <View style={styles.inputContainer}>
-        <Text style={[styles.label, styles.defaultText]}>Email</Text>
-        <TextInput style={styles.input} />
+        <Text style={[styles.label, styles.defaultText]}>
+          Pseudo, numéro de téléphone ou mail
+        </Text>
+        <TextInput
+          style={styles.input}
+          value={loginId}
+          onChangeText={setLoginId}
+        />
       </View>
       <View style={styles.inputContainer}>
         <Text style={[styles.label, styles.defaultText]}>Mot de passe</Text>
-        <TextInput style={[styles.input]} secureTextEntry={true} />
+        <TextInput
+          style={[styles.input]}
+          secureTextEntry={true}
+          value={password}
+          onChangeText={setPassword}
+        />
       </View>
       <TouchableOpacity style={styles.button}>
         <LinearGradient
@@ -62,7 +95,10 @@ export default function Login() {
           end={{ x: 1, y: 0 }}
           colors={["#040141", "#090979", "#d45a00"]}
         >
-          <Text style={[styles.buttonText, styles.defaultText]}>
+          <Text
+            style={[styles.buttonText, styles.defaultText]}
+            onPress={handleClick}
+          >
             Se connecter
           </Text>
         </LinearGradient>
