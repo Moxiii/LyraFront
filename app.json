@@ -4,11 +4,11 @@
     "slug": "Georges-React-App",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/img/georges.png",
     "userInterfaceStyle": "light",
     
     "splash": {
-      "image": "./assets/Splash.jpg",
+      "image": "./assets/Splash.jpeg",
       "resizeMode": "cover"
     },
     "assetBundlePatterns": [
@@ -19,8 +19,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/img/georgesinvisible.png",
+        "backgroundColor": "#0A05FF"
       }
     },
     "web": {
