@@ -1,15 +1,14 @@
-import React, { useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import { LinearGradient } from "expo-linear-gradient";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Image,
-  TouchableOpacity,
-} from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { GoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from '@react-oauth/google';
+import { LinearGradient } from "expo-linear-gradient";
+import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+
+const clientId = "1047364862184-5ht68ioumb1cnjmpivurtmvtnb7fkr4s.apps.googleusercontent.com";
+
+
 
 export default function Login() {
   const [loginId, setLoginId] = useState("");
@@ -18,6 +17,14 @@ export default function Login() {
   const goToRegisterPage = () => {
     navigation.navigate("Register");
   };
+
+
+  //implement google login with custom button
+  // const glogin = useGoogleLogin({
+  //   onSuccess: codeResponse => console.log(codeResponse),
+  //   flow: 'auth-code',
+  // });
+
   const handleClick = (e) => {
     e.preventDefault();
 
@@ -50,6 +57,8 @@ export default function Login() {
       console.log("Utilisateur connecté");
     });
   };
+
+
 
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
   return (
@@ -103,6 +112,20 @@ export default function Login() {
           </Text>
         </LinearGradient>
       </TouchableOpacity>
+
+      {/* //Google login button */}
+      <GoogleLogin
+        onSuccess={credentialResponse => {
+          console.log(credentialResponse);
+        }}
+        onError={() => {
+          console.log('Login Failed');
+        }}
+        shape="pill"
+      />  
+
+      {/* <MyCustomButton onClick={() => glogin()}>Sign in with Google 🚀</MyCustomButton> */}
+
       <TouchableOpacity onPress={goToRegisterPage}>
         <Text style={{ color: "#3D4A7A", marginTop: 20, marginBottom: 10 }}>
           Vous n'avez pas de compte ?
