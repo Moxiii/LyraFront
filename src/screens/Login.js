@@ -116,10 +116,29 @@ export default function Login() {
       {/* //Google login button */}
       <GoogleLogin
         onSuccess={credentialResponse => {
-          console.log(credentialResponse);
+          console.log('login success:', credentialResponse);
+          const token = credentialResponse.credential;
+
+          // Send the credentialResponse to backend to authenticate the user
+          // Send token to backend
+        fetch('http://localhost:8080/api/auth/google', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ token }),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log('User data:', data);
+        })
+        .catch((error) => {
+          console.error('Error parsing JSON:', error);
+          });
         }}
-        onError={() => {
-          console.log('Login Failed');
+
+        onError={(error) => {
+          console.log('Login Failed', error);
         }}
         shape="pill"
       />  
