@@ -17,13 +17,11 @@ export default function Login() {
   const goToRegisterPage = () => {
     navigation.navigate("Register");
   };
+  const goToHomePage = () => {
+    navigation.navigate("Home");
+  }
 
 
-  //implement google login with custom button
-  // const glogin = useGoogleLogin({
-  //   onSuccess: codeResponse => console.log(codeResponse),
-  //   flow: 'auth-code',
-  // });
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -55,7 +53,8 @@ export default function Login() {
       body: jsonBody,
     }).then(() => {
       console.log("Utilisateur connecté");
-    });
+      goToHomePage();
+    })
   };
 
 
@@ -115,7 +114,7 @@ export default function Login() {
 
       {/* //Google login button */}
       <GoogleLogin
-        onSuccess={credentialResponse => {
+        onSuccess={ credentialResponse => {
           console.log('login success:', credentialResponse);
           const token = credentialResponse.credential;
 
@@ -131,11 +130,15 @@ export default function Login() {
         .then((res) => res.json())
         .then((data) => {
           console.log('User data:', data);
+          // Redirect to home page
+          goToHomePage();
         })
         .catch((error) => {
           console.error('Error parsing JSON:', error);
           });
-        }}
+        }
+        
+      }
 
         onError={(error) => {
           console.log('Login Failed', error);
