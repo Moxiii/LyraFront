@@ -28,8 +28,8 @@ export default function Home() {
   };
 
   const chartConfig = {
-    backgroundGradientFrom: "transparent",
-    backgroundGradientTo: "transparent",
+    backgroundGradientFrom: "red",
+    backgroundGradientTo: "red",
     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
     strokeWidth: 10,
     barPercentage: 0.5,
@@ -44,7 +44,7 @@ export default function Home() {
     },
   };
   const data = {
-    labels: ["Travail", "Personnel", "0 catégories"],
+    labels: ["Travail", "Personnel", "Catégories"],
     data: [0.2, 0.6, 0.8],
   };
 
