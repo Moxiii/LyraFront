@@ -194,7 +194,6 @@ const styles = StyleSheet.create({
     padding: 10,
     flex: 1,
     marginHorizontal: 5,
-    backgroundColor: "rgba(255, 255, 255, 0.1)", // Set a consistent background color
   },
   cardTitle: {
     color: "#fff",
