@@ -25,35 +25,24 @@ export default function Home() {
   const linkToChat = () => {
     navigation.navigate("Conversation");
   };
+
   const chartConfig = {
     backgroundGradientFrom: "transparent",
     backgroundGradientTo: "transparent",
-    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // Couleur des barres
-    strokeWidth: 2,
+    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    strokeWidth: 10,
     barPercentage: 0.5,
-    decimalPlaces: 1,
+    useShadowColorFromDataset: false,
     propsForLabels: {
-      fontSize: 11, // Taille du texte
-      color: "#fff", // Couleur du texte
-      fontFamily: "Arial", // Police du texte
+      fontSize: 12,
+      color: "#fff",
+      fontFamily: "Arial",
     },
     propsForBackgroundLines: {
       stroke: "#ccc",
     },
-    propsForVerticalLabels: {
-      fontSize: 10,
-      color: "#fff", // Couleur du texte vertical
-      fontFamily: "Arial", // Police du texte vertical
-    },
-    propsForHorizontalLabels: {
-      fontSize: 10,
-      color: "#fff", // Couleur du texte horizontal
-      fontFamily: "Arial", // Police du texte horizontal
-    },
-    strokeWidth: 2,
-    barPercentage: 0.5,
-    useShadowColorFromDataset: false,
   };
+
   const data = {
     labels: ["Travail", "Personnel", "0 catégories"],
     data: [0.2, 0.6, 0.8],
@@ -83,23 +72,21 @@ export default function Home() {
         </TouchableOpacity>
 
         <View style={styles.organisationcard}>
-          <Text style={styles.georgesmessage}>Georges propose:</Text>
+          <Text style={styles.cardTitle}>Georges propose:</Text>
           <Text style={styles.suggestion}>- Planifier la réunion de 10h</Text>
           <Text style={styles.suggestion}>- Appeler le fournisseur</Text>
           <Text style={styles.suggestion}>- Vérifier les emails</Text>
         </View>
 
         <View style={styles.chartcard}>
-          <Text style={styles.georgesmessage}>Catégories des TODO:</Text>
-          <View
-            style={{ alignItems: "center", marginTop: 20, marginRight: 90 }}
-          >
+          <Text style={styles.cardTitle}>Catégories des TODO:</Text>
+          <View style={styles.chartContainer}>
             <ProgressChart
               data={data}
-              width={410}
-              height={221}
-              strokeWidth={10}
-              radius={22}
+              width={300}
+              height={200}
+              strokeWidth={16}
+              radius={32}
               chartConfig={chartConfig}
               hideLegend={false}
             />
@@ -115,13 +102,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    paddingHorizontal: 20,
   },
   usercard: {
-    display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 20,
-    marginHorizontal: 20,
+    marginTop: 30,
+    marginBottom: 20,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    padding: 10,
+    borderRadius: 10,
   },
   profilepic: {
     width: 70,
@@ -142,16 +132,14 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginLeft: "auto",
-    marginRight: 20,
   },
   chatcard: {
     flexDirection: "row",
-    backgroundColor: "rgba(105, 105, 105, 0.16)",
+    backgroundColor: "rgba(105, 105, 105, 0.3)",
     padding: 15,
-    marginHorizontal: 20,
-    marginTop: 20,
-    borderRadius: 15,
+    borderRadius: 10,
     alignItems: "center",
+    marginBottom: 20,
   },
   chatGeorgesImg: {
     width: 50,
@@ -164,29 +152,28 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   organisationcard: {
-    backgroundColor: "rgba(105, 105, 105, 0.16)",
+    backgroundColor: "rgba(105, 105, 105, 0.3)",
     padding: 15,
-    marginHorizontal: 20,
-    marginTop: 20,
-    borderRadius: 15,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  cardTitle: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
   },
   suggestion: {
     color: "#fff",
     marginTop: 5,
   },
   chartcard: {
-    backgroundColor: "rgba(105, 105, 105, 0.16)",
+    backgroundColor: "rgba(105, 105, 105, 0.3)",
     padding: 15,
-    marginHorizontal: 20,
-    marginTop: 20,
-    borderRadius: 15,
+    borderRadius: 10,
+  },
+  chartContainer: {
     alignItems: "center",
-  },
-  chart: {
-    marginTop: 10,
-  },
-  chartText: {
-    color: "#fff",
-    textAlign: "center",
+    marginTop: 20,
   },
 });

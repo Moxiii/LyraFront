@@ -8,6 +8,10 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -15,9 +19,11 @@ export default function Login() {
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
+  
   const goToRegisterPage = () => {
     navigation.navigate("Register");
   };
+
   const handleClick = (e) => {
     e.preventDefault();
 
@@ -39,7 +45,6 @@ export default function Login() {
       jsonBody = JSON.stringify({ username: loginId, password: password });
     }
 
-    // Envoyer la requête HTTP avec l'objet JSON
     fetch("http://localhost:8080/api/auth/login", {
       method: "POST",
       headers: {
@@ -52,68 +57,85 @@ export default function Login() {
   };
 
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
+
+  // Get screen dimensions
+  const { width, height } = Dimensions.get("window");
+
   return (
-    <View style={styles.container}>
-      <View style={styles.invisibleGeorgesContainer}>
-        <Image
-          source={invisibleGeorgesImage}
-          style={styles.invisibleGeorgesImage}
-        />
-      </View>
-      <Text style={[styles.titre, styles.defaultText]}>
-        Connectez-vous à Georges
-      </Text>
-      <View style={styles.inputContainer}>
-        <Text style={[styles.label, styles.defaultText]}>
-          Pseudo, numéro de téléphone ou mail
-        </Text>
-        <TextInput
-          style={styles.input}
-          value={loginId}
-          onChangeText={setLoginId}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={[styles.label, styles.defaultText]}>Mot de passe</Text>
-        <TextInput
-          style={[styles.input]}
-          secureTextEntry={true}
-          value={password}
-          onChangeText={setPassword}
-        />
-      </View>
-      <TouchableOpacity style={styles.button}>
-        <LinearGradient
-          style={{
-            ...styles.gradient,
-            borderRadius: 16,
-            width: 327,
-            height: 50,
-            textAlign: "center",
-          }}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          colors={["#040141", "#090979", "#d45a00"]}
-        >
-          <Text
-            style={[styles.buttonText, styles.defaultText]}
-            onPress={handleClick}
-          >
-            Se connecter
+    <KeyboardAvoidingView
+      style={styles.keyboardAvoidingView}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={[styles.container, { paddingTop: height * 0.1 }]}>
+          <View style={styles.invisibleGeorgesContainer}>
+            <Image
+              source={invisibleGeorgesImage}
+              style={styles.invisibleGeorgesImage}
+            />
+          </View>
+          <Text style={[styles.titre, styles.defaultText]}>
+            Connectez-vous à Georges
           </Text>
-        </LinearGradient>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={goToRegisterPage}>
-        <Text style={{ color: "#3D4A7A", marginTop: 20, marginBottom: 10 }}>
-          Vous n'avez pas de compte ?
-        </Text>
-      </TouchableOpacity>
-      <StatusBar style="auto" />
-    </View>
+          <View style={styles.inputContainer}>
+            <Text style={[styles.label, styles.defaultText]}>
+              Pseudo, numéro de téléphone ou mail
+            </Text>
+            <TextInput
+              style={styles.input}
+              value={loginId}
+              onChangeText={setLoginId}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={[styles.label, styles.defaultText]}>Mot de passe</Text>
+            <TextInput
+              style={[styles.input]}
+              secureTextEntry={true}
+              value={password}
+              onChangeText={setPassword}
+            />
+          </View>
+          <TouchableOpacity style={styles.button} onPress={handleClick}>
+            <LinearGradient
+              style={{
+                ...styles.gradient,
+                borderRadius: 16,
+                width: width * 0.8,
+                height: 50,
+                textAlign: "center",
+              }}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              colors={["#040141", "#090979", "#d45a00"]}
+            >
+              <Text
+                style={[styles.buttonText, styles.defaultText]}
+                onPress={handleClick}
+              >
+                Se connecter
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={goToRegisterPage}>
+            <Text style={{ color: "#3D4A7A", marginTop: 20, marginBottom: 10 }}>
+              Vous n'avez pas de compte ?
+            </Text>
+          </TouchableOpacity>
+          <StatusBar style="auto" />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
+  keyboardAvoidingView: {
+    flex: 1,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+  },
   defaultText: {
     fontFamily: "NATS",
   },
@@ -121,9 +143,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "top",
+    justifyContent: "flex-start",
     paddingHorizontal: 35,
-    paddingTop: 80,
   },
   nom: {
     color: "#3D4A7A",
@@ -132,15 +153,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   button: {
-    paddingTop: 10,
+    marginTop: 20,
     alignItems: "center",
     justifyContent: "center",
     padding: 28,
     borderRadius: 30,
-    height: 95,
     overflow: "hidden",
   },
-
   invisibleGeorgesImage: {
     width: 200,
     height: 200,
@@ -157,6 +176,7 @@ const styles = StyleSheet.create({
     color: "#3D4A7A",
     fontWeight: "bold",
     paddingBottom: 20,
+    textAlign: "center",
   },
   inputContainer: {
     marginTop: 10,
@@ -169,13 +189,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   input: {
-    width: "90%",
+    width: "100%",
     height: 40,
     borderBottomWidth: 1,
     borderBottomColor: "#CDD1D0",
     fontSize: 18,
     color: "black",
     outlineWidth: 0,
+    marginTop: 10,
   },
   gradient: {
     flex: 1,
