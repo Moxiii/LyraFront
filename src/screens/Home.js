@@ -28,8 +28,8 @@ export default function Home() {
   };
 
   const chartConfig = {
-    backgroundGradientFrom: "red",
-    backgroundGradientTo: "red",
+    backgroundGradientFrom: "rgba(255,255,255,0.01)",
+    backgroundGradientTo: "rgba(255,255,255,0.01)",
     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
     strokeWidth: 10,
     barPercentage: 0.5,
