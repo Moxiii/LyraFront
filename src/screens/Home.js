@@ -6,7 +6,6 @@ import {
   Image,
   ImageBackground,
   TouchableOpacity,
-  Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -143,7 +142,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
+    fontSize:15,
     marginTop: 30,
+    marginBottom:20,
     paddingHorizontal: 20,
     width: "100%",
   },
@@ -185,12 +186,14 @@ const styles = StyleSheet.create({
     color: "#fff",
     flex: 1,
     flexWrap: "wrap",
+    padding:10,
   },
   row: {
+    marginTop:30,
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%",
-    marginBottom: 15,
+    marginBottom: 20,
   },
   card: {
     borderRadius: 10,
@@ -200,11 +203,12 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     color: "#fff",
-    fontSize: 14,
+    fontSize: 17,
     fontWeight: "bold",
     marginBottom: 5,
   },
   cardContent: {
+    fontSize:14,
     color: "#fff",
     paddingLeft: 10,
     marginBottom: 3,
@@ -218,7 +222,7 @@ const styles = StyleSheet.create({
   },
   georgesTitle: {
     color: "#fff",
-    fontSize: 14,
+    fontSize: 17,
     fontWeight: "bold",
     marginBottom: 5,
   },
