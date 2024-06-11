@@ -8,10 +8,13 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import { ProgressChart } from "react-native-chart-kit";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Home() {
   const backgroundImage = require("../../assets/img/Splash.jpg"); // Background Image
@@ -27,27 +30,16 @@ export default function Home() {
     navigation.navigate("Conversation");
   };
 
-  const chartConfig = {
-    backgroundColor: "transparent",
-    backgroundGradientFrom: "transparent",
-    backgroundGradientTo: "transparent",
-    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-    strokeWidth: 10,
-    barPercentage: 0.5,
-    useShadowColorFromDataset: false,
-    propsForLabels: {
-      fontSize: 12,
-      color: "#fff",
-      fontFamily: "Poppins",
-    },
-    propsForBackgroundLines: {
-      stroke: "#fff",
-    },
-  };
-
-  const data = {
-    labels: ["Travail", "Personnel", "0 catégories"],
-    data: [0.2, 0.6, 0.8],
+  const data2 = {
+    labels: ["Work", "Personnal", "Wishlist", "Pas de catégories","Birthday","Business"],
+    datasets: [
+      {
+        cutout:'80%',
+        label: "# of Votes",
+        data: [20, 10, 10, 10, 10,10],
+        backgroundColor: ["#FFFFFF", "#777E99", "#404040", "#9E9E9E","#A1A1C1","#EAEAEA"],
+      },
+    ],
   };
 
   return (
@@ -101,24 +93,35 @@ export default function Home() {
             </TouchableOpacity>
           </View>
         </View>
-
         <View style={styles.chartcard}>
-          <View style={styles.chartContainer}>
-            <View style={styles.chartWrapper}>
-              <ProgressChart
-                data={data}
-                width={Dimensions.get("window").width * 0.8}
-                height={200}
-                strokeWidth={16}
-                radius={32}
-                chartConfig={chartConfig}
-                hideLegend={false}
-                style={{
-                  backgroundColor: "transparent",
-                }}
-              />
-            </View>
-          </View>
+  <View style={styles.chartContainer}>
+    <View style={styles.chartWrapper}>
+      <Doughnut
+        data={data2}
+        options={{  
+          maintainAspectRatio: false,
+          cutoutPercentage: 90, 
+          
+          color:"white",
+          plugins: {
+            legend: {
+              position: "right",
+              labels: {
+                usePointStyle: true, 
+              },
+            },
+          },
+          elements: {
+            arc: {
+              borderWidth: 0,
+            },
+          },
+        }}
+      />
+    </View>
+  </View>
+
+
         </View>
       </View>
     </ImageBackground>
@@ -235,15 +238,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   chartcard: {
-    backgroundColor: "transparent",
-    padding: 10,
     borderRadius: 10,
     width: "100%",
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
   },
   chartContainer: {
     alignItems: "center",
-    marginTop: 10,
-    backgroundColor: "transparent",
+    padding: 10,
     borderRadius: 10,
   },
   chartWrapper: {
