@@ -11,14 +11,15 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useRoute } from "@react-navigation/native";
+import Modal from "react-native-modal";
 
 const Conversations = ({ navigation }) => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const [image, setImage] = useState(null);
+  const [isModalVisible, setModalVisible] = useState(false);
   const route = useRoute();
 
-  console.log(route.name);
   const getCurrentTime = () => {
     const now = new Date();
     const hours = now.getHours().toString().padStart(2, "0");
@@ -36,12 +37,12 @@ const Conversations = ({ navigation }) => {
 
     if (!result.cancelled) {
       setImage(result.uri);
-      handleSend();
+      handleSend(result.uri);
     }
   };
 
-  const handleSend = () => {
-    if (inputText.trim() === "" && !image) {
+  const handleSend = (imageUri = null) => {
+    if (inputText.trim() === "" && !imageUri) {
       return;
     }
 
@@ -50,7 +51,7 @@ const Conversations = ({ navigation }) => {
       text: inputText,
       sender: "user",
       time: getCurrentTime(),
-      image: image,
+      image: imageUri,
     };
 
     setMessages([...messages, newMessage]);
@@ -65,63 +66,104 @@ const Conversations = ({ navigation }) => {
           <Ionicons
             name="arrow-back"
             size={30}
-            color="black"
+            color="white"
             style={styles.backIcon}
           />
         </TouchableOpacity>
         <View style={styles.leftHeader}>
           <Image
             style={styles.image}
-            source={require("../../assets/img/georges.png")}
+            source={require("../../assets/img/marting.png")}
           />
-        </View>
-        <View style={styles.rightHeader}>
-          <Text style={styles.headerText}>Georges</Text>
+          <Text style={styles.username}>@martindvt</Text>
+          <Text style={styles.tagline}>Incoming CEO of the world.</Text>
         </View>
       </View>
 
-      <FlatList
-        data={messages}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View
-            style={[
-              styles.messageBubble,
-              {
-                alignSelf: item.sender === "user" ? "flex-end" : "flex-start",
-              },
-            ]}
-          >
-            <Text style={{ color: "#fff" }}>{item.text}</Text>
-            {item.image && (
-              <Image
-                source={{ uri: item.image }}
-                style={{ width: 200, height: 200 }}
-              />
+      <TouchableOpacity
+        style={styles.openModalButton}
+        onPress={() => setModalVisible(true)}
+      >
+        <Text style={styles.openModalButtonText}>Clique pour chatter !</Text>
+      </TouchableOpacity>
+
+      <Modal
+        isVisible={isModalVisible}
+        onSwipeComplete={() => setModalVisible(false)}
+        swipeDirection="down"
+        style={styles.modal}
+      >
+        <View style={styles.modalContent}>
+          <FlatList
+            data={messages}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <View
+                style={[
+                  styles.messageContainer,
+                  {
+                    flexDirection: item.sender === "user" ? "row-reverse" : "row",
+                  },
+                ]}
+              >
+                {item.sender === "user" && (
+                  <Image
+                    source={require("../../assets/img/marting.png")}
+                    style={styles.profileImage}
+                  />
+                )}
+                <View
+                  style={[
+                    styles.messageBubble,
+                    {
+                      backgroundColor:
+                        item.sender === "user" ? "#3D4A7A" : "#282828",
+                    },
+                  ]}
+                >
+                  <Text style={{ color: "#fff" }}>{item.text}</Text>
+                  {item.image && (
+                    <Image
+                      source={{ uri: item.image }}
+                      style={{ width: 200, height: 200, marginTop: 5 }}
+                    />
+                  )}
+                  <Text style={styles.timeText}>{item.time}</Text>
+                </View>
+              </View>
             )}
-            <Text style={styles.timeText}>{item.time}</Text>
-          </View>
-        )}
-      />
-
-      <View style={styles.inputContainer}>
-        <TouchableOpacity onPress={pickImage}>
-          <Ionicons
-            name="document-outline"
-            size={24}
-            color="#797C7B"
-            style={styles.icon}
           />
-        </TouchableOpacity>
-        <TextInput
-          style={styles.input}
-          placeholder="Écrivez votre message..."
-          value={inputText}
-          onChangeText={(text) => setInputText(text)}
-        />
 
-        <Ionicons name="send" size={20} color="#3D4A7A" onPress={handleSend} />
-      </View>
+          <View style={styles.inputContainer}>
+            <TouchableOpacity onPress={pickImage}>
+              <Ionicons
+                name="image-outline"
+                size={24}
+                color="#797C7B"
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={pickImage}>
+              <Ionicons
+                name="document-outline"
+                size={24}
+                color="#797C7B"
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+            <TextInput
+              style={styles.input}
+              placeholder="Écrivez votre message..."
+              placeholderTextColor="#999"
+              value={inputText}
+              onChangeText={(text) => setInputText(text)}
+            />
+            <TouchableOpacity onPress={() => handleSend()}>
+              <Ionicons name="send" size={24} color="#3D4A7A" />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -129,11 +171,13 @@ const Conversations = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#1a1a1a",
   },
   header: {
-    backgroundColor: "#fff",
     flexDirection: "row",
     paddingVertical: 20,
+    paddingHorizontal: 10,
+    backgroundColor: "#282828",
   },
   backIcon: {
     marginTop: "20%",
@@ -144,12 +188,12 @@ const styles = StyleSheet.create({
   },
   rightHeader: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: "column",
     paddingLeft: "10%",
-    alignItems: "center",
+    alignItems: "flex-start",
   },
   headerText: {
-    color: "black",
+    color: "white",
     fontSize: 16,
     fontWeight: "bold",
   },
@@ -158,39 +202,78 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     height: 60,
   },
+  username: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+  tagline: {
+    color: "#999",
+    fontSize: 12,
+  },
+  openModalButton: {
+    backgroundColor: "#3D4A7A",
+    padding: 10,
+    margin: 20,
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  openModalButtonText: {
+    color: "#fff",
+    fontSize: 16,
+  },
+  modal: {
+    justifyContent: "flex-end",
+    margin: 0,
+  },
+  modalContent: {
+    backgroundColor: "#282828",
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  messageContainer: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    marginVertical: 5,
+  },
+  profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginHorizontal: 10,
+  },
   messageBubble: {
     padding: 10,
-    margin: 5,
     borderRadius: 10,
-    maxWidth: "80%",
-    backgroundColor: "#3D4A7A",
+    maxWidth: "70%",
   },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
-    paddingTop: 25,
-    paddingBottom: 70,
+    backgroundColor: "#282828",
+    paddingVertical: 10,
     paddingHorizontal: 10,
-    borderBottomWidth: 1,
     borderTopWidth: 1,
-    borderBottomColor: "rgba(0, 0, 5, 5)",
-    borderTopColor: "#EEFAF8",
+    borderTopColor: "#333",
   },
   input: {
-    backgroundColor: "#F3F6F6",
-    color: "black",
+    backgroundColor: "#444",
+    color: "white",
     flex: 1,
     height: 40,
     borderRadius: 10,
     paddingHorizontal: 10,
+    marginHorizontal: 10,
   },
   icon: {
-    marginRight: 10,
+    marginHorizontal: 5,
   },
   timeText: {
-    marginLeft: 10,
+    marginTop: 5,
     color: "#ccc",
+    fontSize: 10,
+    alignSelf: "flex-end",
   },
 });
 
