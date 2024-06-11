@@ -97,7 +97,7 @@ export default function Home() {
             <ProgressChart
               data={data}
               width={410}
-              height={220}
+              height={221}
               strokeWidth={10}
               radius={22}
               chartConfig={chartConfig}
