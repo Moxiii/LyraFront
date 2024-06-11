@@ -6,10 +6,6 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
-const clientId = "1047364862184-5ht68ioumb1cnjmpivurtmvtnb7fkr4s.apps.googleusercontent.com";
-
-
-
 export default function Login() {
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
@@ -105,7 +101,8 @@ export default function Login() {
         >
           <Text
             style={[styles.buttonText, styles.defaultText]}
-            onPress={handleClick}
+            //onPress={handleClick}
+            onPress={TestPrompt}
           >
             Se connecter
           </Text>
@@ -156,6 +153,23 @@ export default function Login() {
       <StatusBar style="auto" />
     </View>
   );
+}
+import MistralClient from '@mistralai/mistralai';
+import { func } from 'prop-types';
+
+
+
+async function TestPrompt(){
+  const apiKey = process.env.MISTRAL_API_KEY;
+
+  const client = new MistralClient(apiKey);
+
+  const chatResponse = await client.chat({
+    model: 'mistral-large-latest',
+    messages: [{role: 'user', content: 'What is the best French cheese?'}],
+  });
+
+  console.log('Chat:', chatResponse.choices[0].message.content);
 }
 
 const styles = StyleSheet.create({
