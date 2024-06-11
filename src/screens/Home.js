@@ -28,8 +28,9 @@ export default function Home() {
   };
 
   const chartConfig = {
-    backgroundGradientFrom: "rgba(255,255,255,0.01)",
-    backgroundGradientTo: "rgba(255,255,255,0.01)",
+    backgroundColor: "transparent",
+    backgroundGradientFrom: "transparent",
+    backgroundGradientTo: "transparent",
     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
     strokeWidth: 10,
     barPercentage: 0.5,
@@ -40,11 +41,12 @@ export default function Home() {
       fontFamily: "Poppins",
     },
     propsForBackgroundLines: {
-      stroke: "#ccc",
+      stroke: "#fff",
     },
   };
+
   const data = {
-    labels: ["Travail", "Personnel", "Catégories"],
+    labels: ["Travail", "Personnel", "0 catégories"],
     data: [0.2, 0.6, 0.8],
   };
 
@@ -107,11 +109,13 @@ export default function Home() {
                 data={data}
                 width={Dimensions.get("window").width * 0.8}
                 height={200}
-                marginRight={20}
                 strokeWidth={16}
                 radius={32}
                 chartConfig={chartConfig}
                 hideLegend={false}
+                style={{
+                  backgroundColor: "transparent",
+                }}
               />
             </View>
           </View>
@@ -190,6 +194,7 @@ const styles = StyleSheet.create({
     padding: 10,
     flex: 1,
     marginHorizontal: 5,
+    backgroundColor: "rgba(255, 255, 255, 0.1)", // Set a consistent background color
   },
   cardTitle: {
     color: "#fff",
@@ -231,7 +236,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   chartcard: {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    backgroundColor: "transparent",
     padding: 10,
     borderRadius: 10,
     width: "100%",
@@ -239,5 +244,11 @@ const styles = StyleSheet.create({
   chartContainer: {
     alignItems: "center",
     marginTop: 10,
+    backgroundColor: "transparent",
+    borderRadius: 10,
+  },
+  chartWrapper: {
+    width: "100%",
+    alignItems: "center",
   },
 });
