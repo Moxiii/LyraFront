@@ -28,15 +28,32 @@ export default function Home() {
   const linkToChat = () => {
     navigation.navigate("Conversation");
   };
+  const linkToSettings = () => {
+    navigation.navigate("Settings");
+  };
 
   const data2 = {
-    labels: ["Work", "Personnal", "Wishlist", "Pas de catégories","Birthday","Business"],
+    labels: [
+      "Work",
+      "Personnal",
+      "Wishlist",
+      "Pas de catégories",
+      "Birthday",
+      "Business",
+    ],
     datasets: [
       {
-        cutout:'80%',
+        cutout: "80%",
         label: "# of Votes",
-        data: [20, 10, 10, 10, 10,10],
-        backgroundColor: ["#FFFFFF", "#777E99", "#404040", "#9E9E9E","#A1A1C1","#EAEAEA"],
+        data: [20, 10, 10, 10, 10, 10],
+        backgroundColor: [
+          "#FFFFFF",
+          "#777E99",
+          "#404040",
+          "#9E9E9E",
+          "#A1A1C1",
+          "#EAEAEA",
+        ],
       },
     ],
   };
@@ -53,8 +70,12 @@ export default function Home() {
           <Text style={styles.username}>@martindvt</Text>
           <Text style={styles.bio}>CEO of Georges</Text>
         </View>
-
-        <Ionicons name="pencil" size={24} color="white" style={styles.icon} />
+        <TouchableOpacity
+          style={styles.icon}
+          onPress={linkToSettings}
+        >
+          <Ionicons name="settings" size={24} color="white" />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.container}>
@@ -93,34 +114,32 @@ export default function Home() {
           </View>
         </View>
         <View style={styles.chartcard}>
-  <View style={styles.chartContainer}>
-    <View style={styles.chartWrapper}>
-      <Doughnut
-        data={data2}
-        options={{  
-          maintainAspectRatio: false,
-          cutoutPercentage: 90, 
-          
-          color:"white",
-          plugins: {
-            legend: {
-              position: "right",
-              labels: {
-                usePointStyle: true, 
-              },
-            },
-          },
-          elements: {
-            arc: {
-              borderWidth: 0,
-            },
-          },
-        }}
-      />
-    </View>
-  </View>
+          <View style={styles.chartContainer}>
+            <View style={styles.chartWrapper}>
+              <Doughnut
+                data={data2}
+                options={{
+                  maintainAspectRatio: false,
+                  cutoutPercentage: 90,
 
-
+                  color: "white",
+                  plugins: {
+                    legend: {
+                      position: "right",
+                      labels: {
+                        usePointStyle: true,
+                      },
+                    },
+                  },
+                  elements: {
+                    arc: {
+                      borderWidth: 0,
+                    },
+                  },
+                }}
+              />
+            </View>
+          </View>
         </View>
       </View>
     </ImageBackground>
@@ -142,9 +161,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    fontSize:15,
+    fontSize: 15,
     marginTop: 30,
-    marginBottom:20,
+    marginBottom: 20,
     paddingHorizontal: 20,
     width: "100%",
   },
@@ -186,10 +205,10 @@ const styles = StyleSheet.create({
     color: "#fff",
     flex: 1,
     flexWrap: "wrap",
-    padding:10,
+    padding: 10,
   },
   row: {
-    marginTop:30,
+    marginTop: 30,
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%",
@@ -208,7 +227,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   cardContent: {
-    fontSize:14,
+    fontSize: 14,
     color: "#fff",
     paddingLeft: 10,
     marginBottom: 3,

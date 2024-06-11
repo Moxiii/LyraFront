@@ -6,6 +6,7 @@ import { View, StyleSheet, ImageBackground } from "react-native";
 
 import Navbar from "./src/components/Navbar";
 import Register from "./src/screens/Register";
+import Settings from "./src/screens/Settings";
 import Login from "./src/screens/Login";
 import Conversations from "./src/screens/Conversations";
 import Home from "./src/screens/Home";
@@ -28,6 +29,7 @@ export default function App() {
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="Conversation" component={Conversations} />
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Settings" component={Settings} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
