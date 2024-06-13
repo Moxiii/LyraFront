@@ -7,13 +7,16 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import { ProgressChart } from "react-native-chart-kit";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Home() {
-  const backgroundImage = require("../../assets/img/Splash.jpg");
+  const backgroundImage = require("../../assets/img/Splash.jpg"); // Background Image
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
   const CEO = require("../../assets/img/marting.png");
 
@@ -25,168 +28,250 @@ export default function Home() {
   const linkToChat = () => {
     navigation.navigate("Conversation");
   };
-  const chartConfig = {
-    backgroundGradientFrom: "transparent",
-    backgroundGradientTo: "transparent",
-    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // Couleur des barres
-    strokeWidth: 2,
-    barPercentage: 0.5,
-    decimalPlaces: 1,
-    propsForLabels: {
-      fontSize: 11, // Taille du texte
-      color: "#fff", // Couleur du texte
-      fontFamily: "Arial", // Police du texte
-    },
-    propsForBackgroundLines: {
-      stroke: "#ccc",
-    },
-    propsForVerticalLabels: {
-      fontSize: 10,
-      color: "#fff", // Couleur du texte vertical
-      fontFamily: "Arial", // Police du texte vertical
-    },
-    propsForHorizontalLabels: {
-      fontSize: 10,
-      color: "#fff", // Couleur du texte horizontal
-      fontFamily: "Arial", // Police du texte horizontal
-    },
-    strokeWidth: 2,
-    barPercentage: 0.5,
-    useShadowColorFromDataset: false,
+  const linkToSettings = () => {
+    navigation.navigate("Settings");
   };
-  const data = {
-    labels: ["Travail", "Personnel", "0 catégories"],
-    data: [0.2, 0.6, 0.8],
+
+  const data2 = {
+    labels: [
+      "Work",
+      "Personnal",
+      "Wishlist",
+      "Pas de catégories",
+      "Birthday",
+      "Business",
+    ],
+    datasets: [
+      {
+        cutout: "80%",
+        label: "# of Votes",
+        data: [20, 10, 10, 10, 10, 10],
+        backgroundColor: [
+          "#FFFFFF",
+          "#777E99",
+          "#404040",
+          "#9E9E9E",
+          "#A1A1C1",
+          "#EAEAEA",
+        ],
+      },
+    ],
   };
 
   return (
-    <View style={styles.root}>
-      <ImageBackground
-        source={backgroundImage}
-        resizeMode="cover"
-        style={styles.container}
-      >
-        <View style={styles.usercard}>
-          <Image source={CEO} style={styles.profilepic} />
-          <View style={styles.usertexts}>
-            <Text style={styles.username}>@martindvt</Text>
-            <Text style={styles.bio}>Incoming CEO of the world.</Text>
-          </View>
-          <Ionicons name="pencil" size={24} color="white" style={styles.icon} />
+    <ImageBackground
+      source={backgroundImage}
+      resizeMode="cover"
+      style={styles.root}
+    >
+      <View style={styles.header}>
+        <Image source={CEO} style={styles.profilepic} />
+        <View style={styles.usertexts}>
+          <Text style={styles.username}>@martindvt</Text>
+          <Text style={styles.bio}>CEO of Georges</Text>
         </View>
+        <TouchableOpacity
+          style={styles.icon}
+          onPress={linkToSettings}
+        >
+          <Ionicons name="settings" size={24} color="white" />
+        </TouchableOpacity>
+      </View>
 
+      <View style={styles.container}>
         <TouchableOpacity style={styles.chatcard} onPress={linkToChat}>
           <Image source={invisibleGeorgesImage} style={styles.chatGeorgesImg} />
           <Text style={styles.georgesmessage}>
-            Bonjour Martin, n’hésite pas à venir me voir !
+            Bonjour Martin, n’hésite pas à venir me voir au besoin !
           </Text>
         </TouchableOpacity>
 
-        <View style={styles.organisationcard}>
-          <Text style={styles.georgesmessage}>Georges propose:</Text>
-          <Text style={styles.suggestion}>- Planifier la réunion de 10h</Text>
-          <Text style={styles.suggestion}>- Appeler le fournisseur</Text>
-          <Text style={styles.suggestion}>- Vérifier les emails</Text>
-        </View>
-
-        <View style={styles.chartcard}>
-          <Text style={styles.georgesmessage}>Catégories des TODO:</Text>
-          <View
-            style={{ alignItems: "center", marginTop: 20, marginRight: 90 }}
-          >
-            <ProgressChart
-              data={data}
-              width={410}
-              height={220}
-              strokeWidth={10}
-              radius={22}
-              chartConfig={chartConfig}
-              hideLegend={false}
-            />
+        <View style={styles.row}>
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>To do :</Text>
+            <Text style={styles.cardContent}>• Lessive</Text>
+            <Text style={styles.cardContent}>• Vaisselle</Text>
+            <Text style={styles.cardContent}>• Les ongles 💅</Text>
+          </View>
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Vos projets :</Text>
+            <Text style={styles.cardContent}>• Wive</Text>
           </View>
         </View>
-      </ImageBackground>
-    </View>
+
+        <View style={styles.organisationcard}>
+          <Text style={styles.georgesTitle}>Georges propose :</Text>
+          <Text style={styles.suggestion}>
+            Ajouter votre billet pour l'opening night de Wive à votre Wallet.
+          </Text>
+          <View style={styles.proposeActions}>
+            <TouchableOpacity style={styles.actionButton}>
+              <Ionicons name="close" size={24} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.actionButton}>
+              <Ionicons name="checkmark" size={24} color="white" />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.chartcard}>
+          <View style={styles.chartContainer}>
+            <View style={styles.chartWrapper}>
+              <Doughnut
+                data={data2}
+                options={{
+                  maintainAspectRatio: false,
+                  cutoutPercentage: 90,
+
+                  color: "white",
+                  plugins: {
+                    legend: {
+                      position: "right",
+                      labels: {
+                        usePointStyle: true,
+                      },
+                    },
+                  },
+                  elements: {
+                    arc: {
+                      borderWidth: 0,
+                    },
+                  },
+                }}
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1 },
-  container: {
+  root: {
+    fontFamily: "Poppins",
     flex: 1,
     justifyContent: "center",
   },
-  usercard: {
-    display: "flex",
+  container: {
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    paddingHorizontal: 20,
+  },
+  header: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 20,
-    marginHorizontal: 20,
+    fontSize: 15,
+    marginTop: 30,
+    marginBottom: 20,
+    paddingHorizontal: 20,
+    width: "100%",
   },
   profilepic: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
   usertexts: {
-    marginLeft: 15,
+    marginLeft: 10,
   },
   username: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 16,
   },
   bio: {
     color: "#fff",
-    marginTop: 5,
+    marginTop: 3,
   },
   icon: {
     marginLeft: "auto",
-    marginRight: 20,
   },
   chatcard: {
     flexDirection: "row",
-    backgroundColor: "rgba(105, 105, 105, 0.16)",
-    padding: 15,
-    marginHorizontal: 20,
-    marginTop: 20,
-    borderRadius: 15,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    padding: 10,
+    borderRadius: 10,
     alignItems: "center",
+    marginTop: 5,
+    width: "100%",
   },
   chatGeorgesImg: {
-    width: 50,
-    height: 50,
-    marginRight: 15,
+    width: 40,
+    height: 40,
+    marginRight: 10,
   },
   georgesmessage: {
     color: "#fff",
     flex: 1,
     flexWrap: "wrap",
+    padding: 10,
+  },
+  row: {
+    marginTop: 30,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    marginBottom: 20,
+  },
+  card: {
+    borderRadius: 10,
+    padding: 10,
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  cardTitle: {
+    color: "#fff",
+    fontSize: 17,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  cardContent: {
+    fontSize: 14,
+    color: "#fff",
+    paddingLeft: 10,
+    marginBottom: 3,
   },
   organisationcard: {
-    backgroundColor: "rgba(105, 105, 105, 0.16)",
-    padding: 15,
-    marginHorizontal: 20,
-    marginTop: 20,
-    borderRadius: 15,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    padding: 10,
+    borderRadius: 10,
+    marginBottom: 15,
+    width: "100%",
+  },
+  georgesTitle: {
+    color: "#fff",
+    fontSize: 17,
+    fontWeight: "bold",
+    marginBottom: 5,
   },
   suggestion: {
     color: "#fff",
+    marginBottom: 5,
+  },
+  proposeActions: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 5,
   },
+  actionButton: {
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    borderRadius: 10,
+    padding: 10,
+    marginHorizontal: 5,
+  },
   chartcard: {
-    backgroundColor: "rgba(105, 105, 105, 0.16)",
-    padding: 15,
-    marginHorizontal: 20,
-    marginTop: 20,
-    borderRadius: 15,
+    borderRadius: 10,
+    width: "100%",
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+  },
+  chartContainer: {
     alignItems: "center",
+    padding: 10,
+    borderRadius: 10,
   },
-  chart: {
-    marginTop: 10,
-  },
-  chartText: {
-    color: "#fff",
-    textAlign: "center",
+  chartWrapper: {
+    width: "100%",
+    alignItems: "center",
   },
 });
