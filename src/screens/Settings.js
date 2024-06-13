@@ -80,7 +80,7 @@ const Settings = () => {
               color: "#3D4A7A",
               marginBottom: 10,
               fontSize: 15,
-              marginLeft: "35%",
+              marginLeft: "36%",
             }}
           >
             Déconnexion

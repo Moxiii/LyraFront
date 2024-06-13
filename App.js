@@ -1,8 +1,10 @@
-import React from "react";
-import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { View, StyleSheet, ImageBackground } from "react-native";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { useFonts } from "expo-font";
+import React from "react";
+import { useEffect } from "react";
+import { ImageBackground, StyleSheet, View } from "react-native";
 
 import Navbar from "./src/components/Navbar";
 import Register from "./src/screens/Register";
@@ -10,6 +12,10 @@ import Settings from "./src/screens/Settings";
 import Login from "./src/screens/Login";
 import Conversations from "./src/screens/Conversations";
 import Home from "./src/screens/Home";
+
+
+const clientId = "1047364862184-5ht68ioumb1cnjmpivurtmvtnb7fkr4s.apps.googleusercontent.com";
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -20,19 +26,26 @@ export default function App() {
   if (!fontsLoaded) {
     return <View />;
   }
+
+  
+
+
   return (
-    <View style={styles.root}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Navbar" component={Navbar} />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Register" component={Register} />
-          <Stack.Screen name="Conversation" component={Conversations} />
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Settings" component={Settings} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </View>
+    <GoogleOAuthProvider clientId={clientId}>
+      <View style={styles.root}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Navbar" component={Navbar} />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen name="Conversation" component={Conversations} />
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Settings" component={Settings} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </View>
+    </GoogleOAuthProvider>
+
   );
 }
 
