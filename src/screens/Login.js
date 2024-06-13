@@ -24,6 +24,10 @@ export default function Login() {
     navigation.navigate("Register");
   };
 
+  const goToHomePage = () => {
+    navigation.navigate("Navbar");
+  };
+
   const handleClick = (e) => {
     e.preventDefault();
 
@@ -54,6 +58,7 @@ export default function Login() {
     }).then(() => {
       console.log("Utilisateur connecté");
     });
+    goToHomePage();
   };
 
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");

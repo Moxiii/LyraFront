@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import MistralClient from "@mistralai/mistralai";
 import {
   View,
   Text,
@@ -16,6 +17,8 @@ import Modal from "react-native-modal";
 const Conversations = ({ navigation }) => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
+  const [georgesResponse, setGeorgesResonse] = useState();
+
   const [image, setImage] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const route = useRoute();
@@ -41,7 +44,34 @@ const Conversations = ({ navigation }) => {
     }
   };
 
-  const handleSend = (imageUri = null) => {
+  const sendMessageToMistral = async (inputText) => {
+    const apiKey = "jnzFCjsg2DbZYfQtNOHM6tihOXEkUX2h";
+
+    const client = new MistralClient(apiKey);
+
+    try {
+      const chatResponse = await client.chat({
+        model: "mistral-tiny",
+        messages: [{ role: "user", content: inputText }],
+      });
+      const newResponseMessage = {
+        id: messages.length + 1,
+        text: chatResponse.choices[0].message.content,
+        sender: "georges",
+        time: getCurrentTime(),
+        image: null,
+      };
+      setMessages([...messages, newResponseMessage]);
+      console.log(messages);
+      console.log("Chat:", chatResponse.choices[0].message.content);
+    } catch (error) {
+      throw new Error(
+        "Failed to communicate with Mistral API: " + error.message
+      );
+    }
+  };
+
+  const handleSend = async (imageUri = null) => {
     if (inputText.trim() === "" && !imageUri) {
       return;
     }
@@ -53,6 +83,13 @@ const Conversations = ({ navigation }) => {
       time: getCurrentTime(),
       image: imageUri,
     };
+
+    try {
+      const response = await sendMessageToMistral(inputText);
+      console.log("API Response:", response);
+    } catch (error) {
+      console.error("Failed to send message to Mistral:", error);
+    }
 
     setMessages([...messages, newMessage]);
     setInputText("");
@@ -102,7 +139,8 @@ const Conversations = ({ navigation }) => {
                 style={[
                   styles.messageContainer,
                   {
-                    flexDirection: item.sender === "user" ? "row-reverse" : "row",
+                    flexDirection:
+                      item.sender === "user" ? "row-reverse" : "row",
                   },
                 ]}
               >
