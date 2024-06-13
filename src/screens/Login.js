@@ -21,10 +21,6 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
-const clientId = "1047364862184-5ht68ioumb1cnjmpivurtmvtnb7fkr4s.apps.googleusercontent.com";
-
-
-
 export default function Login() {
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
@@ -80,6 +76,48 @@ export default function Login() {
   const { width, height } = Dimensions.get("window");
 
   return (
+    <View style={styles.container}>
+      <View style={styles.invisibleGeorgesContainer}>
+        <Image
+          source={invisibleGeorgesImage}
+          style={styles.invisibleGeorgesImage}
+        />
+      </View>
+      <Text style={[styles.titre, styles.defaultText]}>
+        Connectez-vous à Georges
+      </Text>
+      <View style={styles.inputContainer}>
+        <Text style={[styles.label, styles.defaultText]}>
+          Pseudo, numéro de téléphone ou mail
+        </Text>
+        <TextInput
+          style={styles.input}
+          value={loginId}
+          onChangeText={setLoginId}
+        />
+      </View>
+      <View style={styles.inputContainer}>
+        <Text style={[styles.label, styles.defaultText]}>Mot de passe</Text>
+        <TextInput
+          style={[styles.input]}
+          secureTextEntry={true}
+          value={password}
+          onChangeText={setPassword}
+        />
+      </View>
+      <TouchableOpacity style={styles.button}>
+        <LinearGradient
+          style={{
+            ...styles.gradient,
+            borderRadius: 16,
+            width: 327,
+            height: 50,
+            textAlign: "center",
+          }}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          colors={["#040141", "#090979", "#d45a00"]}
+        >
     <KeyboardAvoidingView
       style={styles.keyboardAvoidingView}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -94,6 +132,7 @@ export default function Login() {
           </View>
           <Text style={[styles.titre, styles.defaultText]}>
             Connectez-vous à Georges
+
           </Text>
           <View style={styles.inputContainer}>
             <Text style={[styles.label, styles.defaultText]}>
@@ -191,6 +230,23 @@ export default function Login() {
       <StatusBar style="auto" />
     </View>
   );
+}
+import MistralClient from '@mistralai/mistralai';
+import { func } from 'prop-types';
+
+
+
+async function TestPrompt(){
+  const apiKey = process.env.MISTRAL_API_KEY;
+
+  const client = new MistralClient(apiKey);
+
+  const chatResponse = await client.chat({
+    model: 'mistral-large-latest',
+    messages: [{role: 'user', content: 'What is the best French cheese?'}],
+  });
+
+  console.log('Chat:', chatResponse.choices[0].message.content);
 }
 
 const styles = StyleSheet.create({

@@ -14,8 +14,6 @@ import Conversations from "./src/screens/Conversations";
 import Home from "./src/screens/Home";
 
 
-const clientId = "1047364862184-5ht68ioumb1cnjmpivurtmvtnb7fkr4s.apps.googleusercontent.com";
-
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -31,7 +29,7 @@ export default function App() {
 
 
   return (
-    <GoogleOAuthProvider clientId={clientId}>
+    <GoogleOAuthProvider clientId={process.env.GOOGLECLIENTID}>
       <View style={styles.root}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
