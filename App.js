@@ -3,7 +3,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useFonts } from "expo-font";
 import React from "react";
-import { useEffect } from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 
 import Navbar from "./src/components/Navbar";
@@ -12,7 +11,6 @@ import Settings from "./src/screens/Settings";
 import Login from "./src/screens/Login";
 import Conversations from "./src/screens/Conversations";
 import Home from "./src/screens/Home";
-
 
 const Stack = createStackNavigator();
 
@@ -24,9 +22,6 @@ export default function App() {
   if (!fontsLoaded) {
     return <View />;
   }
-
-  
-
 
   return (
     <GoogleOAuthProvider clientId={process.env.GOOGLECLIENTID}>
@@ -43,7 +38,6 @@ export default function App() {
         </NavigationContainer>
       </View>
     </GoogleOAuthProvider>
-
   );
 }
 
