@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import MistralClient from "@mistralai/mistralai";
 import {
   View,
@@ -13,8 +13,23 @@ import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useRoute } from "@react-navigation/native";
 import Modal from "react-native-modal";
-
+import {fetchUserData} from "../../utils/Fetchs/userFetchs";
 const Conversations = ({ navigation }) => {
+  const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
+  useEffect(() => {
+    const getUserData =async () =>{
+      try{
+        const userData = await fetchUserData();
+        setUsername(userData.username);
+        setBio(userData.description);
+      }catch (error){
+        console.error(error);
+      }
+    }
+    getUserData();
+  }, []);
+
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const [image, setImage] = useState(null);
@@ -45,6 +60,7 @@ const Conversations = ({ navigation }) => {
   const sendMessageToMistral = async (inputText) => {
     const apiKey = "jnzFCjsg2DbZYfQtNOHM6tihOXEkUX2h";
     const client = new MistralClient(apiKey);
+
 
     try {
       const chatResponse = await client.chat({
@@ -108,8 +124,8 @@ const Conversations = ({ navigation }) => {
             style={styles.image}
             source={require("../../assets/img/marting.png")}
           />
-          <Text style={styles.username}>@martindvt</Text>
-          <Text style={styles.tagline}>Incoming CEO of the world.</Text>
+          <Text style={styles.username}>@{username}</Text>
+          <Text style={styles.tagline}>{bio}</Text>
         </View>
       </View>
 

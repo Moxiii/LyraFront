@@ -1,9 +1,15 @@
-export default function loginUser(user) {
-  fetch("http://localhost:8033/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(user),
-  }).then(() => {
-    console.log("Utilisateur connecté");
-  });
-}
+
+  export const fetchUserData =async () =>{
+    const token = localStorage.getItem("jwtToken");
+    const responseUserData = await fetch("http://localhost:8080/api/user/me",{
+      method : "GET",
+      headers : {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if(!responseUserData.ok){
+      throw new Error("Failed to fetch User")
+    }
+    return await responseUserData.json();
+  };
+

@@ -2,16 +2,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useFonts } from "expo-font";
-import React from "react";
+import React ,{useState,useEffect} from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
-
-import Navbar from "./src/components/Navbar";
-import Register from "./src/screens/Register";
-import Settings from "./src/screens/Settings";
-import Login from "./src/screens/Login";
-import Conversations from "./src/screens/Conversations";
-import Home from "./src/screens/Home";
-
+import {AuthenticatedRoutes , UnauthenticatedRoutes} from "./routes/homeStack";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -22,18 +16,25 @@ export default function App() {
   if (!fontsLoaded) {
     return <View />;
   }
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  useEffect(() => {
+    const checkAuth = async ()=>{
+      try{
+        const token = await AsyncStorage.getItem("jwtToken");
+        setIsAuthenticated(!!token);
+      }catch(error){
+      console.log("Failed to retrieve token:", error);
+    }
+    }
+    checkAuth();
+  }, []);
 
   return (
     <GoogleOAuthProvider clientId={process.env.GOOGLECLIENTID}>
       <View style={styles.root}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Navbar" component={Navbar} />
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Register" component={Register} />
-            <Stack.Screen name="Conversation" component={Conversations} />
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Settings" component={Settings} />
+            {isAuthenticated? <AuthenticatedRoutes/> : <UnauthenticatedRoutes/>}
           </Stack.Navigator>
         </NavigationContainer>
       </View>

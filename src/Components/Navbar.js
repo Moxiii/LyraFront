@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Conversations from "../screens/Conversations";
 import Splash from "../screens/Splash";
 import Home from "../screens/Home";
+import Calendar from "../screens/Calendar";
 
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   return (
@@ -121,7 +122,7 @@ export default function Navbar() {
     >
       <Tab.Screen
         name="Calendar"
-        component={Splash}
+        component={Calendar}
         options={{ tabBarLabel: "Calendrier" }}
       />
       <Tab.Screen
