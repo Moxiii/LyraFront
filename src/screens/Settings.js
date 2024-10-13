@@ -1,9 +1,25 @@
-import React from "react";
+import React ,{useEffect , useState} from "react";
 import { View, StyleSheet, ImageBackground, Text, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 const backgroundImage = require("../../assets/img/fondsettings.png");
 const martin = require("../../assets/img/marting.png");
+import {fetchUserData} from "../../utils/Fetchs/userFetchs";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Settings = () => {
+  const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
+  useEffect(() => {
+    const getUserData =async () =>{
+     try{
+       const userData = await fetchUserData();
+       setUsername(userData.username);
+       setBio(userData.description);
+     }catch (error){
+       console.error(error);
+     }
+    }
+    getUserData();
+  }, []);
   return (
     <View style={styles.body}>
       <ImageBackground
@@ -16,8 +32,8 @@ const Settings = () => {
           <View style={styles.profileContainer}>
             <Image source={martin} style={styles.pp} />
             <View style={styles.textContainer}>
-              <Text style={styles.name}>Martin Drevet</Text>
-              <Text style={styles.subtile}>Incoming CEO of the world.</Text>
+              <Text style={styles.name}>@{username}</Text>
+              <Text style={styles.subtile}>{bio}</Text>
             </View>
           </View>
           <View style={styles.itemContainer}>

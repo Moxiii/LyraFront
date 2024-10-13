@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 import {
@@ -14,7 +14,7 @@ import {
   ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function Login() {
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
@@ -25,10 +25,10 @@ export default function Login() {
   };
 
   const goToHomePage = () => {
-    navigation.navigate("Navbar");
+    navigation.navigate("Main");
   };
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
 
     // Vérifier si loginId est un e-mail
@@ -49,16 +49,22 @@ export default function Login() {
       jsonBody = JSON.stringify({ username: loginId, password: password });
     }
 
-    fetch("http://localhost:8080/api/auth/login", {
+    const response = await fetch("http://localhost:8080/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: jsonBody,
-    }).then(() => {
-      console.log("Utilisateur connecté");
     });
-    goToHomePage();
+    if(response.ok){
+      const data = await response.json();
+      await AsyncStorage.setItem('jwtToken' , data.token);
+      console.log("User connected with name : ", data.username + " with token" , data.token);
+      goToHomePage();
+    }
+    else {
+      console.log("Conn error" , response.statusText)
+    }
   };
 
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");

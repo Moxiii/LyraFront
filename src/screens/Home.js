@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{useEffect , useState} from "react";
 import {
   View,
   Text,
@@ -12,6 +12,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import {fetchUserData } from "../../utils/Fetchs/userFetchs";
+import {fetchUserTodo} from "../../utils/Fetchs/todoFetchs";
+
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -23,15 +26,31 @@ export default function Home() {
   const navigation = useNavigation();
   const route = useRoute();
 
-  console.log(route.name);
-
+  const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
+  const [profilePic, setProfilePic] = useState("");
+  const [todos, setTodos]=useState([]);
+  const [selectedTodo, setSelectedTodo] = useState(null);
+  const [showTitles, setShowTitles] = useState(true);
+  const [showTasks, setShowTasks] = useState(false);
   const linkToChat = () => {
-    navigation.navigate("Conversation");
+    navigation.navigate("Conversations");
   };
   const linkToSettings = () => {
     navigation.navigate("Settings");
   };
-
+  useEffect(() => {
+    const getUserData =async () =>{
+      try{
+        const userData = await fetchUserData();
+        setUsername(userData.username);
+        setBio(userData.description);
+      }catch (error){
+        console.error("Failed to fetch user " ,error);
+      }
+    }
+    getUserData();
+  }, []);
   const data2 = {
     labels: [
       "Work",
@@ -57,7 +76,21 @@ export default function Home() {
       },
     ],
   };
-
+  useEffect(() => {
+    const getUserTodo =async ()=>{
+      try {
+        const userTodo = await fetchUserTodo();
+        setTodos(userTodo)
+        console.log("Les todos trouvé sont: ",userTodo);
+      }catch (error){
+        console.error("Failed to fetch user todo" ,error)
+      }
+    }
+    getUserTodo();
+  }, []);
+const toggleView = () =>{
+  setShowTitles(!showTitles);
+};
   return (
     <ImageBackground
       source={backgroundImage}
@@ -67,8 +100,8 @@ export default function Home() {
       <View style={styles.header}>
         <Image source={CEO} style={styles.profilepic} />
         <View style={styles.usertexts}>
-          <Text style={styles.username}>@martindvt</Text>
-          <Text style={styles.bio}>CEO of Georges</Text>
+          <Text style={styles.username}>@{username}</Text>
+          <Text style={styles.bio}>{bio}</Text>
         </View>
         <TouchableOpacity
           style={styles.icon}
@@ -82,16 +115,47 @@ export default function Home() {
         <TouchableOpacity style={styles.chatcard} onPress={linkToChat}>
           <Image source={invisibleGeorgesImage} style={styles.chatGeorgesImg} />
           <Text style={styles.georgesmessage}>
-            Bonjour Martin, n’hésite pas à venir me voir au besoin !
+            Bonjour {username}, n’hésite pas à venir me voir au besoin !
           </Text>
         </TouchableOpacity>
 
         <View style={styles.row}>
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>To do :</Text>
-            <Text style={styles.cardContent}>• Lessive</Text>
-            <Text style={styles.cardContent}>• Vaisselle</Text>
-            <Text style={styles.cardContent}>• Les ongles 💅</Text>
+            {showTitles ? (
+                <>
+                  <Text style={styles.cardTitle}>To do :</Text>
+                  {todos.map((todo) => (
+                      <TouchableOpacity
+                          key={todo.id}
+                          onPress={() => {
+                            setSelectedTodo(todo);
+                            setShowTitles(false); // Bascule vers l'affichage des tâches
+                          }}
+                          style={styles.card}
+                      >
+                        <Text style={styles.cardTitle}>{todo.title}</Text>
+                      </TouchableOpacity>
+                  ))}
+                </>
+            ) : (
+                // Affichage des tâches de la To-Do sélectionnée
+                selectedTodo && (
+                    <View>
+                      {/* Titre de la To-Do avec un onPress pour revenir à la liste */}
+                      <TouchableOpacity onPress={() => {
+                        setShowTitles(true); // Revient à l'affichage des To-Dos
+                        setSelectedTodo(null); // Réinitialise la To-Do sélectionnée
+                      }}>
+                        <Text style={styles.cardTitle}>{selectedTodo.title}</Text>
+                      </TouchableOpacity>
+                      {selectedTodo.task.map((task) => (
+                          <Text key={task.id} style={styles.cardContent}>
+                            • {task.description} {task.completed ? '✅' : '❌'}
+                          </Text>
+                      ))}
+                    </View>
+                )
+            )}
           </View>
           <View style={styles.card}>
             <Text style={styles.cardTitle}>Vos projets :</Text>

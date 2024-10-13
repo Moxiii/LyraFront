@@ -18,15 +18,15 @@ export default function Login() {
   };
 
   const [email, setEmail] = useState("");
-  const [motdepasse, setMotDePasse] = useState("");
-  const [pseudo, setPseudo] = useState("");
-  const [nom, setNom] = useState("");
+  const [password, setMotDePasse] = useState("");
+  const [username, setPseudo] = useState("");
+  const [name, setNom] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const user = { email, motdepasse, nom, pseudo };
+    const user = { email, password, name, username };
     console.log(user);
-    fetch("http://localhost:8033/user/add", {
+    fetch("http://localhost:8080/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
@@ -67,7 +67,7 @@ export default function Login() {
         </Text>
         <input
           type="pseudo"
-          value={pseudo}
+          value={username}
           onChange={(e) => setPseudo(e.target.value)}
           style={styles.input}
         />
@@ -77,7 +77,7 @@ export default function Login() {
         <Text style={[styles.label, styles.defaultText]}>Nom</Text>
         <input
           type="nom"
-          value={nom}
+          value={name}
           onChange={(e) => setNom(e.target.value)}
           style={styles.input}
         />
@@ -86,7 +86,7 @@ export default function Login() {
         <Text style={[styles.label, styles.defaultText]}>Mot de passe</Text>
         <input
           type="password"
-          value={motdepasse}
+          value={password}
           onChange={(e) => setMotDePasse(e.target.value)}
           style={styles.input}
         />
