@@ -14,7 +14,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import {fetchUserData } from "../../utils/Fetchs/userFetchs";
 import {fetchUserTodo} from "../../utils/Fetchs/todoFetchs";
-
+import {fetchUserProject} from "../../utils/Fetchs/projetFetch";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -29,6 +29,9 @@ export default function Home() {
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [profilePic, setProfilePic] = useState("");
+
+  const [projects, setProjects]=useState([]);
+  const [selectedProject, setSelectedProject] = useState(null);
   const [todos, setTodos]=useState([]);
   const [selectedTodo, setSelectedTodo] = useState(null);
   const [showTitles, setShowTitles] = useState(true);
@@ -87,6 +90,18 @@ export default function Home() {
       }
     }
     getUserTodo();
+  }, []);
+  useEffect(() => {
+    const getUserProject =async ()=>{
+      try {
+        const userProject = await fetchUserProject();
+        setProjects(userProject)
+        console.log("Les Projects trouvé sont: ",userProject);
+      }catch (error){
+        console.error("Failed to fetch user Project" ,error)
+      }
+    }
+    getUserProject();
   }, []);
 const toggleView = () =>{
   setShowTitles(!showTitles);
@@ -158,8 +173,56 @@ const toggleView = () =>{
             )}
           </View>
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>Vos projets :</Text>
-            <Text style={styles.cardContent}>• Wive</Text>
+            {showTitles ? (
+                <>
+                  <Text style={styles.cardTitle}>Vos projets :</Text>
+                  {projects.map((projet) => (
+                      <TouchableOpacity
+                          key={projet.id}
+                          onPress={() => {
+                            setSelectedProject(projet);
+                            setShowTitles(false);
+                          }}
+                          style={styles.card}
+                      >
+                        <Text style={styles.cardTitle}>{projet.name}</Text>
+                      </TouchableOpacity>
+                  ))}
+                </>
+            ) : (
+                selectedProject && (
+                    <View>
+
+                      <TouchableOpacity
+                          onPress={() => {
+                            setShowTitles(true);
+                            setSelectedProject(null);
+                          }}
+                      >
+                        <Text style={styles.cardTitle}>{selectedProject.name}</Text>
+                      </TouchableOpacity>
+
+                      {/* Description du projet */}
+                      <Text style={styles.cardContent}>{selectedProject.description}</Text>
+
+                      {/* Liens associés au projet */}
+                      <Text style={styles.cardSubtitle}>Liens:</Text>
+                      {selectedProject.links.map((link, index) => (
+                          <Text key={index} style={styles.cardContent}>
+                            • {link}
+                          </Text>
+                      ))}
+
+                      {/* Utilisateurs associés au projet */}
+                      <Text style={styles.cardSubtitle}>Utilisateurs:</Text>
+                      {selectedProject.users.map((user, index) => (
+                          <Text key={index} style={styles.cardContent}>
+                            • {user}
+                          </Text>
+                      ))}
+                    </View>
+                )
+            )}
           </View>
         </View>
 
