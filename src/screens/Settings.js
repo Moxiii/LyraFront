@@ -1,11 +1,14 @@
 import React ,{useEffect , useState} from "react";
-import { View, StyleSheet, ImageBackground, Text, Image } from "react-native";
+import {View, StyleSheet, ImageBackground, Text, Image, TouchableOpacity} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 const backgroundImage = require("../../assets/img/fondsettings.png");
 const martin = require("../../assets/img/marting.png");
 import {fetchUserData} from "../../utils/Fetchs/userFetchs";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from "@react-navigation/native";
+
 const Settings = () => {
+  const navigation = useNavigation();
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   useEffect(() => {
@@ -28,6 +31,14 @@ const Settings = () => {
         style={styles.background}
       >
         <Text style={styles.settings}>Settings</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+          <Ionicons
+              name="arrow-back"
+              size={30}
+              color="white"
+              style={styles.backIcon}
+          />
+        </TouchableOpacity>
         <View style={styles.container}>
           <View style={styles.profileContainer}>
             <Image source={martin} style={styles.pp} />

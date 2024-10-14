@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Conversations from "../screens/Conversations";
-import Splash from "../screens/Splash";
 import Home from "../screens/Home";
 import Calendar from "../screens/Calendar";
 
@@ -115,6 +114,7 @@ const Tab = createBottomTabNavigator();
 export default function Navbar() {
   return (
     <Tab.Navigator
+        initialRouteName="Home"
       tabBar={(props) => <CustomTabBar {...props} />}
       screenOptions={{
         headerShown: false,
@@ -126,7 +126,7 @@ export default function Navbar() {
         options={{ tabBarLabel: "Calendrier" }}
       />
       <Tab.Screen
-        name="InvisibleSpeakButton"
+        name="Home"
         component={Home}
         options={{ tabBarLabel: "" }}
         listeners={({ navigation }) => ({

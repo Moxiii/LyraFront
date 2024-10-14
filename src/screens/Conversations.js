@@ -11,10 +11,11 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { useRoute } from "@react-navigation/native";
+import {useNavigation, useRoute} from "@react-navigation/native";
 import Modal from "react-native-modal";
 import {fetchUserData} from "../../utils/Fetchs/userFetchs";
-const Conversations = ({ navigation }) => {
+const Conversations = () => {
+  const navigation = useNavigation();
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   useEffect(() => {
@@ -111,12 +112,12 @@ const Conversations = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Main")}>
           <Ionicons
-            name="arrow-back"
-            size={30}
-            color="white"
-            style={styles.backIcon}
+              name="arrow-back"
+              size={30}
+              color="white"
+              style={styles.backIcon}
           />
         </TouchableOpacity>
         <View style={styles.leftHeader}>

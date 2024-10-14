@@ -15,7 +15,9 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-export default function Login() {
+
+
+export default function Login({ onLoginSuccess }) {
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
@@ -58,9 +60,8 @@ export default function Login() {
     });
     if(response.ok){
       const data = await response.json();
-      await AsyncStorage.setItem('jwtToken' , data.token);
-      console.log("User connected with name : ", data.username + " with token" , data.token);
-      goToHomePage();
+      await AsyncStorage.setItem('jwtToken' , data.accessToken);
+      onLoginSuccess();
     }
     else {
       console.log("Conn error" , response.statusText)
