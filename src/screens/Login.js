@@ -51,7 +51,7 @@ export default function Login({ onLoginSuccess }) {
       jsonBody = JSON.stringify({ username: loginId, password: password });
     }
 
-    const response = await fetch("http://localhost:8080/api/auth/login", {
+    const response = await fetch("http://georges-Backend/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
