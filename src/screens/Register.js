@@ -31,8 +31,11 @@ export default function Login() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
     })
-      .then(() => {
+      .then((res) => {
         console.log("Utilisateur added");
+        if(res.status===201){
+          goToLoginPage()
+        }
       })
       .catch((error) => {
         console.error("Erreur lors de l'enregistrement :", error);

@@ -1,3 +1,3 @@
 export default function Calendar(){
-    return "Hello from cal";
+    return "Hello from calendar";
 }
