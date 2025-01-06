@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {fetchWithAuth} from "./fetchWithAuth";
+import {useNavigation} from "@react-navigation/native";
 export const fetchUserData =async () =>{
     const responseUserData = await fetchWithAuth("http://localhost:8080/api/user/me",{
       method : "GET",
@@ -9,7 +10,6 @@ export const fetchUserData =async () =>{
     }
     return await responseUserData.json();
   };
-
 export const handleLogout = async () => {
   try {
     await fetchWithAuth("http://localhost:8080/api/auth/logout", {

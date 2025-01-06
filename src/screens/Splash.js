@@ -10,7 +10,8 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {GoogleLogin} from "@react-oauth/google";
 export default function Splash() {
   const backgroundImage = require("../../assets/img/Splash.jpg");
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
@@ -28,7 +29,32 @@ export default function Splash() {
   if (!backgroundImage) {
     return <View />;
   }
+const handleGoogleLogin = async (res)=>{
+  const googleToken = res.credential;
+    try{
 
+    const response = await fetch("http://localhost:8080/api/oauth2/google",
+        {
+          method:"POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ token: googleToken })
+        })
+  if(response.ok){
+    const data = await response.json();
+    await AsyncStorage.setItem("jwtToken" , data.accessToken);
+
+  }else{
+    throw new Error("Erreur lors de la connexion google")
+  }}catch (error){
+      console.error("Erreur lors de la connexion google : " , error)
+    }
+}
+
+  const handleGoogleLoginFailure = (error) => {
+    console.error("Échec de la connexion Google :", error);
+  };
   return (
     <View style={styles.root}>
       <ImageBackground
@@ -49,24 +75,12 @@ export default function Splash() {
           />
         </View>
         <View style={styles.iconContainer}>
-          <Ionicons
-            name="logo-google"
-            size={24}
-            color="white"
-            style={styles.icon}
-          />
-          <Ionicons
-            name="logo-facebook"
-            size={24}
-            color="white"
-            style={styles.icon}
-          />
-          <Ionicons
-            name="logo-apple"
-            size={24}
-            color="white"
-            style={styles.icon}
-          />
+         <GoogleLogin
+         onSuccess={handleGoogleLogin}
+         onFailure={handleGoogleLoginFailure}
+         client_id="465032956776-hod020he9c10cbvpikor1t5uq1fohaij.apps.googleusercontent.com"
+         useOneTap
+         />
         </View>
 
         <TouchableOpacity
@@ -103,7 +117,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginLeft: "20%",
     marginBottom: "10%",
-    width: 244,
     height: 44,
   },
   iconContainer: {

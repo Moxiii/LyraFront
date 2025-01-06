@@ -47,6 +47,7 @@ export default function Home() {
     const getUserData =async () =>{
       try{
         const userData = await fetchUserData();
+        console.log(userData)
         setUsername(userData.username);
         setBio(userData.description);
       }catch (error){
@@ -85,7 +86,6 @@ export default function Home() {
       try {
         const userTodo = await fetchUserTodo();
         setTodos(userTodo)
-        console.log("Les todos trouvé sont: ",userTodo);
       }catch (error){
         console.error("Failed to fetch user todo" ,error)
       }
@@ -97,7 +97,6 @@ export default function Home() {
       try {
         const userProject = await fetchUserProject();
         setProjects(userProject)
-        console.log("Les Projects trouvé sont: ",userProject);
       }catch (error){
         console.error("Failed to fetch user Project" ,error)
       }

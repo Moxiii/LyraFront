@@ -3,7 +3,7 @@ import {View, StyleSheet, ImageBackground, Text, Image, TouchableOpacity} from "
 import { Ionicons } from "@expo/vector-icons";
 const backgroundImage = require("../../assets/img/fondsettings.png");
 const martin = require("../../assets/img/marting.png");
-import {fetchUserData} from "../../utils/Fetchs/userFetchs";
+import {fetchUserData, handleLogout} from "../../utils/Fetchs/userFetchs";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from "@react-navigation/native";
 
@@ -23,6 +23,15 @@ const Settings = () => {
     }
     getUserData();
   }, []);
+  const Logout = () => {
+    //handleLogout();
+    console.log("navigation state : " , navigation.getState())
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Splash" }]
+    });
+    console.log("new navigation state : " , navigation.getState())
+  };
   return (
     <View style={styles.body}>
       <ImageBackground
@@ -102,6 +111,7 @@ const Settings = () => {
             </View>
             <Text style={styles.itemText}>Invite un ami</Text>
           </View>
+          <TouchableOpacity onPress={Logout}>
           <Text
             style={{
               color: "#3D4A7A",
@@ -112,6 +122,7 @@ const Settings = () => {
           >
             Déconnexion
           </Text>
+          </TouchableOpacity>
         </View>
       </ImageBackground>
     </View>
@@ -122,9 +133,6 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     backgroundColor: "#007bff",
-  },
-  subtile: {
-    color: "#797C7B",
   },
   settings: {
     fontSize: 23,
