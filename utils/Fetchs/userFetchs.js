@@ -1,6 +1,38 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {fetchWithAuth} from "./fetchWithAuth";
-import {useNavigation} from "@react-navigation/native";
+
+
+export const uploadProfilePic = async (file) => {
+    if (!file) {
+        throw new Error('Aucun fichier sélectionné.');
+    }
+    const formData = new FormData();
+    formData.append('file', {
+        uri: file.uri,
+        type: file.type,
+        name: file.name,
+    });
+
+    try {
+        const response = await fetchWithAuth(
+            'http://localhost:8080/api/user/uploadProfilPic',
+            {
+                method: "POST",
+                body: formData,
+            });
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            console.error('Erreur lors de l\'upload :', errorMessage); // Affichez le message d'erreur du serveur
+            throw new Error(`Erreur lors de l'envoi : ${errorMessage}`);
+        }
+        const result = await response.json();
+        console.log('Image uploadée avec succès :', result);
+        return result;
+    } catch (error) {
+        console.error('Erreur lors de l\'upload de l\'image :', error.message);
+        throw error;
+    }
+}
 export const fetchUserData =async () =>{
     const responseUserData = await fetchWithAuth("http://localhost:8080/api/user/me",{
       method : "GET",
