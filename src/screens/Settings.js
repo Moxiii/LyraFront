@@ -24,14 +24,11 @@ const Settings = () => {
     getUserData();
   }, []);
   const Logout = () => {
-    //handleLogout();
-    console.log("navigation state : " , navigation.getState())
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "Splash" }]
-    });
-    console.log("new navigation state : " , navigation.getState())
+    handleLogout();
   };
+  const Account = () => {
+    navigation.navigate("Account")
+  }
   return (
     <View style={styles.body}>
       <ImageBackground
@@ -87,7 +84,9 @@ const Settings = () => {
                 style={styles.icon}
               />
             </View>
+            <TouchableOpacity onPress={Account}>
             <Text style={styles.itemText}>Compte</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.itemContainer}>
             <View style={styles.iconBackground}>

@@ -8,7 +8,9 @@ import Login from "../src/screens/Login";
 import Register from "../src/screens/Register";
 import Splash from "../src/screens/Splash";
 import Navbar from "../src/Components/Navbar";
-
+import Account from "../src/screens/Account";
+import Todo from "../src/screens/Todo"
+import Projects from "../src/screens/Projects";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -17,6 +19,9 @@ export const AuthenticatedRoutes = () => (
     <Stack.Navigator screenOptions={{ headerShown: false }} >
         <Stack.Screen name="Main" component={Navbar} />
         <Stack.Screen name="Settings" component={Settings} />
+        <Stack.Screen name="Account" component={Account}/>
+        <Stack.Screen name="Todo" component={Todo}/>
+        <Stack.Screen name="Projects" component={Projects}/>
     </Stack.Navigator>
 );
 
