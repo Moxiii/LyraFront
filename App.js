@@ -18,9 +18,24 @@ export default function App() {
     const checkAuth = async () => {
       try {
         const token = await AsyncStorage.getItem("jwtToken");
-        setIsAuthenticated(!!token);
+        if(token){
+          const response = await fetch("http://localhost:8080/api/auth/check-token",{
+            method : "GET",
+            headers:{
+              Authorization:`Bearer ${token}`,
+            }
+          })
+          if(response.ok){
+            setIsAuthenticated(true)
+          }else{
+            setIsAuthenticated(false)
+            await AsyncStorage.removeItem("jwtToken")
+          }
+        }
+
       } catch (error) {
         console.log("Failed to retrieve token:", error);
+        setIsAuthenticated(false);
       }
     };
 

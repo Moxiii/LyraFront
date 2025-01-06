@@ -1,12 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import {fetchWithAuth} from "./fetchWithAuth";
 export const fetchUserData =async () =>{
-  const token = await AsyncStorage.getItem('jwtToken');
-    const responseUserData = await fetch("http://localhost:8080/api/user/me",{
+    const responseUserData = await fetchWithAuth("http://localhost:8080/api/user/me",{
       method : "GET",
-      headers : {
-        Authorization: `Bearer ${token}`,
-      },
     });
     if(!responseUserData.ok){
       throw new Error("Failed to fetch User")
@@ -16,12 +12,8 @@ export const fetchUserData =async () =>{
 
 export const handleLogout = async () => {
   try {
-    const token = await AsyncStorage.getItem('jwtToken');
-    await fetch("http://localhost:8080/api/auth/logout", {
+    await fetchWithAuth("http://localhost:8080/api/auth/logout", {
       method: "DELETE",
-      headers : {
-        Authorization: `Bearer ${token}`,
-      },
     });
 
     await AsyncStorage.removeItem('jwtToken');
@@ -32,12 +24,8 @@ export const handleLogout = async () => {
 
 export const refreshToken = async ()=>{
     try {
-      const token = await AsyncStorage.getItem('jwtToken');
-      const response = await fetch('http://localhost:8080/api/auth/refresh-token', {
+      const response = await fetchWithAuth('http://localhost:8080/api/auth/refresh-token', {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
 
       if (response.ok) {
@@ -47,6 +35,7 @@ export const refreshToken = async ()=>{
         return newToken;
       } else {
         throw new Error('Unable to refresh token');
+        await AsyncStorage.removeItem('jwtToken');
       }
     } catch (error) {
       console.error('Erreur lors du rafraîchissement du token:', error);

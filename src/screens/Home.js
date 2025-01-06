@@ -12,7 +12,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import {fetchUserData } from "../../utils/Fetchs/userFetchs";
+import {fetchWithAuth} from "../../utils/Fetchs/fetchWithAuth";
+import {fetchUserData} from "../../utils/Fetchs/userFetchs";
 import {fetchUserTodo} from "../../utils/Fetchs/todoFetchs";
 import {fetchUserProject} from "../../utils/Fetchs/projetFetch";
 
