@@ -19,21 +19,30 @@ export default function Account() {
         const result = await launchImageLibrary({
             mediaType: "photo",
             includeBase64 : false,
-            includeExtra : false,
             quality : 1
         });
-
-            console.log("Image picker response:", JSON.stringify(result , null ) );
             if (result.didCancel) {
                 Alert.alert("Opération annulée", "Aucune image sélectionnée.");
             } else if (result.errorCode) {
                 Alert.alert("Erreur", "Erreur lors de la sélection de l'image.");
             } else {
-                const selectedFile = result.assets[0];
-                setFile(selectedFile.uri);
-                setPreviewUri(selectedFile.uri);
-            }
 
+                const selectedFile = result.assets[0];
+                try {
+                    const response = await fetch(selectedFile.uri);
+                    const blob = await response.blob();
+                    setFile({
+                        uri: selectedFile.uri,
+                        blob: blob,
+                        name: selectedFile.fileName || "profile-pic.jpg",
+                        type: selectedFile.type || "image/jpeg"
+                    });
+                    setPreviewUri(selectedFile.uri);
+                } catch (error) {
+                    console.error("Erreur lors de la récupération du Blob :", error);
+                    Alert.alert("Erreur", "Une erreur est survenue lors de la sélection de l'image.");
+                }
+            }
     };
     const handleSubmitPic = async () => {
         if (!file) {
@@ -43,9 +52,8 @@ export default function Account() {
         try {
 
             const formData = new FormData();
-            const base64 = file.uri.replace("data:image/png;base64","")
             formData.append('file', {
-                uri: base64,
+                blob:file.blob
             });
             const response = await uploadProfilePic(formData);
             if (response.ok) {

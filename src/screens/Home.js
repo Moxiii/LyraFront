@@ -47,7 +47,6 @@ export default function Home() {
     const getUserData =async () =>{
       try{
         const userData = await fetchUserData();
-        console.log(userData)
         setUsername(userData.username);
         setBio(userData.description);
       }catch (error){

@@ -18,6 +18,9 @@ export const uploadProfilePic = async (file) => {
             'http://localhost:8080/api/user/uploadProfilPic',
             {
                 method: "POST",
+                headers:{
+                    'Accept': 'application/json'
+                },
                 body: formData,
             });
         if (!response.ok) {
