@@ -37,3 +37,6 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+**/expo/
+**/node_modules/
+**/dist/
