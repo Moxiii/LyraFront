@@ -15,7 +15,7 @@ export const uploadProfilePic = async (file) => {
 
     try {
         const response = await fetchWithAuth(
-            'http://localhost:8080/api/user/uploadProfilPic',
+            'http://localhost:8080/api/user/upload/profilPic',
             {
                 method: "POST",
                 headers:{
@@ -78,3 +78,7 @@ export const refreshToken = async ()=>{
     }
   };
 
+export const getProfilPic = async () => {
+    const picResponse = await fetchWithAuth("http://localhost:8080/api/user/get/profilPic");
+    console.log(picResponse)
+}
