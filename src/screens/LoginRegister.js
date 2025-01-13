@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   Image,
-  ImageBackground,
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -89,7 +88,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginLeft: "20%",
     marginBottom: "10%",
-    width: 244,
     height: 44,
   },
   iconContainer: {

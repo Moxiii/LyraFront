@@ -1,26 +1,17 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {fetchWithAuth} from "./fetchWithAuth";
 
-
-export const uploadProfilePic = async (file) => {
+export const uploadProfilePic = async (file , setUserData) => {
     if (!file) {
         throw new Error('Aucun fichier sélectionné.');
     }
     const formData = new FormData();
-    formData.append('file', {
-        uri: file.uri,
-        type: file.type,
-        name: file.name,
-    });
-
+    formData.append('file', file);
     try {
         const response = await fetchWithAuth(
             'http://localhost:8080/api/user/upload/profilPic',
             {
                 method: "POST",
-                headers:{
-                    'Accept': 'application/json'
-                },
                 body: formData,
             });
         if (!response.ok) {
@@ -28,7 +19,14 @@ export const uploadProfilePic = async (file) => {
             console.error('Erreur lors de l\'upload :', errorMessage); // Affichez le message d'erreur du serveur
             throw new Error(`Erreur lors de l'envoi : ${errorMessage}`);
         }
+
         const result = await response.json();
+        if (result.profileImage) {
+            setUserData((prevUserData) => ({
+                ...prevUserData,
+                profilePic: `data:image/png;base64,${result.profileImage}`,
+            }));
+        }
         console.log('Image uploadée avec succès :', result);
         return result;
     } catch (error) {
@@ -78,7 +76,3 @@ export const refreshToken = async ()=>{
     }
   };
 
-export const getProfilPic = async () => {
-    const picResponse = await fetchWithAuth("http://localhost:8080/api/user/get/profilPic");
-    console.log(picResponse)
-}

@@ -1,28 +1,13 @@
-import React ,{useEffect , useState} from "react";
+import React from "react";
 import {View, StyleSheet, ImageBackground, Text, Image, TouchableOpacity} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 const backgroundImage = require("../../assets/img/fondsettings.png");
-const martin = require("../../assets/img/marting.png");
-import {fetchUserData, handleLogout} from "../../utils/Fetchs/userFetchs";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { handleLogout} from "../../utils/Fetchs/userFetchs";
+import {useUserData} from "../../utils/Context/UserContext";
 import {useNavigation} from "@react-navigation/native";
-
 const Settings = () => {
   const navigation = useNavigation();
-  const [username, setUsername] = useState("");
-  const [bio, setBio] = useState("");
-  useEffect(() => {
-    const getUserData =async () =>{
-     try{
-       const userData = await fetchUserData();
-       setUsername(userData.username);
-       setBio(userData.description);
-     }catch (error){
-       console.error(error);
-     }
-    }
-    getUserData();
-  }, []);
+  const {userData} = useUserData();
   const Logout = () => {
     handleLogout();
   };
@@ -47,10 +32,10 @@ const Settings = () => {
         </TouchableOpacity>
         <View style={styles.container}>
           <View style={styles.profileContainer}>
-            <Image source={martin} style={styles.pp} />
+            <Image source={userData.profileImage} style={styles.pp} />
             <View style={styles.textContainer}>
-              <Text style={styles.name}>@{username}</Text>
-              <Text style={styles.subtile}>{bio}</Text>
+              <Text style={styles.name}>@{userData.username}</Text>
+              <Text style={styles.subtile}>{userData.description}</Text>
             </View>
           </View>
           <View style={styles.itemContainer}>

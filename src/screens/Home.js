@@ -1,4 +1,4 @@
-import React ,{useEffect , useState} from "react";
+import React ,{ useState} from "react";
 import {
   View,
   Text,
@@ -9,52 +9,30 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { useRoute } from "@react-navigation/native";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import {fetchWithAuth} from "../../utils/Fetchs/fetchWithAuth";
-import {fetchUserData} from "../../utils/Fetchs/userFetchs";
-import {fetchUserTodo} from "../../utils/Fetchs/todoFetchs";
-import {fetchUserProject} from "../../utils/Fetchs/projetFetch";
+import {useUserData} from "../../utils/Context/UserContext";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Home() {
+
   const backgroundImage = require("../../assets/img/Splash.jpg"); // Background Image
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
-  const CEO = require("../../assets/img/marting.png");
 
+  const { userData, userTodos, userProjects } = useUserData();
   const navigation = useNavigation();
-  const route = useRoute();
 
-  const [username, setUsername] = useState("");
-  const [bio, setBio] = useState("");
-  const [profilePic, setProfilePic] = useState("");
-
-  const [projects, setProjects]=useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [todos, setTodos]=useState([]);
   const [selectedTodo, setSelectedTodo] = useState(null);
   const [showTitles, setShowTitles] = useState(true);
-  const [showTasks, setShowTasks] = useState(false);
   const linkToChat = () => {
     navigation.navigate("Conversations");
   };
   const linkToSettings = () => {
     navigation.navigate("Settings");
   };
-  useEffect(() => {
-    const getUserData =async () =>{
-      try{
-        const userData = await fetchUserData();
-        setUsername(userData.username);
-        setBio(userData.description);
-      }catch (error){
-        console.error("Failed to fetch user " ,error);
-      }
-    }
-    getUserData();
-  }, []);
+
   const data2 = {
     labels: [
       "Work",
@@ -80,31 +58,7 @@ export default function Home() {
       },
     ],
   };
-  useEffect(() => {
-    const getUserTodo =async ()=>{
-      try {
-        const userTodo = await fetchUserTodo();
-        setTodos(userTodo)
-      }catch (error){
-        console.error("Failed to fetch user todo" ,error)
-      }
-    }
-    getUserTodo();
-  }, []);
-  useEffect(() => {
-    const getUserProject =async ()=>{
-      try {
-        const userProject = await fetchUserProject();
-        setProjects(userProject)
-      }catch (error){
-        console.error("Failed to fetch user Project" ,error)
-      }
-    }
-    getUserProject();
-  }, []);
-const toggleView = () =>{
-  setShowTitles(!showTitles);
-};
+
   return (
     <ImageBackground
       source={backgroundImage}
@@ -112,10 +66,16 @@ const toggleView = () =>{
       style={styles.root}
     >
       <View style={styles.header}>
-        <Image source={CEO} style={styles.profilepic} />
+
+        <Image
+            source={
+              userData?.profileImage}
+            style={styles.profilepic}
+        />
+
         <View style={styles.usertexts}>
-          <Text style={styles.username}>@{username}</Text>
-          <Text style={styles.bio}>{bio}</Text>
+          <Text style={styles.username}>@{userData?.username}</Text>
+          <Text style={styles.bio}>{userData?.description}</Text>
         </View>
         <TouchableOpacity
           style={styles.icon}
@@ -129,7 +89,7 @@ const toggleView = () =>{
         <TouchableOpacity style={styles.chatcard} onPress={linkToChat}>
           <Image source={invisibleGeorgesImage} style={styles.chatGeorgesImg} />
           <Text style={styles.georgesmessage}>
-            Bonjour {username}, n’hésite pas à venir me voir au besoin !
+            Bonjour {userData?.username}, n’hésite pas à venir me voir au besoin !
           </Text>
         </TouchableOpacity>
 
@@ -138,7 +98,7 @@ const toggleView = () =>{
             {showTitles ? (
                 <>
                   <Text style={styles.cardTitle}>To do :</Text>
-                  {todos.map((todo) => (
+                  {userTodos?.map((todo) => (
                       <TouchableOpacity
                           key={todo.id}
                           onPress={() => {
@@ -152,7 +112,6 @@ const toggleView = () =>{
                   ))}
                 </>
             ) : (
-                // Affichage des tâches de la To-Do sélectionnée
                 selectedTodo && (
                     <View>
                       {/* Titre de la To-Do avec un onPress pour revenir à la liste */}
@@ -175,7 +134,7 @@ const toggleView = () =>{
             {showTitles ? (
                 <>
                   <Text style={styles.cardTitle}>Vos projets :</Text>
-                  {projects.map((projet) => (
+                  {userProjects?.map((projet) => (
                       <TouchableOpacity
                           key={projet.id}
                           onPress={() => {

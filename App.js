@@ -3,9 +3,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useFonts } from "expo-font";
 import React ,{useState , useEffect}from "react";
-import { ImageBackground, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AuthenticatedRoutes, UnauthenticatedRoutes} from "./routes/homeStack";
+import {UserProvider} from "./utils/Context/UserContext";
 
 
 const Stack = createStackNavigator();
@@ -60,7 +61,13 @@ export default function App() {
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             {isAuthenticated ? (
-                <Stack.Screen name="AuthenticatedRoutes" component={AuthenticatedRoutes} />
+                <Stack.Screen name="AuthenticatedRoutes" >
+                  {()=>(
+                  <UserProvider>
+                    <AuthenticatedRoutes/>
+                  </UserProvider>
+                )}
+                </Stack.Screen>
             ) : (
                 <Stack.Screen name="UnauthenticatedRoutes">
                   {(props) => <UnauthenticatedRoutes {...props} onLoginSuccess={handleLoginSuccess} />}

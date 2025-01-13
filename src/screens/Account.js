@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
     View,
     Text,
@@ -9,31 +9,49 @@ import {
 } from "react-native";
 import { uploadProfilePic } from "../../utils/Fetchs/userFetchs";
 import { launchImageLibrary } from "react-native-image-picker";
+import {Platform} from "react-native";
+import {useUserData} from "../../utils/Context/UserContext";
 
 export default function Account() {
+    const { setUserData } = useUserData();
     const [file, setFile] = useState(null);
     const [previewUri, setPreviewUri] = useState(null);
-
-    // Fonction pour choisir une image
     const handlePickImage = async () => {
-        const result = await launchImageLibrary({
-            mediaType: "photo",
-            includeBase64 : false,
-            quality : 1
-        });
+        if (Platform.OS === "web") {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = "image/*";
+            input.onchange = (event) => {
+                const selectedFile = event.target.files[0];
+                if (selectedFile) {
+                    setFile(selectedFile);
+                    setPreviewUri(URL.createObjectURL(selectedFile));
+                }
+            };
+            input.click();
+        } else {
+            const result = await launchImageLibrary({
+                mediaType: "photo",
+                includeBase64: false,
+                quality: 1,
+            });
+
             if (result.didCancel) {
                 Alert.alert("Opération annulée", "Aucune image sélectionnée.");
             } else if (result.errorCode) {
                 Alert.alert("Erreur", "Erreur lors de la sélection de l'image.");
             } else {
                 const selectedFile = result.assets[0];
-                console.log(result.assets[0]);
-                console.log("Selected File : " , selectedFile)
                 setFile(selectedFile);
                 setPreviewUri(selectedFile.uri);
-
             }
+        }
     };
+    useEffect(() => {
+        if (file) {
+            console.log("file:", file);
+        }
+    }, [file]);
     const handleSubmitPic = async () => {
         if (!file) {
             Alert.alert("Erreur", "Veuillez sélectionner un fichier.");
@@ -41,7 +59,7 @@ export default function Account() {
         }
         try {
 
-            const response = await uploadProfilePic(file);
+            const response = await uploadProfilePic(file ,setUserData);
             if (response.ok) {
                 Alert.alert("Succès", "Image uploadée avec succès!");
             } else {

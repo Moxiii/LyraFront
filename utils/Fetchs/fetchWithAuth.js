@@ -1,10 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { refreshToken , handleLogout } from "./userFetchs";
 
-
 export const fetchWithAuth = async (url, options = {}, onError) => {
     try {
-        // Ajoute automatiquement le token JWT si disponible
         const token = await AsyncStorage.getItem('jwtToken');
         const headers = {
             ...options.headers,
@@ -12,7 +10,6 @@ export const fetchWithAuth = async (url, options = {}, onError) => {
         };
         const response = await fetch(url, { ...options, headers });
 
-        // Vérifie si l'utilisateur est autorisé (401 ou 403)
         if (response.status === 401 || response.status === 403) {
             console.warn('Token invalide ou expiré, tentative de rafraîchissement');
             const newToken = await refreshToken();
