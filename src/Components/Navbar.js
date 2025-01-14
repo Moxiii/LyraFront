@@ -5,7 +5,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Conversations from "../screens/Conversations";
 import Home from "../screens/Home";
 import Calendar from "../screens/Calendar";
-
+import Projects from "../screens/Projects";
+import Todo from "../screens/Todo";
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   return (
     <View
@@ -36,11 +37,11 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
           ? "rgba(255, 255, 255, 1)"
           : "rgba(255, 255, 255, 0.8)";
         const iconName =
-          route.name === "Calendar"
-            ? "calendar"
-            : route.name === "Conversations"
-            ? "chatbubble"
-            : "";
+          route.name === "Calendar" ? "calendar"
+            : route.name === "Conversations" ? "chatbubble"
+            : route.name === "Todo" ? "reader"
+            : route.name === "Projects" ? "desktop"
+            :"";
 
         const onPress = () => {
           const event = navigation.emit({
@@ -125,6 +126,11 @@ export default function Navbar() {
         component={Calendar}
         options={{ tabBarLabel: "Calendrier" }}
       />
+        <Tab.Screen
+            name="Todo"
+            component={Todo}
+            options={{ tabBarLabel: "Todo" }}
+        />
       <Tab.Screen
         name="Home"
         component={Home}
@@ -140,6 +146,11 @@ export default function Navbar() {
         component={Conversations}
         options={{ tabBarLabel: "Messages" }}
       />
+        <Tab.Screen
+            name="Projects"
+            component={Projects}
+            options={{ tabBarLabel: "Projects" }}
+        />
     </Tab.Navigator>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from "react";
+import React, { useState  } from "react";
 import MistralClient from "@mistralai/mistralai";
 import {
   View,
@@ -13,23 +13,11 @@ import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import {useNavigation, useRoute} from "@react-navigation/native";
 import Modal from "react-native-modal";
-import {fetchUserData} from "../../utils/Fetchs/userFetchs";
+import {useUserData} from "../../utils/Context/UserContext";
+
 const Conversations = () => {
+  const {userData} = useUserData();
   const navigation = useNavigation();
-  const [username, setUsername] = useState("");
-  const [bio, setBio] = useState("");
-  useEffect(() => {
-    const getUserData =async () =>{
-      try{
-        const userData = await fetchUserData();
-        setUsername(userData.username);
-        setBio(userData.description);
-      }catch (error){
-        console.error(error);
-      }
-    }
-    getUserData();
-  }, []);
 
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
@@ -123,10 +111,10 @@ const Conversations = () => {
         <View style={styles.leftHeader}>
           <Image
             style={styles.image}
-            source={require("../../assets/img/marting.png")}
+            source={userData.profileImage}
           />
-          <Text style={styles.username}>@{username}</Text>
-          <Text style={styles.tagline}>{bio}</Text>
+          <Text style={styles.username}>@{userData.username}</Text>
+          <Text style={styles.tagline}>{userData.description}</Text>
         </View>
       </View>
 
@@ -159,7 +147,7 @@ const Conversations = () => {
               >
                 {item.sender === "user" && (
                   <Image
-                    source={require("../../assets/img/marting.png")}
+                    source={userData.profileImage}
                     style={styles.profileImage}
                   />
                 )}
