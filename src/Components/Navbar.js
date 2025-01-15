@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Conversations from "../screens/Conversations";
 import Home from "../screens/Home";
-import Calendar from "../screens/Calendar";
+import Calendrier from "../screens/Calendar";
 import Projects from "../screens/Projects";
 import Todo from "../screens/Todo";
 const CustomTabBar = ({ state, descriptors, navigation }) => {
@@ -123,7 +123,7 @@ export default function Navbar() {
     >
       <Tab.Screen
         name="Calendar"
-        component={Calendar}
+        component={Calendrier}
         options={{ tabBarLabel: "Calendrier" }}
       />
         <Tab.Screen

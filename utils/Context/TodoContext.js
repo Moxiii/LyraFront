@@ -10,7 +10,7 @@ import {
 import {useUserData} from "./UserContext";
 const TodoContext = createContext();
 export function TodoProvider ({children}){
-    const {setUserTodos , userTodos} = useUserData()
+    const {userTodos,setUserTodos} = useUserData()
     const deleteTaskToTodoToContext = async (todoID ,taskID)=>{
         try{
             const response = await deleteTasktoTodo(todoID , taskID)
@@ -38,7 +38,7 @@ export function TodoProvider ({children}){
             const response = await addUserTodo(todoTitle)
             setUserTodos((prevTodos)=>[
                     ...prevTodos,
-                    {id:response.id , title: response.title , tasks:response.tasks||[] }
+                    {id:response.id , title: response.title , task:response.task||[] }
                 ]
             )
         }catch (error){throw new Error("Failed to add todo to context")}
@@ -49,7 +49,9 @@ export function TodoProvider ({children}){
             setUserTodos((prevTodos) =>
                 prevTodos.map((todo) =>
                     todo.id === todoID
-                        ? { ...todo, tasks: [...(todo.tasks || []), response] }
+                        ? {
+                    ...todo,
+                            task: [...todo.task, response] }
                         : todo
                 )
             );

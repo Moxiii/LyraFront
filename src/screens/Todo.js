@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, Alert, TextInput, Button, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, Alert, TextInput, Button, TouchableOpacity, StyleSheet , ImageBackground } from "react-native";
 import { useUserData } from "../../utils/Context/UserContext";
 import {useTodoContext} from "../../utils/Context/TodoContext"
 
+
+const backgroundImage = require("../../assets/img/Splash.jpg");
 export default function Todo() {
+
     const {addTodoToContext , addTaskToTodoToContext , deleteTaskToTodoToContext , deleteTodoToContext , updateTodoTaskToContext,updateTodoToContext} = useTodoContext()
     const { userTodos} = useUserData();
     const [todoTitle, setTodoTitle] = useState("");
@@ -39,12 +42,14 @@ export default function Todo() {
             await addTaskToTodoToContext(selectedTodo.id, newTask);
             setTaskDescription("");
             setTaskContent("");
+            const updatedTodo = userTodos.find((todo)=>todo.id === selectedTodo.id);
+            setSelectedTodo(updatedTodo)
             Alert.alert("Succès", "Tâche ajoutée.");
         } catch (error) {
             Alert.alert("Erreur", "Impossible d'ajouter la tâche.");
         }
     };
-    const handleUpdateTodo = async (todoID) =>{
+    const handleUpdateTodo = async (todoID) => {
         try{
          await updateTodoToContext(todoID)
         }catch (error) {
@@ -72,13 +77,18 @@ export default function Todo() {
 
 
     return (
+        <ImageBackground
+            source={backgroundImage}
+            resizeMode="cover"
+            style={styles.root}
+        >
         <View style={{ padding: 20 }}>
             <Text>Hello from Todo</Text>
             <TextInput
                 placeholder="Titre de la todo"
                 value={todoTitle}
                 onChangeText={setTodoTitle}
-                style={{ borderWidth: 1, marginVertical: 10, padding: 8 }}
+                style={styles.textInput}
             />
             <Button title="Ajouter Todo" onPress={handleAddTodo} />
             {showTitles ? (
@@ -118,13 +128,13 @@ export default function Todo() {
                             placeholder="Description de la tâche"
                             value={taskDescription}
                             onChangeText={setTaskDescription}
-                            style={{ borderWidth: 1, marginVertical: 10, padding: 8 }}
+                            style={styles.textInput}
                         />
                         <TextInput
                             placeholder="Contenu de la tâche"
                             value={taskContent}
                             onChangeText={setTaskContent}
-                            style={{ borderWidth: 1, marginVertical: 10, padding: 8 }}
+                            style={styles.textInput}
                         />
                         <Button title="Ajouter Tâche" onPress={handleAddTaskToTodo} />
                         {selectedTodo.task?.length > 0 ? (
@@ -149,10 +159,18 @@ export default function Todo() {
                 )
             )}
         </View>
+        </ImageBackground>
     );
 }
 
 const styles = StyleSheet.create({
+    textInput:{
+        borderWidth:1,
+        marginVertical: 10,
+        padding: 8 ,
+        color: "white" ,
+        borderColor:"white",
+    },
     card: {
         padding: 10,
         marginVertical: 5,
@@ -166,6 +184,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     cardContent: {
+        color:"white",
         fontSize: 16,
         paddingLeft: 10,
     },

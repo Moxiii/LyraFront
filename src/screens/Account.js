@@ -11,8 +11,11 @@ import { uploadProfilePic } from "../../utils/Fetchs/userFetchs";
 import { launchImageLibrary } from "react-native-image-picker";
 import {Platform} from "react-native";
 import {useUserData} from "../../utils/Context/UserContext";
+import {Ionicons} from "@expo/vector-icons";
+import {useNavigation} from "@react-navigation/native";
 
 export default function Account() {
+    const navigation = useNavigation()
     const { setUserData } = useUserData();
     const [file, setFile] = useState(null);
     const [previewUri, setPreviewUri] = useState(null);
@@ -73,6 +76,14 @@ export default function Account() {
 
     return (
         <View style={styles.container}>
+            <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+                <Ionicons
+                    name="arrow-back"
+                    size={30}
+                    color="white"
+                    style={styles.backIcon}
+                />
+            </TouchableOpacity>
             <Text style={styles.title}>Télécharger votre photo de profil</Text>
             {previewUri && (
                 <Image source={{ uri: previewUri }} style={styles.imagePreview} />

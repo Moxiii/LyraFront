@@ -3,11 +3,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useFonts } from "expo-font";
 import React ,{useState , useEffect}from "react";
-import { StyleSheet, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AuthenticatedRoutes, UnauthenticatedRoutes} from "./routes/homeStack";
+import globalStyles from "./utils/styles";
 
-
+import {View} from "react-native";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -56,18 +56,23 @@ export default function App() {
 
   return (
     <GoogleOAuthProvider clientId={process.env.GOOGLECLIENTID}>
-      <View style={styles.root}>
+      <View style={globalStyles.root}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             {isAuthenticated ? (
                 <Stack.Screen name="AuthenticatedRoutes" >
                   {()=>(
-                    <AuthenticatedRoutes/>
+                        <AuthenticatedRoutes/>
                 )}
                 </Stack.Screen>
             ) : (
                 <Stack.Screen name="UnauthenticatedRoutes" screenOptions={{ headerShown: false }}>
-                  {(props) => <UnauthenticatedRoutes {...props} onLoginSuccess={handleLoginSuccess} />}
+                  {(props) => (
+                      <UnauthenticatedRoutes
+                          {...props}
+                          onLoginSuccess={handleLoginSuccess}
+                      />
+                  )}
                 </Stack.Screen>
             )}
           </Stack.Navigator>
@@ -77,14 +82,4 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  root: { flex: 1 },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: "cover",
-  },
-});
+

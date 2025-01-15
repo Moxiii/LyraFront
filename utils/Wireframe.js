@@ -7,8 +7,6 @@ import {
   StyleSheet,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-
-// Bouton réutilisable
 export const GradientButtonThin = ({ label, onPress }) => (
   <View>
     <LinearGradient
@@ -22,7 +20,7 @@ export const GradientButtonThin = ({ label, onPress }) => (
   </View>
 );
 
-// Champ de saisie réutilisable
+
 export const Input = ({ placeholder, value, onChangeText }) => (
   <TextInput
     style={styles.input}
@@ -32,7 +30,7 @@ export const Input = ({ placeholder, value, onChangeText }) => (
   />
 );
 
-// Styles
+
 const styles = StyleSheet.create({
   linearGradient: {
     flex: 1,

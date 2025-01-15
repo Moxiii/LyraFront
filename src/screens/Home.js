@@ -17,7 +17,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Home() {
 
-  const backgroundImage = require("../../assets/img/Splash.jpg"); // Background Image
+  const backgroundImage = require("../../assets/img/Splash.jpg");
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
 
   const { userData, userTodos, userProjects } = useUserData();
@@ -121,7 +121,7 @@ export default function Home() {
                       }}>
                         <Text style={styles.cardTitle}>{selectedTodo.title}</Text>
                       </TouchableOpacity>
-                      {selectedTodo.task.map((task) => (
+                      {selectedTodo?.task?.map((task) => (
                           <Text key={task.id} style={styles.cardContent}>
                             • {task.description} {task.completed ? '✅' : '❌'}
                           </Text>

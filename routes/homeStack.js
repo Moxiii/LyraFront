@@ -28,18 +28,18 @@ export const AuthenticatedRoutes = () => (
                 </Stack.Navigator>
             </ProjectProvider>
         </TodoProvider>
-</UserProvider>
+    </UserProvider>
 
 );
 
 export const UnauthenticatedRoutes = ({onLoginSuccess}) => {
 
     return(
-    <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Splash" component={Splash} />
-        <Stack.Screen name="Login">
-            {(props) => <Login {...props} onLoginSuccess={onLoginSuccess} />}
-        </Stack.Screen>
-        <Stack.Screen name="Register" component={Register} />
-    </Stack.Navigator>
-);};
+        <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Splash" component={Splash} />
+            <Stack.Screen name="Login">
+                {(props) => <Login {...props} onLoginSuccess={onLoginSuccess} />}
+            </Stack.Screen>
+            <Stack.Screen name="Register" component={Register} />
+        </Stack.Navigator>
+    );};
