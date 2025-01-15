@@ -1,59 +1,15 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import {fetchUserData} from "../Fetchs/userFetchs";
 import {fetchUserProject} from "../Fetchs/projetFetch";
-import {fetchUserTodo, addUserTodo, addTaskToTodo, deleteTasktoTodo, deleteUserTodo} from "../Fetchs/todoFetchs";
-
+import {fetchUserTodo} from "../Fetchs/todoFetchs";
+import {TodoProvider} from "./TodoContext";
+import {ProjectProvider} from "./ProjectContext";
 const UserContext = createContext();
 const PPplaceholder = require("../../assets/img/ppplaceholder.png");
 export function UserProvider({ children }) {
     const [userData, setUserData] = useState(null);
     const [userTodos, setUserTodos] = useState([]);
     const [userProjects, setUserProjects] = useState([]);
-    const deleteTaskToTodoToContext = async (todoID ,taskID)=>{
-        try{
-            const response = await deleteTasktoTodo(todoID , taskID)
-            setUserTodos((prevTodos) =>
-                prevTodos.map((todo) =>
-                    todo.id === todoID
-                        ? { ...todo, tasks: todo.tasks ? todo.tasks.filter((task) => task.id !== taskID) : [] }
-                        : todo
-                )
-            );
-
-        }
-        catch (error){throw new Error(error)}
-    }
-    const deleteTodoToContext = async (todoID)=>{
-        try{
-            await deleteUserTodo(todoID);
-            setUserTodos((prevTodos)=>{
-                prevTodos.filter((todo)=> todo.id !== todoID)
-            })
-        }catch(error){throw new Error(error)}
-    }
-    const addTodoToContext = async (todoTitle)=>{
-        try{
-            const response = await addUserTodo(todoTitle)
-            setUserTodos((prevTodos)=>[
-                ...prevTodos,
-                {id:response.id , title: response.title , tasks:response.tasks||[] }
-                ]
-            )
-        }catch (error){throw new Error("Failed to add todo to context")}
-    }
-    const addTaskToTodoToContext = async(todoID , newTask)=>{
-        try {
-            const response = await addTaskToTodo(todoID , newTask)
-            setUserTodos((prevTodos) =>
-                prevTodos.map((todo) =>
-                    todo.id === todoID
-                        ? { ...todo, tasks: [...(todo.tasks || []), response] }
-                        : todo
-                )
-            );
-        }
-        catch (error){throw new Error("Failled to add task")}
-    }
     useEffect(() => {
         const loadUserData = async () => {
             try {
@@ -101,13 +57,13 @@ export function UserProvider({ children }) {
                 setUserData,
                 setUserTodos,
                 setUserProjects ,
-                addTodoToContext,
-                addTaskToTodoToContext,
-                deleteTaskToTodoToContext,
-                deleteTodoToContext,
         }}
         >
-            {children}
+
+            <TodoProvider>
+               <ProjectProvider>{children}</ProjectProvider>
+            </TodoProvider>
+
         </UserContext.Provider>
     );
 }

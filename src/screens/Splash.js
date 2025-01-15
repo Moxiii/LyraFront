@@ -8,16 +8,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {GoogleLogin} from "@react-oauth/google";
 export default function Splash() {
   const backgroundImage = require("../../assets/img/Splash.jpg");
   const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
   const navigation = useNavigation();
-  const route = useRoute();
 
-  console.log(route.name);
+
   const goToLogin = () => {
     navigation.navigate("Login");
   };

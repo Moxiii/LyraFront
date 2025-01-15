@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { View, Text, Alert, TextInput, Button, TouchableOpacity, StyleSheet } from "react-native";
-import { useUserData ,} from "../../utils/Context/UserContext";
-
+import { useUserData } from "../../utils/Context/UserContext";
+import {useTodoContext} from "../../utils/Context/TodoContext"
 
 export default function Todo() {
-    const { userTodos, addTodoToContext , addTaskToTodoToContext , deleteTaskToTodoToContext , deleteTodoToContext} = useUserData();
+    const {addTodoToContext , addTaskToTodoToContext , deleteTaskToTodoToContext , deleteTodoToContext , updateTodoTaskToContext,updateTodoToContext} = useTodoContext()
+    const { userTodos} = useUserData();
     const [todoTitle, setTodoTitle] = useState("");
     const [showTitles, setShowTitles] = useState(true);
     const [taskDescription , setTaskDescription] = useState("");
@@ -12,6 +13,7 @@ export default function Todo() {
     const [taskCompleted, setTaskCompleted] = useState(false);
     const [selectedTodo, setSelectedTodo] = useState(null);
     const [tasks , setTasks] = useState([null]);
+
     const handleAddTodo = async () => {
         try {
             await addTodoToContext(todoTitle)
@@ -20,14 +22,7 @@ export default function Todo() {
             Alert.alert("Erreur", "Une erreur est survenue.");
         }
     };
-    const handleDeleteTodo = async (todoID) => {
-        try {
-            await deleteTodoToContext(todoID);
-            Alert.alert("Succès", "La todo a été supprimée.");
-        } catch (error) {
-            Alert.alert("Erreur", "Impossible de supprimer la todo.");
-        }
-    };
+
 
     const handleAddTaskToTodo = async () => {
         if (!taskDescription) {
@@ -49,6 +44,22 @@ export default function Todo() {
             Alert.alert("Erreur", "Impossible d'ajouter la tâche.");
         }
     };
+    const handleUpdateTodo = async (todoID) =>{
+        try{
+         await updateTodoToContext(todoID)
+        }catch (error) {
+            Alert.alert("Erreur", "Impossible de supprimer la todo.");
+        }
+    }
+    const handleDeleteTodo = async (todoID) => {
+        try {
+            await deleteTodoToContext(todoID);
+            Alert.alert("Succès", "La todo a été supprimée.");
+        } catch (error) {
+            Alert.alert("Erreur", "Impossible de supprimer la todo.");
+        }
+    };
+
 
     const handleDeleteTaskToTodo = async (todoId, taskId) => {
         try {
@@ -58,6 +69,8 @@ export default function Todo() {
             Alert.alert("Erreur", "Impossible de supprimer la tâche.");
         }
     };
+
+
     return (
         <View style={{ padding: 20 }}>
             <Text>Hello from Todo</Text>

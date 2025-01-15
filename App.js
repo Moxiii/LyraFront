@@ -6,7 +6,6 @@ import React ,{useState , useEffect}from "react";
 import { StyleSheet, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AuthenticatedRoutes, UnauthenticatedRoutes} from "./routes/homeStack";
-import {UserProvider} from "./utils/Context/UserContext";
 
 
 const Stack = createStackNavigator();
@@ -40,7 +39,7 @@ export default function App() {
       }
     };
 
-    checkAuth(); // Call the function to check auth status
+    checkAuth();
   }, []);
   const handleLoginSuccess = () => {
     setIsAuthenticated(true);
@@ -63,13 +62,11 @@ export default function App() {
             {isAuthenticated ? (
                 <Stack.Screen name="AuthenticatedRoutes" >
                   {()=>(
-                  <UserProvider>
                     <AuthenticatedRoutes/>
-                  </UserProvider>
                 )}
                 </Stack.Screen>
             ) : (
-                <Stack.Screen name="UnauthenticatedRoutes">
+                <Stack.Screen name="UnauthenticatedRoutes" screenOptions={{ headerShown: false }}>
                   {(props) => <UnauthenticatedRoutes {...props} onLoginSuccess={handleLoginSuccess} />}
                 </Stack.Screen>
             )}
