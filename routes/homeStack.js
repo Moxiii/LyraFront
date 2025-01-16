@@ -15,7 +15,8 @@ import Notification from "../src/screens/SettingsSubScreens/Notification";
 import {UserProvider} from "../utils/Context/UserContext";
 import {TodoProvider} from "../utils/Context/TodoContext";
 import {ProjectProvider} from "../utils/Context/ProjectContext";
-
+import Conversations from "../src/screens/NavScreens/Conversations";
+import Chat from "../src/screens/Chat"
 const Stack = createStackNavigator();
 
 export const AuthenticatedRoutes = () => (
@@ -27,6 +28,8 @@ export const AuthenticatedRoutes = () => (
                     <Stack.Screen name="Settings" component={Settings} />
                     <Stack.Screen name="Todo" component={Todo}/>
                     <Stack.Screen name="Projects" component={Projects}/>
+                    <Stack.Screen name="Conversations" component={Conversations}/>
+                    <Stack.Screen name="Chat" component={Chat}/>
                     {/* SubScreens of settings*/}
                     <Stack.Screen name="Account" component={Account}/>
                     <Stack.Screen name="Help" component={Help}/>

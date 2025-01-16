@@ -40,3 +40,6 @@ yarn-error.*
 **/expo/
 **/node_modules/
 **/dist/
+mistral*
+**/mistral.js
+
