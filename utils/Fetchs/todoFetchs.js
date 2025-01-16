@@ -13,6 +13,7 @@ export const fetchUserTodo =async () =>{
 export const getTodoById = async (todoID) =>{
     const getTodoByID = await fetchWithAuth(`http://localhost:8080/api/todo/${todoID}`)
     if(!getTodoByID().ok){throw new Error("Failed to retrieve ToDo w/ " +  todoID +  "ID");}
+    return getTodoByID.json()
 }
 
 export const addUserTodo = async ( title) => {
@@ -25,20 +26,26 @@ export const addUserTodo = async ( title) => {
     })
     if(!addTodo.ok){throw new Error("Failed to add ToDo");}
     const result = await addTodo.json();
-
     return result
 }
-export const updateTodo = async (todoID) =>{
+export const updateTodo = async (todoID, updatedTodo) =>{
     const updateTodo = await fetchWithAuth(`http://localhost:8080/api/todo/update/${todoID}` , {
-        method:"put"
+        method:"put",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body:JSON.stringify(updatedTodo)
     })
     if(!updateTodo.ok){throw new Error("Failed to update Todo")}
+    const result = await updateTodo.json()
+    return result
 }
 export const deleteUserTodo = async (todoID)=>{
     const deleteTodo = await fetchWithAuth(`http://localhost:8080/api/todo/delete/${todoID}`,{
         method:"DELETE"
     })
     if(!deleteTodo.ok){throw new Error("Failed to delete Todo")}
+    return deleteTodo
 }
 export const addTaskToTodo = async ( todoID , tasks) => {
     const addTasks = await fetchWithAuth(`http://localhost:8080/api/todo/add/task/${todoID}`, {
@@ -56,11 +63,16 @@ export const deleteTasktoTodo = async (todoID , taskID) =>{
         method:"delete"
     })
     if(!deleteTask.ok){throw new Error("failed to delete todo")}
+    return deleteTask;
 }
 
-export const updateTodoTask = async (todoID , taskID) =>{
-    const updateTodoTask = await fetchWithAuth(`http://localhost:8080/api/todo/update/${todoID}/${taskID}` , {
-        method:"put"
+export const updateTodoTask = async (todoID , taskID , updatedTask) =>{
+    const updateTodoTask = await fetchWithAuth(`http://localhost:8080/api/todo/update/task/${todoID}/${taskID}` , {
+        method:"put",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body:JSON.stringify(updatedTask)
     })
     if(!updateTodoTask.ok){throw new Error("Failed to update Todo task")}
     return await updateTodoTask.json()

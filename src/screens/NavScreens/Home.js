@@ -114,14 +114,13 @@ export default function Home() {
             ) : (
                 selectedTodo && (
                     <View>
-                      {/* Titre de la To-Do avec un onPress pour revenir à la liste */}
                       <TouchableOpacity onPress={() => {
-                        setShowTitles(true); // Revient à l'affichage des To-Dos
-                        setSelectedTodo(null); // Réinitialise la To-Do sélectionnée
+                        setShowTitles(true);
+                        setSelectedTodo(null);
                       }}>
                         <Text style={styles.cardTitle}>{selectedTodo.title}</Text>
                       </TouchableOpacity>
-                      {selectedTodo?.task?.map((task) => (
+                      {Array.isArray(selectedTodo.tasks) && selectedTodo?.tasks?.map((task) => (
                           <Text key={task.id} style={styles.cardContent}>
                             • {task.description} {task.completed ? '✅' : '❌'}
                           </Text>
@@ -159,19 +158,13 @@ export default function Home() {
                       >
                         <Text style={styles.cardTitle}>{selectedProject.name}</Text>
                       </TouchableOpacity>
-
-                      {/* Description du projet */}
                       <Text style={styles.cardContent}>{selectedProject.description}</Text>
-
-                      {/* Liens associés au projet */}
                       <Text style={styles.cardSubtitle}>Liens:</Text>
                       {selectedProject.links.map((link, index) => (
                           <Text key={index} style={styles.cardContent}>
                             • {link}
                           </Text>
                       ))}
-
-                      {/* Utilisateurs associés au projet */}
                       <Text style={styles.cardSubtitle}>Utilisateurs:</Text>
                       {selectedProject.users.map((user, index) => (
                           <Text key={index} style={styles.cardContent}>

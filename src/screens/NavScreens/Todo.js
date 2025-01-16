@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { View, Text, Alert, TextInput, Button, TouchableOpacity, StyleSheet , ImageBackground } from "react-native";
 import { useUserData } from "../../../utils/Context/UserContext";
 import {useTodoContext} from "../../../utils/Context/TodoContext"
@@ -16,18 +16,35 @@ export default function Todo() {
     const [taskCompleted, setTaskCompleted] = useState(false);
     const [selectedTodo, setSelectedTodo] = useState(null);
     const [tasks , setTasks] = useState([null]);
+    const [editingTodo , setEditingTodo] = useState(null)
+    const [editingTask , setEditingTask] = useState(null)
 
-    const handleAddTodo = async () => {
+    useEffect(() => {
+        if(selectedTodo){
+            const updatedTodo = userTodos.find((todo)=>todo.id === selectedTodo.id);
+            setSelectedTodo(updatedTodo)
+        }
+    }, [userTodos]);
+    const handleAddOrUpdateTodo = async () => {
         try {
-            await addTodoToContext(todoTitle)
+            if(editingTodo){
+                const updatedTodo = {...editingTodo , title: todoTitle}
+                await updateTodoToContext(editingTodo.id , updatedTodo)
+                setEditingTask(null)
+                setEditingTodo(null)
+                setTaskDescription("")
+                setTaskContent("")
+            }else{await addTodoToContext(todoTitle)}
            setTodoTitle("")
         } catch (error) {
             Alert.alert("Erreur", "Une erreur est survenue.");
         }
     };
-
-
-    const handleAddTaskToTodo = async () => {
+const handleEditTodo = (todo) =>{
+    setEditingTodo(todo)
+    setTodoTitle(todo.title)
+}
+    const handleAddOrUpdateTaskToTodo = async () => {
         if (!taskDescription) {
             return Alert.alert("Erreur", "La description est requise.");
         }
@@ -39,30 +56,36 @@ export default function Todo() {
         const newTask = { description: taskDescription, content: taskContent, completed: false };
 
         try {
-            await addTaskToTodoToContext(selectedTodo.id, newTask);
-            const updatedTodo = userTodos.find((todo) => todo.id === selectedTodo.id);
-            setSelectedTodo(updatedTodo);
+            if(editingTask){
+                await updateTodoTaskToContext(selectedTodo.id , editingTask.id , {
+                    description: taskDescription,
+                    content: taskContent,
+                })
+                setEditingTask(null)
+            }else{await addTaskToTodoToContext(selectedTodo.id, newTask);}
+            setTaskDescription("");
+            setTaskContent("");
             Alert.alert("Succès", "Tâche ajoutée.");
         } catch (error) {
             Alert.alert("Erreur", "Impossible d'ajouter la tâche.");
         }
     };
-    const handleUpdateTodo = async (todoID) => {
-        try{
-         await updateTodoToContext(todoID)
-        }catch (error) {
-            Alert.alert("Erreur", "Impossible de supprimer la todo.");
-        }
-    }
+const handleEditTask =  (task) =>{
+    setEditingTask(task);
+    setTaskDescription(task.description)
+    setTaskContent(task.content)
+}
+
     const handleDeleteTodo = async (todoID) => {
         try {
             await deleteTodoToContext(todoID);
+            const updatedTodo = userTodos.find((todo) => todo.id === selectedTodo.id);
+            setSelectedTodo(updatedTodo);
             Alert.alert("Succès", "La todo a été supprimée.");
         } catch (error) {
             Alert.alert("Erreur", "Impossible de supprimer la todo.");
         }
     };
-
 
     const handleDeleteTaskToTodo = async (todoId, taskId) => {
         try {
@@ -88,7 +111,7 @@ export default function Todo() {
                 onChangeText={setTodoTitle}
                 style={styles.textInput}
             />
-            <Button title="Ajouter Todo" onPress={handleAddTodo} />
+            <Button title={editingTodo? "Modifier Todo" : "Ajouter Todo"} onPress={handleAddOrUpdateTodo} />
             {showTitles ? (
                 <>
                     <Text style={styles.cardTitle}>To do :</Text>
@@ -102,6 +125,11 @@ export default function Todo() {
                                 style={styles.card}
                             >
                                 <Text style={styles.cardTitle}>{todo.title}</Text>
+                                <Button
+                                title="modifier"
+                                onPress={()=> handleEditTodo(todo)}
+                                color="blue"
+                            />
                                 <Button
                                     title="supprimer"
                                     onPress={()=> handleDeleteTodo(todo.id)}
@@ -134,14 +162,19 @@ export default function Todo() {
                             onChangeText={setTaskContent}
                             style={styles.textInput}
                         />
-                        <Button title="Ajouter Tâche" onPress={handleAddTaskToTodo} />
-                        {selectedTodo.task?.length > 0 ? (
-                            selectedTodo.task.map((task) => (
+                        <Button title={editingTask? "Modifier tache" : "Ajouter Tache" } onPress={handleAddOrUpdateTaskToTodo} />
+                        {Array.isArray(selectedTodo.tasks) && selectedTodo.tasks?.length > 0 ? (
+                            selectedTodo.tasks.map((task) => (
                                 <View key={task.id}>
                                 <Text  style={styles.cardContent}>
                                     • {task.description} {task.completed ? "✅" : "❌"}
                                 </Text>
                                 <Button
+                                    title="modifier"
+                                    onPress={()=> handleEditTask(task)}
+                                    color="blue"
+                                />
+                                    <Button
                                     title="supprimer"
                                     onPress={()=> handleDeleteTaskToTodo(selectedTodo.id , task.id)}
                                     color="red"

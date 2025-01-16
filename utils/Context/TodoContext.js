@@ -27,23 +27,27 @@ export function TodoProvider ({children}){
         }
         catch (error){throw new Error(error)}
     }
-    const deleteTodoToContext = async (todoID)=>{
-        try{
-            await deleteUserTodo(todoID);
-            setUserTodos((prevTodos)=>{
-                prevTodos.filter((todo)=> todo.id !== todoID)
-            })
-        }catch(error){throw new Error(error)}
-    }
+    const deleteTodoToContext = async (todoID) => {
+        try {
+            const response = await deleteUserTodo(todoID);
+            if (response.ok) {
+                setUserTodos((prevTodos) =>
+                    prevTodos.filter((todo) => todo.id !== todoID)
+                );
+            }
+        } catch (error) {
+            throw new Error(error);
+        }
+    };
     const addTodoToContext = async (todoTitle)=>{
         try{
             const response = await addUserTodo(todoTitle)
             setUserTodos((prevTodos)=>[
                     ...prevTodos,
-                    {id:response.id , title: response.title , task:response.task||[] }
+                    {id:response.id , title: response.title , tasks:response.tasks || [] }
                 ]
             )
-        }catch (error){throw new Error("Failed to add todo to context")}
+        }catch (error){throw new Error(error)}
     }
     const addTaskToTodoToContext = async(todoID , newTask)=>{
         try {
@@ -53,32 +57,51 @@ export function TodoProvider ({children}){
                     todo.id === todoID
                         ? {
                     ...todo,
-                            task:response }
+                            tasks:[...todo.tasks , ...response] }
                         : todo
                 )
             );
         }
-        catch (error){throw new Error("Failed to add task")}
+        catch (error){throw new Error(error)}
     }
 
-    const updateTodoToContext = async (todoID)=>{
+    const updateTodoToContext = async (todoID , updatedTodo)=>{
         try {
-            const response = await updateTodo(todoID);
-        }
-        catch (error){throw new Error("Failed to update todo")}
-    }
-    const updateTodoTaskToContext = async (todoID , taskID)=>{
-        try {
-            const response = await updateTodoTask(todoID , taskID);
-            setUserTodos((prevTodos)=>
-                prevTodos.map((todo , task)=>
-                    todo.id === todoID && task.id === taskID
+            const response = await updateTodo(todoID , updatedTodo);
+            setUserTodos((prevTodos) =>
+                prevTodos.map((todo)=>
+                    todo.id === todoID
                     ?
-                        {...todo,task:response} : todo
+                        {...todo ,
+                            ...(response.title && { title: response.title }),
+                            ...(response.tasks && { tasks: response.task }),
+                        }
+        : todo
                 )
             )
         }
-        catch (error){throw new Error("Failed to update todo task")}
+        catch (error){throw new Error(error)}
+    }
+    const updateTodoTaskToContext = async (todoID , taskID , updatedTask)=>{
+        try {
+            const response = await updateTodoTask(todoID , taskID , updatedTask);
+            setUserTodos((prevTodos)=>
+                prevTodos.map((todo)=>
+                    todo.id === todoID
+                    ?
+                        {
+                            ...todo,
+                            tasks:todo.tasks.map((task)=>
+                                task.id === taskID ?
+                                    {
+                                        ...task,...response
+                                    }
+                                    :task
+                            )} : todo
+                )
+            )
+        }
+        catch (error){throw new Error(error)}
     }
     return(
         <TodoContext.Provider
