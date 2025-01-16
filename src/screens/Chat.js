@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useRef, useState} from "react";
 import { sendMessageToMistral } from "../../utils/mistral";
 import WebSocketComponent from "../Components/WebSocketComponent";
 import {
@@ -21,7 +21,7 @@ const Chat = ({ route }) => {
     const [messages, setMessages] = useState([])
     const [inputText, setInputText] = useState("");
     const [image, setImage] = useState(null);
-
+    const webSocketRef = useRef(null)
     const getCurrentTime = () => {
         const now = new Date();
         const hours = now.getHours().toString().padStart(2, "0");
@@ -75,7 +75,9 @@ const Chat = ({ route }) => {
                 console.error("Failed to send message to Mistral:", error);
             }
         } else if (conversationID === "Websocket") {
-            WebSocketComponent.sendMessageToWebSocket(newMessage.text)
+           if(webSocketRef.current){
+               webSocketRef.current.sendMessage(newMessage.text)
+           }
         }
     };
 

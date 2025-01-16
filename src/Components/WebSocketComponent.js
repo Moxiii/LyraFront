@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Text, View, Button } from "react-native";
 import { Client } from "@stomp/stompjs";
 
-const WebSocketComponent = ({ sendMessage }) => {
+const WebSocketComponent = ((props , ref) => {
     const [client, setClient] = useState(null);
     const [message, setMessage] = useState("");
 
     useEffect(() => {
         const stompClient = new Client({
-            brokerURL: "ws://localhost/ws",
+            brokerURL: "ws://localhost:8080/ws",
             connectHeaders: {},
             debug: function (str) {
                 console.log(str);
@@ -41,14 +41,15 @@ const WebSocketComponent = ({ sendMessage }) => {
             });
         }
     };
-
+React.useImperativeHandle(ref,()=>({
+    sendMessage: sendMessageToWebSocket,
+}))
     return (
         <View>
-            {/* Le bouton va appeler la fonction passée en prop */}
             <Button title="Envoyer un message" onPress={() => sendMessageToWebSocket(message)} />
             <Text>Message reçu: {message}</Text>
         </View>
     );
-};
+});
 
 export default WebSocketComponent;
