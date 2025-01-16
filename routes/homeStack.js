@@ -6,9 +6,12 @@ import Login from "../src/screens/Login";
 import Register from "../src/screens/Register";
 import Splash from "../src/screens/Splash";
 import Navbar from "../src/Components/Navbar";
-import Account from "../src/screens/Account";
+import Account from "../src/screens/Settings/Account";
 import Todo from "../src/screens/Todo"
 import Projects from "../src/screens/Projects";
+import Help from "../src/screens/Settings/Help";
+import Invit from "../src/screens/Settings/Invit";
+import Notification from "../src/screens/Settings/Notification";
 import {UserProvider} from "../utils/Context/UserContext";
 import {TodoProvider} from "../utils/Context/TodoContext";
 import {ProjectProvider} from "../utils/Context/ProjectContext";
@@ -22,9 +25,12 @@ export const AuthenticatedRoutes = () => (
                 <Stack.Navigator screenOptions={{ headerShown: false }} >
                     <Stack.Screen name="Main" component={Navbar} />
                     <Stack.Screen name="Settings" component={Settings} />
-                    <Stack.Screen name="Account" component={Account}/>
                     <Stack.Screen name="Todo" component={Todo}/>
                     <Stack.Screen name="Projects" component={Projects}/>
+                    <Stack.Screen name="Account" component={Account}/>
+                    <Stack.Screen name="Help" component={Help}/>
+                    <Stack.Screen name="Invit" component={Invit}/>
+                    <Stack.Screen name="Notification" component={Notification}/>
                 </Stack.Navigator>
             </ProjectProvider>
         </TodoProvider>

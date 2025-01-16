@@ -43,5 +43,15 @@ const globalStyles = StyleSheet.create({
         marginBottom: 15,
         width: "100%",
     },
+    background: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "flex-end",
+        flexDirection: "column",
+    },
+    backIcon: {
+        marginTop: "20%",
+        marginLeft: "10%",
+    },
 });
 export default globalStyles

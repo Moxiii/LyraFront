@@ -124,7 +124,7 @@ export default function Navbar() {
       <Tab.Screen
         name="Calendar"
         component={Calendrier}
-        options={{ tabBarLabel: "Calendrier" }}
+        options={{ tabBarLabel: "Calendar" }}
       />
         <Tab.Screen
             name="Todo"

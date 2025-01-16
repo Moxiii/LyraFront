@@ -100,7 +100,7 @@ const Conversations = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           <Ionicons
               name="arrow-back"
               size={30}

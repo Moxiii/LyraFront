@@ -62,7 +62,7 @@ const handleGoogleLogin = async (res)=>{
         <View style={styles.georges}>
           <Text style={styles.title}>Georges</Text>
           <Text style={styles.subtitle}>
-            Connecte Georges à toutes tes applications. Il fera le reste
+            Connecte Georges à toutes tes applications. Il fera le reste !
           </Text>
         </View>
         <View style={styles.invisibleGeorgesContainer}>

@@ -5,14 +5,16 @@ import {
     TouchableOpacity,
     Image,
     StyleSheet,
+    ImageBackground,
     Alert,
 } from "react-native";
-import { uploadProfilePic } from "../../utils/Fetchs/userFetchs";
+import { uploadProfilePic } from "../../../utils/Fetchs/userFetchs";
 import { launchImageLibrary } from "react-native-image-picker";
 import {Platform} from "react-native";
-import {useUserData} from "../../utils/Context/UserContext";
+import {useUserData} from "../../../utils/Context/UserContext";
 import {Ionicons} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
+import backgroundImage from "../../../assets/img/Splash.jpg";
 
 export default function Account() {
     const navigation = useNavigation()
@@ -76,6 +78,11 @@ export default function Account() {
 
     return (
         <View style={styles.container}>
+            <ImageBackground
+                source={backgroundImage}
+                resizeMode="cover"
+                style={styles.container}
+            >
             <TouchableOpacity onPress={() => navigation.navigate("Main")}>
                 <Ionicons
                     name="arrow-back"
@@ -97,6 +104,7 @@ export default function Account() {
             >
                 <Text style={styles.buttonText}>Envoyer</Text>
             </TouchableOpacity>
+            </ImageBackground>
         </View>
     );
 }
@@ -113,6 +121,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
         marginBottom: 20,
+        color:"white"
     },
     imagePreview: {
         width: 150,

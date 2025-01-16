@@ -14,6 +14,16 @@ const Settings = () => {
   const Account = () => {
     navigation.navigate("Account")
   }
+  const Help = () => {
+    navigation.navigate("Help")
+  }
+  const Invit = () => {
+    navigation.navigate("Invit")
+  }
+  const Notification = () => {
+    navigation.navigate("Notification")
+  }
+
   return (
     <View style={styles.body}>
       <ImageBackground
@@ -38,6 +48,7 @@ const Settings = () => {
               <Text style={styles.subtile}>{userData.description}</Text>
             </View>
           </View>
+
           <View style={styles.itemContainer}>
             <View style={styles.iconBackground}>
               <Ionicons
@@ -49,6 +60,7 @@ const Settings = () => {
             </View>
             <Text style={styles.itemText}>Chat</Text>
           </View>
+
           <View style={styles.itemContainer}>
             <View style={styles.iconBackground}>
               <Ionicons
@@ -58,9 +70,12 @@ const Settings = () => {
                 style={styles.icon}
               />
             </View>
+            <TouchableOpacity onPress={Notification}>
             <Text style={styles.itemText}>Notification</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.itemContainer}>
+
             <View style={styles.iconBackground}>
               <Ionicons
                 name="key-outline"
@@ -73,7 +88,9 @@ const Settings = () => {
             <Text style={styles.itemText}>Compte</Text>
             </TouchableOpacity>
           </View>
+
           <View style={styles.itemContainer}>
+
             <View style={styles.iconBackground}>
               <Ionicons
                 name="help-circle-outline"
@@ -82,8 +99,11 @@ const Settings = () => {
                 style={styles.icon}
               />
             </View>
+            <TouchableOpacity onPress={Help}>
             <Text style={styles.itemText}>Aide</Text>
+            </TouchableOpacity>
           </View>
+
           <View style={styles.itemContainer}>
             <View style={styles.iconBackground}>
               <Ionicons
@@ -93,7 +113,9 @@ const Settings = () => {
                 style={styles.icon}
               />
             </View>
+            <TouchableOpacity onPress={Invit}>
             <Text style={styles.itemText}>Invite un ami</Text>
+            </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={Logout}>
           <Text
