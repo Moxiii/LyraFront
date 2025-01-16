@@ -13,7 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import {useNavigation, useRoute} from "@react-navigation/native";
 import Modal from "react-native-modal";
-import {useUserData} from "../../utils/Context/UserContext";
+import {useUserData} from "../../../utils/Context/UserContext";
 
 const Conversations = () => {
   const {userData} = useUserData();

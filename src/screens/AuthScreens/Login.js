@@ -68,7 +68,7 @@ export default function Login({ onLoginSuccess }) {
     }
   };
 
-  const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
+  const invisibleGeorgesImage = require("../../../assets/img/georgesinvisible.png");
 
   // Get screen dimensions
   const { width, height } = Dimensions.get("window");

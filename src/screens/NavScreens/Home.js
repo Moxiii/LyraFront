@@ -11,14 +11,14 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import {useUserData} from "../../utils/Context/UserContext";
+import {useUserData} from "../../../utils/Context/UserContext";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Home() {
 
-  const backgroundImage = require("../../assets/img/Splash.jpg");
-  const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
+  const backgroundImage = require("../../../assets/img/Splash.jpg");
+  const invisibleGeorgesImage = require("../../../assets/img/georgesinvisible.png");
 
   const { userData, userTodos, userProjects } = useUserData();
   const navigation = useNavigation();

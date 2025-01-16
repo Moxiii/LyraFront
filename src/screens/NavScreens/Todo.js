@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, Alert, TextInput, Button, TouchableOpacity, StyleSheet , ImageBackground } from "react-native";
-import { useUserData } from "../../utils/Context/UserContext";
-import {useTodoContext} from "../../utils/Context/TodoContext"
+import { useUserData } from "../../../utils/Context/UserContext";
+import {useTodoContext} from "../../../utils/Context/TodoContext"
 
 
-const backgroundImage = require("../../assets/img/Splash.jpg");
+const backgroundImage = require("../../../assets/img/Splash.jpg");
 export default function Todo() {
 
     const {addTodoToContext , addTaskToTodoToContext , deleteTaskToTodoToContext , deleteTodoToContext , updateTodoTaskToContext,updateTodoToContext} = useTodoContext()
@@ -40,10 +40,8 @@ export default function Todo() {
 
         try {
             await addTaskToTodoToContext(selectedTodo.id, newTask);
-            setTaskDescription("");
-            setTaskContent("");
-            const updatedTodo = userTodos.find((todo)=>todo.id === selectedTodo.id);
-            setSelectedTodo(updatedTodo)
+            const updatedTodo = userTodos.find((todo) => todo.id === selectedTodo.id);
+            setSelectedTodo(updatedTodo);
             Alert.alert("Succès", "Tâche ajoutée.");
         } catch (error) {
             Alert.alert("Erreur", "Impossible d'ajouter la tâche.");

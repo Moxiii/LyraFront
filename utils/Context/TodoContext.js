@@ -14,14 +14,16 @@ export function TodoProvider ({children}){
     const deleteTaskToTodoToContext = async (todoID ,taskID)=>{
         try{
             const response = await deleteTasktoTodo(todoID , taskID)
-            setUserTodos((prevTodos) =>
-                prevTodos.map((todo) =>
-                    todo.id === todoID
-                        ? { ...todo, tasks: todo.tasks ? todo.tasks.filter((task) => task.id !== taskID) : [] }
-                        : todo
-                )
-            );
-
+            if(response.ok){
+                setUserTodos((prevTodos) =>
+                    prevTodos.map((todo) =>
+                        todo.id === todoID
+                            ? { ...todo, tasks: todo.tasks ? todo.tasks.filter((task) => task.id !== taskID) : [] }
+                            : todo
+                    )
+                );
+            }
+            throw new Error("Fail to delete task")
         }
         catch (error){throw new Error(error)}
     }
@@ -51,7 +53,7 @@ export function TodoProvider ({children}){
                     todo.id === todoID
                         ? {
                     ...todo,
-                            task: [...todo.task, response] }
+                            task:response }
                         : todo
                 )
             );
@@ -68,6 +70,13 @@ export function TodoProvider ({children}){
     const updateTodoTaskToContext = async (todoID , taskID)=>{
         try {
             const response = await updateTodoTask(todoID , taskID);
+            setUserTodos((prevTodos)=>
+                prevTodos.map((todo , task)=>
+                    todo.id === todoID && task.id === taskID
+                    ?
+                        {...todo,task:response} : todo
+                )
+            )
         }
         catch (error){throw new Error("Failed to update todo task")}
     }

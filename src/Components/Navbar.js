@@ -2,11 +2,11 @@ import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Conversations from "../screens/Conversations";
-import Home from "../screens/Home";
-import Calendrier from "../screens/Calendar";
-import Projects from "../screens/Projects";
-import Todo from "../screens/Todo";
+import Conversations from "../screens/NavScreens/Conversations";
+import Home from "../screens/NavScreens/Home";
+import Calendrier from "../screens/NavScreens/Calendar";
+import Projects from "../screens/NavScreens/Projects";
+import Todo from "../screens/NavScreens/Todo";
 const CustomTabBar = ({ state, descriptors, navigation }) => {
   return (
     <View

@@ -41,7 +41,7 @@ export default function Login() {
       });
   };
 
-  const invisibleGeorgesImage = require("../../assets/img/georgesinvisible.png");
+  const invisibleGeorgesImage = require("../../../assets/img/georgesinvisible.png");
 
   return (
     <View style={styles.container}>

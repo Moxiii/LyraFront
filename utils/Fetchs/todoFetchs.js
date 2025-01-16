@@ -49,6 +49,7 @@ export const addTaskToTodo = async ( todoID , tasks) => {
         body:JSON.stringify([tasks])
     })
     if(!addTasks.ok){throw new Error("Failed to add ToDo");}
+    return await addTasks.json()
 }
 export const deleteTasktoTodo = async (todoID , taskID) =>{
     const deleteTask = await fetchWithAuth(`http://localhost:8080/api/todo/delete/task/${todoID}/${taskID}` , {
@@ -62,4 +63,5 @@ export const updateTodoTask = async (todoID , taskID) =>{
         method:"put"
     })
     if(!updateTodoTask.ok){throw new Error("Failed to update Todo task")}
+    return await updateTodoTask.json()
 }
