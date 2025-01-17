@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, { useRef, useState } from "react";
 import { sendMessageToMistral } from "../../utils/mistral";
 import WebSocketComponent from "../Components/WebSocketComponent";
 import {
@@ -13,22 +13,21 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useUserData } from "../../utils/Context/UserContext";
+
 const Chat = ({ route }) => {
-    const { conversationID , conversationName} = route.params;
-    const { userData } = useUserData();
+    const { conversationID, conversationName, userData } = route.params;
     const navigation = useNavigation();
-    const [messages, setMessages] = useState([])
+    const [messages, setMessages] = useState([]);
     const [inputText, setInputText] = useState("");
     const [image, setImage] = useState(null);
-    const webSocketRef = useRef(null)
+    const webSocketRef = useRef(null);
+
     const getCurrentTime = () => {
         const now = new Date();
         const hours = now.getHours().toString().padStart(2, "0");
         const minutes = now.getMinutes().toString().padStart(2, "0");
         return `${hours}:${minutes}`;
     };
-
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -42,7 +41,6 @@ const Chat = ({ route }) => {
             handleSend(result.uri);
         }
     };
-
     const handleSend = async (imageUri = null) => {
         if (inputText.trim() === "" && !imageUri) {
             return;
@@ -75,14 +73,15 @@ const Chat = ({ route }) => {
                 console.error("Failed to send message to Mistral:", error);
             }
         } else if (conversationID === "Websocket") {
-           if(webSocketRef.current){
-               webSocketRef.current.sendMessage(newMessage.text)
-           }
+            if (webSocketRef.current) {
+                webSocketRef.current.sendMessage(newMessage.text);
+            }
         }
     };
 
     return (
         <View style={styles.container}>
+            <WebSocketComponent ref={webSocketRef} userData={userData} setMessages={setMessages} />
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => navigation.navigate("Conversations")}>
                     <Ionicons name="arrow-back" size={30} color="white" style={styles.backIcon} />
@@ -124,8 +123,6 @@ const Chat = ({ route }) => {
                     </View>
                 )}
             />
-
-            {/* Input pour saisir le message */}
             <View style={styles.inputContainer}>
                 <TouchableOpacity onPress={pickImage}>
                     <Ionicons name="image-outline" size={24} color="#797C7B" style={styles.icon} />
@@ -162,22 +159,6 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
         flex: 1,
-    },
-    leftHeader: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginLeft: 10,
-    },
-    image: {
-        width: 60,
-        borderRadius: 30,
-        height: 60,
-    },
-    username: {
-        color: "#fff",
-        fontSize: 16,
-        fontWeight: "bold",
-        marginLeft: 10,
     },
     messageContainer: {
         flexDirection: "row",

@@ -24,7 +24,7 @@ const Conversations = ({ navigation }) => {
     ]);
 
     const handleConversationClick = (conversationID , conversationName) => {
-        navigation.navigate("Chat", { conversationID , conversationName});
+        navigation.navigate("Chat", { conversationID , conversationName , userData});
     };
 
     const renderConversation = ({ item }) => (
