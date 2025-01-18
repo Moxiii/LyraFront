@@ -1,11 +1,13 @@
 import {fetchWithAuth} from "./fetchWithAuth";
+
 export const fetchUserProject =async () =>{
-    const responseProject = await fetchWithAuth("http://localhost:8080/api/project/get",{
+
+    const get = await fetchWithAuth("project/get",{
         method : "GET",
     });
-    if(!responseProject.ok){
+    if(!get.ok){
         throw new Error("Failed to fetch User")
     }
-    return await responseProject.json();
+    return await get.json();
 };
-
+ const add = await fetchWithAuth("project/add")

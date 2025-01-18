@@ -2,7 +2,7 @@ import {fetchWithAuth} from "./fetchWithAuth";
 
 
 export const fetchUserTodo =async () =>{
-    const responseTodo = await fetchWithAuth("http://localhost:8080/api/todo/get",{
+    const responseTodo = await fetchWithAuth("api/todo/get",{
         method : "GET",
     });
     if(!responseTodo.ok){
@@ -11,13 +11,13 @@ export const fetchUserTodo =async () =>{
     return await responseTodo.json();
 };
 export const getTodoById = async (todoID) =>{
-    const getTodoByID = await fetchWithAuth(`http://localhost:8080/api/todo/${todoID}`)
+    const getTodoByID = await fetchWithAuth(`todo/${todoID}`)
     if(!getTodoByID().ok){throw new Error("Failed to retrieve ToDo w/ " +  todoID +  "ID");}
     return getTodoByID.json()
 }
 
 export const addUserTodo = async ( title) => {
-    const addTodo = await fetchWithAuth("http://localhost:8080/api/todo/add" , {
+    const addTodo = await fetchWithAuth("todo/add" , {
         method:"POST",
         headers: {
             "Content-Type": "application/json",
@@ -29,7 +29,7 @@ export const addUserTodo = async ( title) => {
     return result
 }
 export const updateTodo = async (todoID, updatedTodo) =>{
-    const updateTodo = await fetchWithAuth(`http://localhost:8080/api/todo/update/${todoID}` , {
+    const updateTodo = await fetchWithAuth(`todo/update/${todoID}` , {
         method:"put",
         headers: {
             "Content-Type": "application/json",
@@ -41,14 +41,14 @@ export const updateTodo = async (todoID, updatedTodo) =>{
     return result
 }
 export const deleteUserTodo = async (todoID)=>{
-    const deleteTodo = await fetchWithAuth(`http://localhost:8080/api/todo/delete/${todoID}`,{
+    const deleteTodo = await fetchWithAuth(`todo/delete/${todoID}`,{
         method:"DELETE"
     })
     if(!deleteTodo.ok){throw new Error("Failed to delete Todo")}
     return deleteTodo
 }
 export const addTaskToTodo = async ( todoID , tasks) => {
-    const addTasks = await fetchWithAuth(`http://localhost:8080/api/todo/add/task/${todoID}`, {
+    const addTasks = await fetchWithAuth(`todo/add/task/${todoID}`, {
         method:"POST",
         headers: {
             "Content-Type": "application/json",
@@ -59,7 +59,7 @@ export const addTaskToTodo = async ( todoID , tasks) => {
     return await addTasks.json()
 }
 export const deleteTasktoTodo = async (todoID , taskID) =>{
-    const deleteTask = await fetchWithAuth(`http://localhost:8080/api/todo/delete/task/${todoID}/${taskID}` , {
+    const deleteTask = await fetchWithAuth(`todo/delete/task/${todoID}/${taskID}` , {
         method:"delete"
     })
     if(!deleteTask.ok){throw new Error("failed to delete todo")}
@@ -67,7 +67,7 @@ export const deleteTasktoTodo = async (todoID , taskID) =>{
 }
 
 export const updateTodoTask = async (todoID , taskID , updatedTask) =>{
-    const updateTodoTask = await fetchWithAuth(`http://localhost:8080/api/todo/update/task/${todoID}/${taskID}` , {
+    const updateTodoTask = await fetchWithAuth(`todo/update/task/${todoID}/${taskID}` , {
         method:"put",
         headers: {
             "Content-Type": "application/json",

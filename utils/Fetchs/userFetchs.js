@@ -9,7 +9,7 @@ export const uploadProfilePic = async (file) => {
     formData.append('file', file);
     try {
         const response = await fetchWithAuth(
-            'http://localhost:8080/api/user/upload/profilPic',
+            'user/upload/profilPic',
             {
                 method: "POST",
                 body: formData,
@@ -28,7 +28,7 @@ export const uploadProfilePic = async (file) => {
     }
 }
 export const fetchUserData =async () =>{
-    const responseUserData = await fetchWithAuth("http://localhost:8080/api/user/me",{
+    const responseUserData = await fetchWithAuth("user/me",{
       method : "GET",
     });
     if(!responseUserData.ok){
@@ -38,7 +38,7 @@ export const fetchUserData =async () =>{
   };
 export const handleLogout = async () => {
   try {
-    await fetchWithAuth("http://localhost:8080/api/auth/logout", {
+    await fetchWithAuth("auth/logout", {
       method: "DELETE",
     });
 
@@ -50,7 +50,7 @@ export const handleLogout = async () => {
 
 export const refreshToken = async ()=>{
     try {
-      const response = await fetchWithAuth('http://localhost:8080/api/auth/refresh-token', {
+      const response = await fetchWithAuth('auth/refresh-token', {
         method: 'POST',
       });
 

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Conversationslist from "../screens/NavScreens/Conversations"
+import Conversations from "../screens/NavScreens/Conversations";
 import Home from "../screens/NavScreens/Home";
 import Calendrier from "../screens/NavScreens/Calendar";
 import Projects from "../screens/NavScreens/Projects";
@@ -143,7 +143,7 @@ export default function Navbar() {
       />
       <Tab.Screen
         name="Conversations"
-        component={Conversationslist}
+        component={Conversations}
         options={{ tabBarLabel: "Messages" }}
       />
         <Tab.Screen

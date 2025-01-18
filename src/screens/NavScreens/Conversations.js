@@ -2,8 +2,7 @@ import { useState } from "react";
 import { FlatList, TouchableOpacity, View, StyleSheet, Image, Text } from "react-native";
 import { useUserData } from "../../../utils/Context/UserContext";
 import GeorgesImage from "../../../assets/img/georgesinvisible.png";
-import { Ionicons } from "@expo/vector-icons";
-
+import Header from "../../Components/Header";
 const Conversations = ({ navigation }) => {
     const { userData } = useUserData();
     const [conversations] = useState([
@@ -33,7 +32,7 @@ const Conversations = ({ navigation }) => {
                 style={styles.conversationItem}
                 onPress={() => handleConversationClick(item.id , item.name)}
             >
-                <Image source={{ uri: item.profileImage }} style={styles.profileImage} />
+                <Image source={item.profileImage} style={styles.profileImage} />
                 <View style={styles.conversationDetails}>
                     <Text style={styles.conversationName}>{item.name}</Text>
                     <Text style={styles.lastMessage}>{item.lastMessage}</Text>
@@ -45,12 +44,7 @@ const Conversations = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-                    <Ionicons name="arrow-back" size={30} color="white" style={styles.backIcon} />
-                </TouchableOpacity>
-                <Text style={styles.headerText}>Conversations</Text>
-            </View>
+           <Header name={"Conversations"}/>
             <FlatList
                 data={conversations}
                 renderItem={renderConversation}
@@ -66,24 +60,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#1a1a1a",
     },
-    header: {
-        flexDirection: "row",
-        paddingVertical: 15,
-        paddingHorizontal: 20,
-        backgroundColor: "#282828",
-        alignItems: "center",
-        justifyContent: "space-between",
-    },
-    backIcon: {
-        marginTop: "10%",
-    },
-    headerText: {
-        color: "#fff",
-        fontSize: 20,
-        fontWeight: "bold",
-        textAlign: "center",
-        flex: 1,
-    },
+
     conversationsList: {
         padding: 10,
     },

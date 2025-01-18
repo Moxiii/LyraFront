@@ -4,6 +4,7 @@ import { useUserData } from "../../../utils/Context/UserContext";
 import {useTodoContext} from "../../../utils/Context/TodoContext"
 import globalStyles from "../../../utils/Styles/global";
 import {theme} from "../../../utils/Styles/theme"
+import Header from "../../Components/Header";
 
 const backgroundImage = require("../../../assets/img/Splash.jpg");
 export default function Todo() {
@@ -104,8 +105,8 @@ const handleEditTask =  (task) =>{
             resizeMode="cover"
             style={styles.root}
         >
-        <View style={{ padding: 20 }}>
-            <Text style={styles.text}>Hello from Todo</Text>
+        <View>
+            <Header name={"Todo"}/>
             <TextInput
                 placeholder="Titre de la todo"
                 value={todoTitle}

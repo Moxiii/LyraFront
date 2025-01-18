@@ -1,13 +1,20 @@
 import {StyleSheet} from "react-native";
+import {theme} from "./theme"
 //Todo refactor all styles to found redundant styles and apply them with globalStyles
 const globalStyles = StyleSheet.create({
+    title:{
+        color: theme.colors.text,
+        fontSize:theme.fontSize.large,
+        justifyContent:"flex-start",
+        alignItems:"center",
+        paddingVertical:20,
+    },
     backgroundImage: {
         flex: 1,
         resizeMode: "cover",
     },
     root: {
         flex: 1,
-        justifyContent: "center",
         fontFamily: "Poppins",
     },
     profilepic: {
