@@ -103,7 +103,7 @@ export default function Home() {
                           key={todo.id}
                           onPress={() => {
                             setSelectedTodo(todo);
-                            setShowTitles(false); // Bascule vers l'affichage des tâches
+                            setShowTitles(false);
                           }}
                           style={styles.card}
                       >

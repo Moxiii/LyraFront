@@ -2,7 +2,7 @@ import {fetchWithAuth} from "./fetchWithAuth";
 
 
 export const fetchUserTodo =async () =>{
-    const responseTodo = await fetchWithAuth("api/todo/get",{
+    const responseTodo = await fetchWithAuth("todo/get",{
         method : "GET",
     });
     if(!responseTodo.ok){
