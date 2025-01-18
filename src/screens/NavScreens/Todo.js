@@ -2,7 +2,8 @@ import React, {useEffect, useState} from "react";
 import { View, Text, Alert, TextInput, Button, TouchableOpacity, StyleSheet , ImageBackground } from "react-native";
 import { useUserData } from "../../../utils/Context/UserContext";
 import {useTodoContext} from "../../../utils/Context/TodoContext"
-
+import globalStyles from "../../../utils/Styles/global";
+import {theme} from "../../../utils/Styles/theme"
 
 const backgroundImage = require("../../../assets/img/Splash.jpg");
 export default function Todo() {
@@ -104,7 +105,7 @@ const handleEditTask =  (task) =>{
             style={styles.root}
         >
         <View style={{ padding: 20 }}>
-            <Text>Hello from Todo</Text>
+            <Text style={styles.text}>Hello from Todo</Text>
             <TextInput
                 placeholder="Titre de la todo"
                 value={todoTitle}
@@ -202,6 +203,10 @@ const styles = StyleSheet.create({
         color: "white" ,
         borderColor:"white",
     },
+    text:{
+        color:theme.colors.text,
+        fontSize:theme.fontSize.normal
+    },
     card: {
         padding: 10,
         marginVertical: 5,
@@ -213,6 +218,7 @@ const styles = StyleSheet.create({
     cardTitle: {
         fontSize: 18,
         fontWeight: "bold",
+        color:theme.colors.text,
     },
     cardContent: {
         color:"white",

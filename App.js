@@ -5,7 +5,7 @@ import { useFonts } from "expo-font";
 import React ,{useState , useEffect}from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AuthenticatedRoutes, UnauthenticatedRoutes} from "./routes/homeStack";
-import globalStyles from "./utils/styles";
+import globalStyles from "./utils/Styles/global";
 
 import {View} from "react-native";
 const Stack = createStackNavigator();

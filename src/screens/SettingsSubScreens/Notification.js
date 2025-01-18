@@ -2,7 +2,7 @@ import {useNavigation} from "@react-navigation/native";
 import {View, Text, TouchableOpacity, ImageBackground} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 import backgroundImage from "../../../assets/img/fondsettings.png";
-import globalStyles from "../../../utils/styles";
+import globalStyles from "../../../utils/Styles/global";
 
 export default function Notification(){
     const navigation = useNavigation()

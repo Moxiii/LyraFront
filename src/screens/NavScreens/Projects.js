@@ -2,7 +2,7 @@ import React from "react";
 import { View , ImageBackground} from "react-native";
 import {useUserData} from "../../../utils/Context/UserContext";
 import backgroundImage from "../../../assets/img/Splash.jpg";
-import globalStyles from "../../../utils/styles";
+import globalStyles from "../../../utils/Styles/global";
 export default function Projects() {
   const {userProject} = useUserData();
 

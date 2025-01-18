@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {fetchWithAuth} from "./fetchWithAuth";
 
-export const uploadProfilePic = async (file , setUserData) => {
+export const uploadProfilePic = async (file) => {
     if (!file) {
         throw new Error('Aucun fichier sélectionné.');
     }
@@ -16,18 +16,11 @@ export const uploadProfilePic = async (file , setUserData) => {
             });
         if (!response.ok) {
             const errorMessage = await response.text();
-            console.error('Erreur lors de l\'upload :', errorMessage); // Affichez le message d'erreur du serveur
+            console.error('Erreur lors de l\'upload :', errorMessage);
             throw new Error(`Erreur lors de l'envoi : ${errorMessage}`);
         }
 
         const result = await response.json();
-        if (result.profileImage) {
-            setUserData((prevUserData) => ({
-                ...prevUserData,
-                profilePic: `data:image/png;base64,${result.profileImage}`,
-            }));
-        }
-        console.log('Image uploadée avec succès :', result);
         return result;
     } catch (error) {
         console.error('Erreur lors de l\'upload de l\'image :', error.message);

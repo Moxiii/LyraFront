@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import {fetchUserData} from "../Fetchs/userFetchs";
+import {fetchUserData, uploadProfilePic} from "../Fetchs/userFetchs";
 import {fetchUserProject} from "../Fetchs/projetFetch";
 import {fetchUserTodo} from "../Fetchs/todoFetchs";
 import {TodoProvider} from "./TodoContext";
@@ -10,6 +10,20 @@ export function UserProvider({ children }) {
     const [userData, setUserData] = useState(null);
     const [userTodos, setUserTodos] = useState([]);
     const [userProjects, setUserProjects] = useState([]);
+
+    const addProfilePicToContext = async (file) =>{
+        try{
+            const response = await uploadProfilePic(file);
+            console.log('Réponse OK :', response.ok);
+            if(response.ok){
+                console.log("Image profile mise à jour", response.profileImage);
+                setUserData((prevUserData) => ({
+                    ...prevUserData,
+                    profileImage: `data:image/png;base64,${response.profileImage}`,
+                }));
+            }
+        }catch (error){throw new Error(error)}
+    }
     useEffect(() => {
         const loadUserData = async () => {
             try {
@@ -57,6 +71,7 @@ export function UserProvider({ children }) {
                 setUserData,
                 setUserTodos,
                 setUserProjects ,
+                addProfilePicToContext,
         }}
         >
 

@@ -8,7 +8,6 @@ import {
     ImageBackground,
     Alert,
 } from "react-native";
-import { uploadProfilePic } from "../../../utils/Fetchs/userFetchs";
 import { launchImageLibrary } from "react-native-image-picker";
 import {Platform} from "react-native";
 import {useUserData} from "../../../utils/Context/UserContext";
@@ -18,7 +17,7 @@ import backgroundImage from "../../../assets/img/Splash.jpg";
 
 export default function Account() {
     const navigation = useNavigation()
-    const { setUserData } = useUserData();
+    const { addProfilePicToContext } = useUserData();
     const [file, setFile] = useState(null);
     const [previewUri, setPreviewUri] = useState(null);
     const handlePickImage = async () => {
@@ -52,24 +51,14 @@ export default function Account() {
             }
         }
     };
-    useEffect(() => {
-        if (file) {
-            console.log("file:", file);
-        }
-    }, [file]);
+
     const handleSubmitPic = async () => {
         if (!file) {
             Alert.alert("Erreur", "Veuillez sélectionner un fichier.");
             return;
         }
         try {
-
-            const response = await uploadProfilePic(file ,setUserData);
-            if (response.ok) {
-                Alert.alert("Succès", "Image uploadée avec succès!");
-            } else {
-                Alert.alert("Erreur", "Échec de l'envoi de l'image.");
-            }
+            await addProfilePicToContext(file);
         } catch (error) {
             Alert.alert("Erreur", "Une erreur est survenue lors de l'envoi.");
             console.error("Erreur :", error);
