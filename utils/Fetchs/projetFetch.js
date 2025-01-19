@@ -9,7 +9,6 @@ export const fetchUserProject =async () =>{
 };
 
  export const addUserProject = async (addedProject) =>{
-
      const add = await fetchWithAuth("project/add" , {
          method:"POST",
          headers: {
@@ -44,12 +43,12 @@ export const deleteUserProject = async (projectID) =>{
      const del = await fetchWithAuth(`project/delete/${projectID}`,{
          method:"DELETE"
      })
-    handleResponse(del)
+   return  handleResponse(del)
 }
 export const uploadProjectPicture = async (file , projectID) =>{
      const formData = new FormData();
      formData.append("file" , file)
-     const response = await fetchWithAuth(`project/upload/picture/${projectID}`,{
+     const response = await fetchWithAuth(`/upload/project/picture/${projectID}`,{
          method:"POST",
          body:formData
     })

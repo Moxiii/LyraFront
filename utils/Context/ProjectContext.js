@@ -11,7 +11,7 @@ export function ProjectProvider ({children}){
     const addProjectToContext = async (project)=>{
         try{
             const response = await addUserProject(project);
-            if(response.ok){
+            if(response.name){
                 setUserProjects((prevProjects)=>
                     [...prevProjects,
                         {
@@ -44,19 +44,21 @@ export function ProjectProvider ({children}){
     const updateProjectToContext = async (projectID, updatedProject)=>{
         try{
             const response = await updateUserProject(projectID,updatedProject)
-            if(response.ok){
-                setUserProjects((prevProjects)=>
-                    [...prevProjects,
-                        {
-                            id:response.id ,
-                            name:response.name ,
-                            description:response.description || "",
-                            projectPicture:response.projectPicture || null ,
-                            links:[response.links] || [] ,
-                            users:[response.users] || []
-                        }
-                    ]
-                )
+            if(response.name){
+                setUserProjects((prevProjects) =>
+                    prevProjects.map((project) =>
+                        project.id === projectID
+                            ? {
+                                ...project,
+                                name: response.name,
+                                description: response.description || "",
+                                projectPicture: response.projectPicture || null,
+                                links: response.links || [],
+                                users: response.users || []
+                            }
+                            : project
+                    )
+                );
             }
         }catch(error){throw new Error(error)}
     }

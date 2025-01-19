@@ -6,7 +6,6 @@ import {
   Alert,
   TouchableOpacity,
   FlatList,
-  Image,
   StyleSheet,
   TextInput, Button, Modal
 } from "react-native";
@@ -16,8 +15,6 @@ import backgroundImage from "../../../assets/img/Splash.jpg";
 import globalStyles from "../../../utils/Styles/global";
 import {useNavigation} from "@react-navigation/native";
 import Header from "../../Components/Header";
-import GeorgesImage from "../../../assets/img/georgesinvisible.png";
-import {open} from "react-native-file-viewer";
 
 
 export default function Projects() {
@@ -28,7 +25,6 @@ export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [editingProject , setEditingProject] = useState(null)
   const [projectName, setProjectName] = useState("");
-console.log("raw Project: ",userProjects)
   useEffect(() => {
     if(selectedProject){
       const updatedProject = userProjects.find((project)=>project.id === selectedProject.id);
@@ -38,10 +34,23 @@ console.log("raw Project: ",userProjects)
   const handleAddOrUpdateProjects = async () => {
     try {
       if(editingProject){
-        const updatedProjects = {...editingProject , name: projectName}
+        const updatedProjects = {
+          ...editingProject ,
+          name: projectName || editingProject.name,
+          description: editingProject.description || "",
+          links: editingProject.links || [],
+          username: editingProject.username || [],
+        }
         await updateProjectToContext(editingProject.id , updatedProjects)
         setEditingProject(null)
-      }else{await addProjectToContext(projectName)}
+      }else{
+        const newProject = {
+          name: projectName,
+          description: "",
+          links: [],
+          username: [],
+        };
+        await addProjectToContext(newProject)}
       setProjectName("")
     } catch (error) {
       Alert.alert("Erreur", "Une erreur est survenue.");
