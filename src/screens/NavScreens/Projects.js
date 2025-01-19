@@ -72,7 +72,6 @@ const renderProject = ({ item })=>(
     >
       <View style={styles.projectDetails}>
         <Text style={styles.projectName}>{item.name}</Text>
-        <Text style={styles.projectDescription}>{item.description||"pas de description"}</Text>
       </View>
     </TouchableOpacity>
   </View>
@@ -109,8 +108,25 @@ const renderProject = ({ item })=>(
                   <Text style={styles.modalDescription}>
                     {selectedProject.description || "Pas de description"}
                   </Text>
+                  <Text style={styles.modalDescription}>
+                    {selectedProject.links.map((link, index)=> (
+                        <Text key={index}>
+                          • {link}
+                        </Text>
+                    )) || "Pas de links"}
+                  </Text>
+                  <Text style={styles.modalDescription}>
+                    {selectedProject.users.map((user , index)=>(
+                        <Text
+                            key={index}
+                        >
+                          • {user}
+                        </Text>
+                    ))}
+                  </Text>
                 </>
             )}
+            <Button title="update" onPress={editingProject} />
             <Button title="Fermer" onPress={closeModal} />
           </View>
         </View>

@@ -18,7 +18,7 @@ export function ProjectProvider ({children}){
                             id:response.id ,
                             name:response.name ,
                             description:response.description || "",
-                            projectPicture:response.projectPicture || null ,
+                            projectPicture: `data:image/png;base64,${response.projectPicture}` || null ,
                             links:[response.links] || [] ,
                             users:[response.users] || []
                         }
@@ -52,7 +52,7 @@ export function ProjectProvider ({children}){
                                 ...project,
                                 name: response.name,
                                 description: response.description || "",
-                                projectPicture: response.projectPicture || null,
+                                projectPicture: `data:image/png;base64,${response.projectPicture}` || null,
                                 links: response.links || [],
                                 users: response.users || []
                             }

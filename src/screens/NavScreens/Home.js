@@ -142,7 +142,17 @@ export default function Home() {
                           }}
                           style={styles.card}
                       >
-                        <Text style={styles.cardTitle}>{projet.name}</Text>
+                        {
+                          projet.projectPicture ?
+                              (
+                              <Image source={projet.projectPicture} style={styles.profilepic}/>
+                          )
+                          :
+                          (
+                              <Text style={styles.cardTitle}>{projet.name}</Text>
+                          )
+                        }
+
                       </TouchableOpacity>
                   ))}
                 </>
