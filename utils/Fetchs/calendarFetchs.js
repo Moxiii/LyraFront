@@ -24,18 +24,7 @@ export const addUserCalendar = async ( id) => {
     const result = await addCalendar.json();
     return result
 }
-export const updateCalendar = async ( updatedCalendar) =>{
-    const updateCalendar = await fetchWithAuth(`calendar/update/` , {
-        method:"put",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body:JSON.stringify(updatedCalendar)
-    })
-    if(!updateCalendar.ok){throw new Error("Failed to update Calendar")}
-    const result = await updateCalendar.json()
-    return result
-}
+
 export const deleteUserCalendar = async ()=>{
     const deleteCalendar = await fetchWithAuth(`calendar/delete/`,{
         method:"DELETE"

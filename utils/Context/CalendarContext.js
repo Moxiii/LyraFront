@@ -4,9 +4,7 @@ import {
     deleteEventToCalendar,
     updateCalendarEvent,
     addUserCalendar,
-    updateCalendar,
     deleteUserCalendar,
-    fetchUserCalendar
 } from "../Fetchs/calendarFetchs";
 import {useUserData} from "./UserContext";
 const CalendarContext = createContext();
@@ -67,22 +65,6 @@ export function CalendarProvider ({children}){
         catch (error){throw new Error(error)}
     }
 
-    const updateCalendarToContext = async ( updatedCalendar)=>{
-        try {
-            const response = await updateCalendar( updatedCalendar);
-            setUserCalendar((prevCalendar) =>
-                prevCalendar.map((calendar)=>
-                    calendar.id === calendarID
-                        ?
-                        {...calendar ,
-                            ...(response.events && { events: response.event }),
-                        }
-                        : calendar
-                )
-            )
-        }
-        catch (error){throw new Error(error)}
-    }
     const updateCalendarEventToContext = async ( calendarID , eventID , updatedEvent)=>{
         try {
             const response = await updateCalendarEvent( eventID , updatedEvent);
@@ -112,7 +94,6 @@ export function CalendarProvider ({children}){
                 deleteEventToCalendarToContext,
                 deleteCalendarToContext,
                 updateCalendarEventToContext,
-                updateCalendarToContext,
             }}>
             {children}
         </CalendarContext.Provider>
