@@ -1,16 +1,12 @@
 import {fetchWithAuth} from "./fetchWithAuth";
-
+import {handleResponse} from "../handleReponse";
 
 export const fetchUserCalendar =async () =>{
     const responseCalendar = await fetchWithAuth("calendar/get",{
         method : "GET",
     });
-    if(!responseCalendar.ok){
-        throw new Error("Failed to fetch User")
-    }
-    return await responseCalendar.json();
+    return handleResponse(responseCalendar)
 };
-
 
 export const addUserCalendar = async ( id) => {
     const addCalendar = await fetchWithAuth("calendar/add" , {
@@ -20,17 +16,14 @@ export const addUserCalendar = async ( id) => {
         },
         body:JSON.stringify({id})
     })
-    if(!addCalendar.ok){throw new Error("Failed to add Calendar");}
-    const result = await addCalendar.json();
-    return result
+   return handleResponse(addCalendar)
 }
 
 export const deleteUserCalendar = async ()=>{
     const deleteCalendar = await fetchWithAuth(`calendar/delete/`,{
         method:"DELETE"
     })
-    if(!deleteCalendar.ok){throw new Error("Failed to delete Calendar")}
-    return deleteCalendar
+   return handleResponse(deleteCalendar)
 }
 export const addEventToCalendar = async (events) => {
     const addEvents = await fetchWithAuth(`calendar/event/add`, {
@@ -40,15 +33,13 @@ export const addEventToCalendar = async (events) => {
         },
         body:JSON.stringify([events])
     })
-    if(!addEvents.ok){throw new Error("Failed to add Calendar");}
-    return await addEvents.json()
+    return handleResponse(addEvents)
 }
 export const deleteEventToCalendar = async (eventID) =>{
     const deleteEvent = await fetchWithAuth(`calendar/event/${eventID}` , {
         method:"delete"
     })
-    if(!deleteEvent.ok){throw new Error("failed to delete Calendar")}
-    return deleteEvent;
+    return handleResponse(deleteEvent)
 }
 
 export const updateCalendarEvent = async ( eventID , updatedEvent) =>{
@@ -59,6 +50,5 @@ export const updateCalendarEvent = async ( eventID , updatedEvent) =>{
         },
         body:JSON.stringify(updatedEvent)
     })
-    if(!updateCalendarEvent.ok){throw new Error("Failed to update Calendar Event")}
-    return await updateCalendarEvent.json()
+   return handleResponse(updateCalendarEvent)
 }

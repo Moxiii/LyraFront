@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {fetchWithAuth} from "./fetchWithAuth";
+import {handleResponse} from "../handleReponse";
 
 export const uploadProfilePic = async (file) => {
     if (!file) {
@@ -9,7 +10,7 @@ export const uploadProfilePic = async (file) => {
     formData.append('file', file);
     try {
         const response = await fetchWithAuth(
-            'user/upload/profilPic',
+            'user/upload/profil/picture',
             {
                 method: "POST",
                 body: formData,
@@ -19,22 +20,17 @@ export const uploadProfilePic = async (file) => {
             console.error('Erreur lors de l\'upload :', errorMessage);
             throw new Error(`Erreur lors de l'envoi : ${errorMessage}`);
         }
-
-        const result = await response.json();
-        return result;
+        return await response.json();
     } catch (error) {
         console.error('Erreur lors de l\'upload de l\'image :', error.message);
         throw error;
     }
 }
 export const fetchUserData =async () =>{
-    const responseUserData = await fetchWithAuth("user/me",{
+    const me = await fetchWithAuth("user/me",{
       method : "GET",
     });
-    if(!responseUserData.ok){
-      throw new Error("Failed to fetch User")
-    }
-    return await responseUserData.json();
+   return handleResponse(me)
   };
 export const handleLogout = async () => {
   try {

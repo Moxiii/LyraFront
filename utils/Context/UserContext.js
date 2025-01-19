@@ -12,20 +12,21 @@ export function UserProvider({ children }) {
     const [userData, setUserData] = useState(null);
     const [userTodos, setUserTodos] = useState([]);
     const [userProjects, setUserProjects] = useState([]);
-
-    const addProfilePicToContext = async (file) =>{
-        try{
+    const addProfilePicToContext = async (file) => {
+        try {
             const response = await uploadProfilePic(file);
-            console.log('Réponse OK :', response.ok);
-            if(response.ok){
-                console.log("Image profile mise à jour", response.profileImage);
+            if (response.profileImage) {
                 setUserData((prevUserData) => ({
                     ...prevUserData,
                     profileImage: `data:image/png;base64,${response.profileImage}`,
                 }));
+            } else {
+                console.error("Erreur côté serveur :", response);
             }
-        }catch (error){throw new Error(error)}
-    }
+        } catch (error) {
+            console.error("Erreur lors de l'upload de l'image :", error);
+        }
+    };
     useEffect(() => {
         const loadUserData = async () => {
             try {

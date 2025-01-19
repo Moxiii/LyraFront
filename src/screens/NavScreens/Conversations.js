@@ -16,7 +16,7 @@ const Conversations = ({ navigation }) => {
         {
             id: "Websocket",
             name: "Connect to WebSocket",
-            profileImage: `${userData.profileImage}`,
+            profileImage: `${userData.profileImage}` ? {uri:`${userData.profileImage}`} : `${GeorgesImage}`,
             lastMessage: "Connexion établie.",
             lastMessageTime: "10:33 AM",
         },

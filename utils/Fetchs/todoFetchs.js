@@ -1,19 +1,15 @@
 import {fetchWithAuth} from "./fetchWithAuth";
-
+import {handleResponse} from "../handleReponse";
 
 export const fetchUserTodo =async () =>{
-    const responseTodo = await fetchWithAuth("todo/get",{
+    const getTodos = await fetchWithAuth("todo/get",{
         method : "GET",
     });
-    if(!responseTodo.ok){
-        throw new Error("Failed to fetch User")
-    }
-    return await responseTodo.json();
+    return handleResponse(getTodos)
 };
 export const getTodoById = async (todoID) =>{
-    const getTodoByID = await fetchWithAuth(`todo/${todoID}`)
-    if(!getTodoByID().ok){throw new Error("Failed to retrieve ToDo w/ " +  todoID +  "ID");}
-    return getTodoByID.json()
+    const getByID = await fetchWithAuth(`todo/${todoID}`)
+    return handleResponse(getByID)
 }
 
 export const addUserTodo = async ( title) => {
@@ -24,9 +20,7 @@ export const addUserTodo = async ( title) => {
         },
         body:JSON.stringify({title})
     })
-    if(!addTodo.ok){throw new Error("Failed to add ToDo");}
-    const result = await addTodo.json();
-    return result
+    return handleResponse(addTodo)
 }
 export const updateTodo = async (todoID, updatedTodo) =>{
     const updateTodo = await fetchWithAuth(`todo/update/${todoID}` , {
@@ -36,16 +30,13 @@ export const updateTodo = async (todoID, updatedTodo) =>{
         },
         body:JSON.stringify(updatedTodo)
     })
-    if(!updateTodo.ok){throw new Error("Failed to update Todo")}
-    const result = await updateTodo.json()
-    return result
+    return handleResponse(updateTodo)
 }
 export const deleteUserTodo = async (todoID)=>{
-    const deleteTodo = await fetchWithAuth(`todo/delete/${todoID}`,{
+    const del = await fetchWithAuth(`todo/delete/${todoID}`,{
         method:"DELETE"
     })
-    if(!deleteTodo.ok){throw new Error("Failed to delete Todo")}
-    return deleteTodo
+    return handleResponse(del);
 }
 export const addTaskToTodo = async ( todoID , tasks) => {
     const addTasks = await fetchWithAuth(`todo/add/task/${todoID}`, {
@@ -55,15 +46,13 @@ export const addTaskToTodo = async ( todoID , tasks) => {
         },
         body:JSON.stringify([tasks])
     })
-    if(!addTasks.ok){throw new Error("Failed to add ToDo");}
-    return await addTasks.json()
+    return handleResponse(addTasks)
 }
-export const deleteTasktoTodo = async (todoID , taskID) =>{
+export const deleteTaskToTodo = async (todoID , taskID) =>{
     const deleteTask = await fetchWithAuth(`todo/delete/task/${todoID}/${taskID}` , {
         method:"delete"
     })
-    if(!deleteTask.ok){throw new Error("failed to delete todo")}
-    return deleteTask;
+    return handleResponse(deleteTask)
 }
 
 export const updateTodoTask = async (todoID , taskID , updatedTask) =>{
@@ -74,6 +63,5 @@ export const updateTodoTask = async (todoID , taskID , updatedTask) =>{
         },
         body:JSON.stringify(updatedTask)
     })
-    if(!updateTodoTask.ok){throw new Error("Failed to update Todo task")}
-    return await updateTodoTask.json()
+   return handleResponse(updateTodoTask)
 }
