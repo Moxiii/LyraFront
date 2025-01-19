@@ -2,7 +2,7 @@ import React, { createContext, useContext } from "react";
 import {
     addTaskToTodo,
     addUserTodo,
-    deleteTasktoTodo,
+    deleteTaskToTodo,
     deleteUserTodo,
     updateTodo,
     updateTodoTask
@@ -13,7 +13,7 @@ export function TodoProvider ({children}){
     const {userTodos,setUserTodos} = useUserData()
     const deleteTaskToTodoToContext = async (todoID ,taskID)=>{
         try{
-            const response = await deleteTasktoTodo(todoID , taskID)
+            const response = await deleteTaskToTodo(todoID , taskID)
             if(response.ok){
                 setUserTodos((prevTodos) =>
                     prevTodos.map((todo) =>
