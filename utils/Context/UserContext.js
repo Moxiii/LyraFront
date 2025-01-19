@@ -4,6 +4,8 @@ import {fetchUserProject} from "../Fetchs/projetFetch";
 import {fetchUserTodo} from "../Fetchs/todoFetchs";
 import {TodoProvider} from "./TodoContext";
 import {ProjectProvider} from "./ProjectContext";
+import {CalendarProvider} from "./CalendarContext";
+
 const UserContext = createContext();
 const PPplaceholder = require("../../assets/img/ppplaceholder.png");
 export function UserProvider({ children }) {
@@ -76,7 +78,11 @@ export function UserProvider({ children }) {
         >
 
             <TodoProvider>
-               <ProjectProvider>{children}</ProjectProvider>
+               <ProjectProvider>
+                   <CalendarProvider>
+                   {children}
+                   </CalendarProvider>
+               </ProjectProvider>
             </TodoProvider>
 
         </UserContext.Provider>
