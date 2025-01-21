@@ -1,16 +1,9 @@
-import React ,{ useState} from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ImageBackground,
-  TouchableOpacity,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
+import React, {useState} from "react";
+import {Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {useNavigation} from "@react-navigation/native";
+import {Ionicons} from "@expo/vector-icons";
+import {ArcElement, Chart as ChartJS, Legend, Tooltip} from "chart.js";
+import {Doughnut} from "react-chartjs-2";
 import {useUserData} from "../../../utils/Context/UserContext";
 
 ChartJS.register(ArcElement, Tooltip, Legend);

@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
-import { View, Text, Alert, TextInput, Button, TouchableOpacity, StyleSheet , ImageBackground } from "react-native";
-import { useUserData } from "../../../utils/Context/UserContext";
+import {Alert, Button, ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {useUserData} from "../../../utils/Context/UserContext";
 import {useTodoContext} from "../../../utils/Context/TodoContext"
-import globalStyles from "../../../utils/Styles/global";
 import {theme} from "../../../utils/Styles/theme"
 import Header from "../../Components/Header";
 

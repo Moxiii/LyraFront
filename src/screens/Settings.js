@@ -1,10 +1,11 @@
 import React from "react";
-import {View, StyleSheet, ImageBackground, Text, Image, TouchableOpacity} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-const backgroundImage = require("../../assets/img/fondsettings.png");
-import { handleLogout} from "../../utils/Fetchs/userFetchs";
+import {Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Ionicons} from "@expo/vector-icons";
+import {handleLogout} from "../../utils/Fetchs/userFetchs";
 import {useUserData} from "../../utils/Context/UserContext";
 import {useNavigation} from "@react-navigation/native";
+
+const backgroundImage = require("../../assets/img/fondsettings.png");
 const Settings = () => {
   const navigation = useNavigation();
   const {userData} = useUserData();

@@ -1,12 +1,7 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import {StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
+import {LinearGradient} from "expo-linear-gradient";
+
 export const GradientButtonThin = ({ label, onPress }) => (
   <View>
     <LinearGradient

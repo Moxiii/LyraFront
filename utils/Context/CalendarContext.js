@@ -1,12 +1,13 @@
-import React, { createContext, useContext } from "react";
+import React, {createContext, useContext} from "react";
 import {
     addEventToCalendar,
-    deleteEventToCalendar,
-    updateCalendarEvent,
     addUserCalendar,
+    deleteEventToCalendar,
     deleteUserCalendar,
+    updateCalendarEvent,
 } from "../Fetchs/calendarFetchs";
 import {useUserData} from "./UserContext";
+
 const CalendarContext = createContext();
 
 export function CalendarProvider ({children}){

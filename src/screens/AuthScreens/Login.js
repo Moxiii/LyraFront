@@ -1,19 +1,8 @@
-import React, { useState} from "react";
-import { StatusBar } from "expo-status-bar";
-import { LinearGradient } from "expo-linear-gradient";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Image,
-  TouchableOpacity,
-  Dimensions,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import React, {useState} from "react";
+import {StatusBar} from "expo-status-bar";
+import {LinearGradient} from "expo-linear-gradient";
+import {Dimensions, Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
+import {useNavigation} from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -26,22 +15,12 @@ export default function Login({ onLoginSuccess }) {
     navigation.navigate("Register");
   };
 
-  const goToHomePage = () => {
-    navigation.navigate("Main");
-  };
-
   const handleClick = async (e) => {
     e.preventDefault();
-
-    // Vérifier si loginId est un e-mail
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isEmail = emailRegex.test(loginId);
-
-    // Vérifier si loginId est un numéro de téléphone français
     const phoneRegex = /^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/;
     const isPhone = phoneRegex.test(loginId);
-
-    // Créer l'objet JSON en fonction du type de loginId
     let jsonBody;
     if (isEmail) {
       jsonBody = JSON.stringify({ email: loginId, password: password });
@@ -69,8 +48,6 @@ export default function Login({ onLoginSuccess }) {
   };
 
   const invisibleGeorgesImage = require("../../../assets/img/georgesinvisible.png");
-
-  // Get screen dimensions
   const { width, height } = Dimensions.get("window");
 
   return (

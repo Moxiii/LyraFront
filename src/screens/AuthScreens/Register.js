@@ -1,14 +1,8 @@
-import React, { useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import { LinearGradient } from "expo-linear-gradient";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import React, {useState} from "react";
+import {StatusBar} from "expo-status-bar";
+import {LinearGradient} from "expo-linear-gradient";
+import {Image, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {useNavigation} from "@react-navigation/native";
 
 export default function Login() {
   const navigation = useNavigation();

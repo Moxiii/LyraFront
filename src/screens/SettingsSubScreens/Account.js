@@ -1,15 +1,6 @@
-import React, {useEffect, useState} from "react";
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    Image,
-    StyleSheet,
-    ImageBackground,
-    Alert,
-} from "react-native";
-import { launchImageLibrary } from "react-native-image-picker";
-import {Platform} from "react-native";
+import React, {useState} from "react";
+import {Alert, Image, ImageBackground, Platform, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {launchImageLibrary} from "react-native-image-picker";
 import {useUserData} from "../../../utils/Context/UserContext";
 import {Ionicons} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";

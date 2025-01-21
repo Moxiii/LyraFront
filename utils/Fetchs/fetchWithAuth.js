@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { refreshToken , handleLogout } from "./userFetchs";
+import {handleLogout, refreshToken} from "./userFetchs";
 
 export const fetchWithAuth = async (url, options = {}, onError) => {
     const BASE_URL = "http://localhost:8080/api/"

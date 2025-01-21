@@ -1,16 +1,8 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ImageBackground,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import {Dimensions, Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {useNavigation} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { GoogleLogin } from "@react-oauth/google";
+import {GoogleLogin} from "@react-oauth/google";
 
 export default function Splash() {
   const backgroundImage = require("../../../assets/img/Splash.jpg");

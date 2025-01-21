@@ -1,18 +1,10 @@
-import React, { useRef, useState } from "react";
-import { sendMessageToMistral } from "../../utils/mistral";
+import React, {useRef, useState} from "react";
+import {sendMessageToMistral} from "../../utils/mistral";
 import WebSocketComponent from "../Components/WebSocketComponent";
-import {
-    View,
-    Text,
-    TextInput,
-    FlatList,
-    StyleSheet,
-    TouchableOpacity,
-    Image,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import {FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
+import {Ionicons} from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {useNavigation} from "@react-navigation/native";
 
 const Chat = ({ route }) => {
     const { conversationID, conversationName, userData } = route.params;

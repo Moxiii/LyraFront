@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { FlatList, TouchableOpacity, View, StyleSheet, Image, Text } from "react-native";
-import { useUserData } from "../../../utils/Context/UserContext";
+import {useState} from "react";
+import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {useUserData} from "../../../utils/Context/UserContext";
 import GeorgesImage from "../../../assets/img/georgesinvisible.png";
 import Header from "../../Components/Header";
+
 const Conversations = ({ navigation }) => {
     const { userData } = useUserData();
     const [conversations] = useState([

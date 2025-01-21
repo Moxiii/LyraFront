@@ -1,6 +1,6 @@
-import React, { createContext, useContext } from "react";
+import React, {createContext, useContext} from "react";
 import {useUserData} from "./UserContext";
-import {addUserProject , updateUserProject , deleteUserProject} from "../Fetchs/projetFetch";
+import {addUserProject, deleteUserProject, updateUserProject} from "../Fetchs/projetFetch";
 
 
 const ProjectContext = createContext();
