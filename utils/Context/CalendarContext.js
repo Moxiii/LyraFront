@@ -1,9 +1,7 @@
 import React, {createContext, useContext} from "react";
 import {
     addEventToCalendar,
-    addUserCalendar,
     deleteEventToCalendar,
-    deleteUserCalendar,
     updateCalendarEvent,
 } from "../Fetchs/calendarFetchs";
 import {useUserData} from "./UserContext";
@@ -27,28 +25,6 @@ export function CalendarProvider ({children}){
             throw new Error("Fail to delete Event")
         }
         catch (error){throw new Error(error)}
-    }
-    const deleteCalendarToContext = async (calendarID) => {
-        try {
-            const response = await deleteUserCalendar();
-            if (response.ok) {
-                setUserCalendar((prevCalendar) =>
-                    prevCalendar.filter((calendar) => calendar.id !== calendarID)
-                );
-            }
-        } catch (error) {
-            throw new Error(error);
-        }
-    };
-    const addCalendarToContext = async ()=>{
-        try{
-            const response = await addUserCalendar()
-            setUserCalendar((prevCalendar)=>[
-                    ...prevCalendar,
-                    {id:response.id , events:response.events || [] }
-                ]
-            )
-        }catch (error){throw new Error(error)}
     }
     const addEventToCalendarToContext = async(calendarID , newEvent)=>{
         try {
@@ -90,10 +66,8 @@ export function CalendarProvider ({children}){
     return(
         <CalendarContext.Provider
             value={{
-                addCalendarToContext,
                 addEventToCalendarToContext,
                 deleteEventToCalendarToContext,
-                deleteCalendarToContext,
                 updateCalendarEventToContext,
             }}>
             {children}

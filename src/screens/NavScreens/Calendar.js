@@ -1,75 +1,87 @@
 import React, {useState} from "react";
-import {Text, View} from "react-native";
-import {Calendar, LocaleConfig} from "react-native-calendars";
+import {Text, View, Dimensions, TouchableOpacity,StyleSheet ,Button} from "react-native";
+import { LocaleConfig, Agenda } from "react-native-calendars";
+import {useUserData} from "../../../utils/Context/UserContext";
+import {useCalendarContext} from "../../../utils/Context/CalendarContext";
 
-LocaleConfig.locales["fr"] = {
-    monthNames: [
-        "Janvier",
-        "Février",
-        "Mars",
-        "Avril",
-        "Mai",
-        "Juin",
-        "Juillet",
-        "Août",
-        "Septembre",
-        "Octobre",
-        "Novembre",
-        "Décembre",
-    ],
-    monthNamesShort: [
-        "Janv.",
-        "Févr.",
-        "Mars",
-        "Avril",
-        "Mai",
-        "Juin",
-        "Juil.",
-        "Août",
-        "Sept.",
-        "Oct.",
-        "Nov.",
-        "Déc.",
-    ],
-    dayNames: [
-        "Dimanche",
-        "Lundi",
-        "Mardi",
-        "Mercredi",
-        "Jeudi",
-        "Vendredi",
-        "Samedi",
-    ],
-    dayNamesShort: ["Dim.", "Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam."],
-    today: "Aujourd'hui",
-};
-LocaleConfig.defaultLocale = "fr";
+const Calendrier = () => {
 
-export default function Calendrier() {
     const [selectedDate, setSelectedDate] = useState("");
-const events = {
-    "2025-01-15": { marked: true, dotColor: "red" },
-    "2025-01-16": { marked: true, dotColor: "blue" },
-    "2025-01-20": { marked: true, dotColor: "green" },
-}
+    const [view, setView] = useState("week")
+    const [currentDate, setCurrentDay] = useState(new Date())
+    const [events, setEvents] = useState({
+        '2025-01-22': [{time: '08:00', title: 'Meeting'}, {time: '12:00', title: 'Lunch'}],
+        '2025-01-23': [{time: '09:00', title: 'Yoga Class'}],
+        '2025-01-24': [{time: '18:00', title: 'Dinner with friends'}],
+    })
+    const agendaItems = Object.keys(events).reduce((acc, date) => {
+        acc[date] = events[date].map((event) => ({
+            name: event.title,
+            time: event.time,
+        }));
+        return acc;
+    }, {});
+
     return (
-        <View>
-            <Calendar
-                markedDates={{
-                    ...events,
-                    [selectedDate]:{selected:true , marked:true , dotColor:"orange"}
-                }}
-                onDayPress={(day)=>setSelectedDate(day.dateString)}
+        <View style={styles.container}>
+            {/* View Switcher */}
+            <View style={styles.viewSwitcher}>
+                <Button title="Week" onPress={() => setView('week')} />
+                <Button title="Month" onPress={() => setView('month')} />
+                <Button title="Year" onPress={() => setView('year')} />
+            </View>
+
+            {/* Agenda Component */}
+            <Agenda
+                items={agendaItems}
+                selected={selectedDate}
+                onDayPress={(day) => setSelectedDate(day.dateString)}
+                renderItem={(item) => (
+                    <View style={styles.eventItem}>
+                        <Text style={styles.eventTime}>{item.time}</Text>
+                        <Text style={styles.eventTitle}>{item.name}</Text>
+                    </View>
+                )}
+                renderEmptyData={() => <Text style={styles.noEvents}>No events for this day</Text>}
                 theme={{
-                    selectedDayBackgroundColor: "orange",
-                    todayTextColor: "red",
-                    arrowColor: "orange",
+                    selectedDayBackgroundColor: 'blue',
+                    dotColor: 'blue',
+                    todayTextColor: 'red',
                 }}
             />
-            {setSelectedDate?(
-                <Text>Date Selectionnée : {selectedDate}</Text>
-            ):null
-            }
         </View>
     );
-}
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#f9f9f9',
+    },
+    viewSwitcher: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginBottom: 10,
+    },
+    eventItem: {
+        padding: 10,
+        backgroundColor: '#fff',
+        marginBottom: 10,
+        borderRadius: 5,
+        elevation: 2,
+    },
+    eventTime: {
+        fontWeight: 'bold',
+    },
+    eventTitle: {
+        fontSize: 16,
+    },
+    noEvents: {
+        fontSize: 16,
+        color: '#777',
+        textAlign: 'center',
+        marginTop: 20,
+    },
+})
+
+export default Calendrier;

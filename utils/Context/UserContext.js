@@ -2,6 +2,7 @@ import React, {createContext, useContext, useEffect, useState} from "react";
 import {fetchUserData, uploadProfilePic} from "../Fetchs/userFetchs";
 import {fetchUserProject} from "../Fetchs/projetFetch";
 import {fetchUserTodo} from "../Fetchs/todoFetchs";
+import {fetchUserCalendar} from "../Fetchs/calendarFetchs";
 import {TodoProvider} from "./TodoContext";
 import {ProjectProvider} from "./ProjectContext";
 import {CalendarProvider} from "./CalendarContext";
@@ -12,6 +13,8 @@ export function UserProvider({ children }) {
     const [userData, setUserData] = useState(null);
     const [userTodos, setUserTodos] = useState([]);
     const [userProjects, setUserProjects] = useState([]);
+    const [userCalendar,setUserCalendar]=useState([])
+
     const addProfilePicToContext = async (file) => {
         try {
             const response = await uploadProfilePic(file);
@@ -60,20 +63,31 @@ export function UserProvider({ children }) {
                 console.error("Failed to fetch user projects", error);
             }
         };
-
+        const loadUserCalendar = async ()=>{
+            try{
+                const calendar = await fetchUserCalendar();
+                setUserCalendar(calendar);
+            }catch (error) {
+                console.error("Failed to fetch user calendar", error);
+            }
+        }
         loadUserData();
         loadUserTodos();
         loadUserProjects();
+        loadUserCalendar()
     }, []);
 
     return (
         <UserContext.Provider
-            value={{ userData,
+            value={{
+                userData,
                 userTodos,
                 userProjects,
+                userCalendar,
                 setUserData,
                 setUserTodos,
                 setUserProjects ,
+                setUserCalendar,
                 addProfilePicToContext,
         }}
         >

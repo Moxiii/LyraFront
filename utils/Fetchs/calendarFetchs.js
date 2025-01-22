@@ -7,23 +7,19 @@ export const fetchUserCalendar =async () =>{
     });
     return handleResponse(responseCalendar)
 };
-
-export const addUserCalendar = async ( id) => {
-    const addCalendar = await fetchWithAuth("calendar/add" , {
-        method:"POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body:JSON.stringify({id})
-    })
-   return handleResponse(addCalendar)
+export const getEventByWeek = async (week) =>{
+    const getByWeek = await fetchWithAuth("/getByWeek",{
+        method: "GET",
+        body:week
+        })
+    return handleResponse(getEventByWeek())
 }
-
-export const deleteUserCalendar = async ()=>{
-    const deleteCalendar = await fetchWithAuth(`calendar/delete/`,{
-        method:"DELETE"
-    })
-   return handleResponse(deleteCalendar)
+export const getEventByMonth = async (month) =>{
+    const getByWeek = await fetchWithAuth("/getByMonth",{
+        method: "GET",
+        body:month
+        })
+    return handleResponse(getByWeek)
 }
 export const addEventToCalendar = async (events) => {
     const addEvents = await fetchWithAuth(`calendar/event/add`, {
