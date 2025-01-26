@@ -1,15 +1,16 @@
 import {fetchWithAuth} from "./fetchWithAuth";
 import {handleResponse} from "../handleReponse";
+const BASE_URL = "project/"
 
 export const fetchUserProject =async () =>{
-    const get = await fetchWithAuth("project/get",{
+    const get = await fetchWithAuth(BASE_URL+"get",{
         method : "GET",
     });
   return handleResponse(get);
 };
 
  export const addUserProject = async (addedProject) =>{
-     const add = await fetchWithAuth("project/add" , {
+     const add = await fetchWithAuth(BASE_URL+"add" , {
          method:"POST",
          headers: {
              "Content-Type": "application/json",
@@ -25,7 +26,7 @@ export const fetchUserProject =async () =>{
 
  export const updateUserProject = async (projectID , updatedProject)  =>{
 
-     const put = await fetchWithAuth(`project/update/${projectID}`,{
+     const put = await fetchWithAuth(BASE_URL+`update/${projectID}`,{
          method:"PUT",
          headers: {
              "Content-Type": "application/json",
@@ -40,7 +41,7 @@ export const fetchUserProject =async () =>{
  }
 
 export const deleteUserProject = async (projectID) =>{
-     const del = await fetchWithAuth(`project/delete/${projectID}`,{
+     const del = await fetchWithAuth(BASE_URL+`delete/${projectID}`,{
          method:"DELETE"
      })
    return  handleResponse(del)
@@ -48,7 +49,7 @@ export const deleteUserProject = async (projectID) =>{
 export const uploadProjectPicture = async (file , projectID) =>{
      const formData = new FormData();
      formData.append("file" , file)
-     const response = await fetchWithAuth(`/upload/project/picture/${projectID}`,{
+     const response = await fetchWithAuth(BASE_URL+`upload/picture/${projectID}`,{
          method:"POST",
          body:formData
     })

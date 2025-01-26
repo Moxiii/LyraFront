@@ -67,13 +67,13 @@ const Chat = ({ route }) => {
         } else if (conversationID === "Websocket") {
             if (webSocketRef.current) {
                 const messageToSend = {
-                    content: 'test',
-                    sender: 'martin',
-                    receiver:"moxi",
+                    content: inputText,
+                    sender: `${userData.username}`,
+                    receiver:"test",
                 };
                 console.log("Message envoyé à la ref :", messageToSend);
                 console.log("webSocketRef existe, envoi du message");
-                webSocketRef.current.sendMessage(JSON.stringify(messageToSend));
+                webSocketRef.current.sendMessage(messageToSend);
             }else {
                 console.log("webSocketRef non disponible");
             }

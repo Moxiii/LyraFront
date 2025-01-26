@@ -5,7 +5,7 @@ import {useUserData} from "../../../utils/Context/UserContext";
 import {Ionicons} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
 import backgroundImage from "../../../assets/img/Splash.jpg";
-
+import Header from "../../Components/Header";
 export default function Account() {
     const navigation = useNavigation()
     const { addProfilePicToContext } = useUserData();
@@ -63,14 +63,8 @@ export default function Account() {
                 resizeMode="cover"
                 style={styles.container}
             >
-            <TouchableOpacity onPress={() => navigation.navigate("Main")}>
-                <Ionicons
-                    name="arrow-back"
-                    size={30}
-                    color="white"
-                    style={styles.backIcon}
-                />
-            </TouchableOpacity>
+         <Header name={"Account"}/>
+
             <Text style={styles.title}>Télécharger votre photo de profil</Text>
             {previewUri && (
                 <Image source={{ uri: previewUri }} style={styles.imagePreview} />

@@ -8,24 +8,25 @@ const WebSocketComponent = forwardRef(({ userData, setMessages }, ref) => {
 
     useEffect(() => {
         console.log("Initialisation du WebSocketComponent...");
-        const socket = new SockJS("http://localhost:8080/ws");
+        const socket = new WebSocket("http://localhost:8080/ws");
         const stompClient = Stomp.over(socket);
+
         stompClient.connect(
             {},
             (frame) => {
                 console.log("Connected: " + frame);
-                const clientID = JSON.stringify({ ClientID: userData.username });
-                stompClient.send("/app/queue_name", {}, clientID);
                 stompClient.subscribe(`/user/queue/${userData.username}`, (message) => {
                     const queueID = message.body;
-                    console.log("Message reçu pour queueId :", message.body);
+                    console.log("Message reçu pour queueId :", queueID);
                     setQueueId(queueID || "testing");
-                    console.log("queueID:", queueID);
-                    stompClient.subscribe(`/queue/messages/${queueID}`, function (message)  {
-                        console.log("Message brut reçu :", message.body);
-                        handleIncommingMessage(message)
-                    });
+                    if (queueID) {
+                        stompClient.subscribe(`/user/${userData.username}/queue/messages/${queueId}`, function (msg) {
+                            console.log("Message brut reçu :", msg.body);
+                            handleIncommingMessage(msg);
+                        });
+                    }
                 });
+                stompClient.send("/app/queue_name", {}, JSON.stringify({ ClientID: userData.username }));
             },
             (error) => {
                 console.error("STOMP Error: " + error);
@@ -33,25 +34,22 @@ const WebSocketComponent = forwardRef(({ userData, setMessages }, ref) => {
         );
 
         stompClient.activate();
-
         setClient(stompClient);
 
         return () => {
             console.log("Nettoyage du composant et déconnexion STOMP...");
-            if (stompClient.connected) {
-                stompClient.deactivate();
-            }
+            stompClient.deactivate();
         };
     }, [userData.username]);
 
+
     const sendMessageToWebSocket = (message) => {
-        console.log("Etat de la connexion :" , {ClientConnected : client.connected , queueId:queueId})
         if (client && client.connected && queueId) {
-            console.log("Etat de la connexion :" , {ClientConnected : client.connected , queueId:queueId} )
             client.publish({
-                destination: `/app/chat/${queueId}`,
+                destination: `/app/chat/${queueId.replace(/"/g, '')}`,
                 body: JSON.stringify(message),
             });
+
         }else {
             console.warn(
                 "Impossible d'envoyer le message : client non connecté ou queueId manquant.",

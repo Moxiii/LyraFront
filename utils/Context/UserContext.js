@@ -1,11 +1,11 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
-import {fetchUserData, uploadProfilePic} from "../Fetchs/userFetchs";
-import {fetchUserProject} from "../Fetchs/projetFetch";
-import {fetchUserTodo} from "../Fetchs/todoFetchs";
-import {fetchUserCalendar} from "../Fetchs/calendarFetchs";
+import { uploadProfilePic} from "../Fetchs/userFetchs";
 import {TodoProvider} from "./TodoContext";
 import {ProjectProvider} from "./ProjectContext";
 import {CalendarProvider} from "./CalendarContext";
+import {ContactProvider} from "./ContactContext";
+import {ConversationProvider} from "./ConversationContext";
+import {userService} from "../Service/UserService";
 
 const UserContext = createContext();
 const PPplaceholder = require("../../assets/img/ppplaceholder.png");
@@ -14,6 +14,8 @@ export function UserProvider({ children }) {
     const [userTodos, setUserTodos] = useState([]);
     const [userProjects, setUserProjects] = useState([]);
     const [userCalendar,setUserCalendar]=useState([])
+    const [userContact,setUserContact]=useState([])
+    const [userConversation,setUserConversation]=useState([])
 
     const addProfilePicToContext = async (file) => {
         try {
@@ -33,48 +35,28 @@ export function UserProvider({ children }) {
     useEffect(() => {
         const loadUserData = async () => {
             try {
-                const data = await fetchUserData();
-                const formattedData = {
-                    ...data,
-                    profileImage: data.profileImage
-                        ? `data:image/png;base64,${data.profileImage}`
-                        : PPplaceholder,
-                };
-                setUserData(formattedData);
+                const [userData, todos, projects, calendar, contact, conversation] =
+                    await Promise.all([
+                        userService.loadUserData(),
+                        userService.loadUserTodos(),
+                        userService.loadUserProjects(),
+                        userService.loadUserCalendar(),
+                        userService.loadUserContact(),
+                        userService.loadUserConversation(),
+                    ]);
+
+                setUserData(userData);
+                setUserTodos(todos);
+                setUserProjects(projects);
+                setUserCalendar(calendar);
+                setUserContact(contact);
+                setUserConversation(conversation);
             } catch (error) {
                 console.error("Failed to fetch user data", error);
             }
         };
 
-        const loadUserTodos = async () => {
-            try {
-                const todos = await fetchUserTodo();
-                setUserTodos(todos);
-            } catch (error) {
-                console.error("Failed to fetch user todos", error);
-            }
-        };
-
-        const loadUserProjects = async () => {
-            try {
-                const projects = await fetchUserProject();
-                setUserProjects(projects);
-            } catch (error) {
-                console.error("Failed to fetch user projects", error);
-            }
-        };
-        const loadUserCalendar = async ()=>{
-            try{
-                const calendar = await fetchUserCalendar();
-                setUserCalendar(calendar);
-            }catch (error) {
-                console.error("Failed to fetch user calendar", error);
-            }
-        }
         loadUserData();
-        loadUserTodos();
-        loadUserProjects();
-        loadUserCalendar()
     }, []);
 
     return (
@@ -84,10 +66,14 @@ export function UserProvider({ children }) {
                 userTodos,
                 userProjects,
                 userCalendar,
+                userContact,
+                userConversation,
                 setUserData,
                 setUserTodos,
                 setUserProjects ,
                 setUserCalendar,
+                setUserContact,
+                setUserConversation,
                 addProfilePicToContext,
         }}
         >
@@ -95,7 +81,11 @@ export function UserProvider({ children }) {
             <TodoProvider>
                <ProjectProvider>
                    <CalendarProvider>
-                   {children}
+                       <ConversationProvider>
+                          <ContactProvider>
+                            {children}
+                       </ContactProvider>
+                   </ConversationProvider>
                    </CalendarProvider>
                </ProjectProvider>
             </TodoProvider>
