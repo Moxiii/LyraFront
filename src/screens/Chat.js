@@ -5,7 +5,7 @@ import {FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View,} f
 import {Ionicons} from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import {useNavigation} from "@react-navigation/native";
-
+import {v4 as uuidv4} from "uuid";
 const Chat = ({ route }) => {
     const { participants, conversationName, userData } = route.params;
     const navigation = useNavigation();
@@ -39,7 +39,7 @@ const Chat = ({ route }) => {
         }
 
         const newMessage = {
-            id: messages.length + 1,
+            id: uuidv4(),
             content: inputText,
             sender: `${userData.username}`,
             time: getCurrentTime(),
@@ -62,7 +62,7 @@ const Chat = ({ route }) => {
 
     return (
         <View style={styles.container}>
-            <WebSocketComponent ref={webSocketRef} userData={userData} setMessages={setMessages} participants={participants} />
+            <WebSocketComponent ref={webSocketRef} userData={userData} setMessages={setMessages} participants={participants} time={getCurrentTime()}/>
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => navigation.navigate("Conversations")}>
                     <Ionicons name="arrow-back" size={30} color="white" style={styles.backIcon} />

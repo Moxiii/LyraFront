@@ -1,8 +1,8 @@
 import React, { forwardRef, useEffect, useState } from "react";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
-
-const WebSocketComponent = forwardRef(({ userData, setMessages , participants}, ref) => {
+import {v4 as uuidv4} from "uuid";
+const WebSocketComponent = forwardRef(({ userData, setMessages , participants, time}, ref ) => {
     const [client, setClient] = useState(null);
     const [queueId, setQueueId] = useState();
 
@@ -62,10 +62,10 @@ const WebSocketComponent = forwardRef(({ userData, setMessages , participants}, 
             const parsedMessage = JSON.parse(message.body);
             console.log("Message parsé :", parsedMessage);
             const newMessage = {
-                id: setMessages.length + 1,
+                id: uuidv4(),
                 content: parsedMessage.content || parsedMessage.message,
                 sender: parsedMessage.sender,
-                time: parsedMessage.time || new Date().toLocaleTimeString(),
+                time: parsedMessage.time || time,
                 image: parsedMessage.image || null,
             };
             console.log("Ajout du nouveau message :", newMessage);
