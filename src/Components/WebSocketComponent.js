@@ -2,13 +2,13 @@ import React, { forwardRef, useEffect, useState } from "react";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 
-const WebSocketComponent = forwardRef(({ userData, setMessages }, ref) => {
+const WebSocketComponent = forwardRef(({ userData, setMessages , participants}, ref) => {
     const [client, setClient] = useState(null);
-    const [queueId, setQueueId] = useState("testing");
+    const [queueId, setQueueId] = useState();
 
     useEffect(() => {
         console.log("Initialisation du WebSocketComponent...");
-        const socket = new WebSocket("http://localhost:8080/ws");
+        const socket = new SockJS("http://localhost:8080/ws");
         const stompClient = Stomp.over(socket);
 
         stompClient.connect(
@@ -16,15 +16,14 @@ const WebSocketComponent = forwardRef(({ userData, setMessages }, ref) => {
             (frame) => {
                 console.log("Connected: " + frame);
                 stompClient.subscribe(`/user/queue/${userData.username}`, (message) => {
-                    const queueID = message.body;
-                    console.log("Message reçu pour queueId :", queueID);
-                    setQueueId(queueID || "testing");
-                    if (queueID) {
-                        stompClient.subscribe(`/user/${userData.username}/queue/messages/${queueId}`, function (msg) {
-                            console.log("Message brut reçu :", msg.body);
-                            handleIncommingMessage(msg);
-                        });
-                    }
+                        console.log("QUEUE NAME RECEIVED : " + message.body)
+                        const QUEUEID = message.body;
+                        const sanitizeQueue = QUEUEID.replace(/"/g, '')
+                        setQueueId(sanitizeQueue);
+                        stompClient.subscribe(`/user/${userData.username}/queue/messages/${sanitizeQueue}`, function (msg) {
+                                console.log("Message brut reçu :", msg.body);
+                                handleIncommingMessage(msg);
+                            });
                 });
                 stompClient.send("/app/queue_name", {}, JSON.stringify({ ClientID: userData.username }));
             },
@@ -46,7 +45,7 @@ const WebSocketComponent = forwardRef(({ userData, setMessages }, ref) => {
     const sendMessageToWebSocket = (message) => {
         if (client && client.connected && queueId) {
             client.publish({
-                destination: `/app/chat/${queueId.replace(/"/g, '')}`,
+                destination: `/user/${participants}/queue/messages/${queueId}`,
                 body: JSON.stringify(message),
             });
 
@@ -63,8 +62,8 @@ const WebSocketComponent = forwardRef(({ userData, setMessages }, ref) => {
             const parsedMessage = JSON.parse(message.body);
             console.log("Message parsé :", parsedMessage);
             const newMessage = {
-                id: parsedMessage.id,
-                text: parsedMessage.text || parsedMessage.message,
+                id: setMessages.length + 1,
+                content: parsedMessage.content || parsedMessage.message,
                 sender: parsedMessage.sender,
                 time: parsedMessage.time || new Date().toLocaleTimeString(),
                 image: parsedMessage.image || null,

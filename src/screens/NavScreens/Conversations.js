@@ -5,49 +5,39 @@ import GeorgesImage from "../../../assets/img/georgesinvisible.png";
 import Header from "../../Components/Header";
 
 const Conversations = ({ navigation }) => {
-    const { userData } = useUserData();
-    const [conversations] = useState([
-        {
-            id: "Georges",
-            name: "Chattez avec Georges",
-            profileImage: `${GeorgesImage}`,
-            lastMessage: "Salut, comment ça va ?",
-            lastMessageTime: "10:32 AM",
-        },
-        {
-            id: "Websocket",
-            name: "Connect to WebSocket",
-            profileImage: `${userData.profileImage}` ? {uri:`${userData.profileImage}`} : `${GeorgesImage}`,
-            lastMessage: "Connexion établie.",
-            lastMessageTime: "10:33 AM",
-        },
-    ]);
+    const { userData , userConversation } = useUserData();
 
-    const handleConversationClick = (conversationID , conversationName) => {
-        navigation.navigate("Chat", { conversationID , conversationName , userData});
+
+    const handleConversationClick = (participants , conversationName) => {
+        navigation.navigate("Chat", { participants , conversationName , userData});
     };
 
-    const renderConversation = ({ item }) => (
-        <View style={styles.conversationItemContainer}>
-            <TouchableOpacity
-                style={styles.conversationItem}
-                onPress={() => handleConversationClick(item.id , item.name)}
-            >
-                <Image source={item.profileImage} style={styles.profileImage} />
-                <View style={styles.conversationDetails}>
-                    <Text style={styles.conversationName}>{item.name}</Text>
-                    <Text style={styles.lastMessage}>{item.lastMessage}</Text>
+    const renderConversation = ({ item }) => {
+        const participants = item.participants.filter(p=> p !== userData.username)
+        const lastMessage = item.lastMessage || "Aucun message"
+        return(
+                <View style={styles.conversationItemContainer}>
+                    <TouchableOpacity
+                        style={styles.conversationItem}
+                        onPress={() => handleConversationClick(participants , participants.join(", "))}
+                    >
+                        <Image source={item.profileImage} style={styles.profileImage} />
+                        <View style={styles.conversationDetails}>
+                            <Text style={styles.conversationName}>{participants.join(", ")}</Text>
+                            <Text style={styles.lastMessage}>{lastMessage}</Text>
+                        </View>
+                        <Text style={styles.lastMessageTime}>{item.lastMessageTime || "00.00"}</Text>
+                    </TouchableOpacity>
                 </View>
-                <Text style={styles.lastMessageTime}>{item.lastMessageTime}</Text>
-            </TouchableOpacity>
-        </View>
-    );
+            )
+
+};
 
     return (
         <View style={styles.container}>
            <Header name={"Conversations"}/>
             <FlatList
-                data={conversations}
+                data={userConversation}
                 renderItem={renderConversation}
                 keyExtractor={(item) => item.id.toString()}
                 contentContainerStyle={styles.conversationsList}
