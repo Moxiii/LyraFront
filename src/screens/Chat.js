@@ -55,6 +55,7 @@ const Chat = ({ route }) => {
             const messageToSend = {
                 content:inputText,
                 sender:`${userData.username}`,
+                receiver:`${participants}`,
             };
             webSocketRef.current.sendMessage(messageToSend)
         }

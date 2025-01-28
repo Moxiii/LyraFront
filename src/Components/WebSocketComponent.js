@@ -45,7 +45,7 @@ const WebSocketComponent = forwardRef(({ userData, setMessages , participants, t
     const sendMessageToWebSocket = (message) => {
         if (client && client.connected && queueId) {
             client.publish({
-                destination: `/user/${participants}/queue/messages/${queueId}`,
+                destination: `/app/chat/${queueId}`,
                 body: JSON.stringify(message),
             });
 
