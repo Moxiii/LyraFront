@@ -1,21 +1,20 @@
-import React, { forwardRef, useEffect, useState } from "react";
+import React, {forwardRef, useEffect, useRef, useState} from "react";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import {v4 as uuidv4} from "uuid";
+import {useConversationContext} from "../../utils/Context/ConversationContext";
 const WebSocketComponent = forwardRef(({
                                            userData,
                                            setMessages ,
                                            participants,
                                            time ,
                                            conversationID ,
-                                           conversationName,
                                            onQueueNameReceived,
                                        },
                                        ref ) => {
-    const [client, setClient] = useState(null);
-    const [queueId, setQueueId] = useState();
 
-
+    const clientRef = useRef(null);
+    const { queueData } = useConversationContext();
     useEffect(() => {
         console.log("Initialisation du WebSocketComponent...");
         const socket = new SockJS("http://localhost:8080/ws");
@@ -23,56 +22,60 @@ const WebSocketComponent = forwardRef(({
         stompClient.connect(
             {},
             (frame) => {
-                console.log("Connected: " + frame);
+                        clientRef.current = stompClient;
                 stompClient.subscribe(`/user/queue/${userData.username}`, (message) => {
-                        console.log("QUEUE NAME RECEIVED : " + message.body)
-                        const QUEUEID = message.body;
-                        const sanitizeQueue = QUEUEID.replace(/"/g, '')
-                        setQueueId(sanitizeQueue);
-                        if(onQueueNameReceived){
-                            onQueueNameReceived({
-                                queueName: sanitizeQueue,
-                                conversationName:conversationName
-                            })
+                    try {
+                        const parsedMessage = JSON.parse(message.body);
+                        console.log("🔹 Message reçu sur /user/queue : ", parsedMessage);
+
+                        if (parsedMessage.queueName && parsedMessage.conversationName) {
+                            console.log("✅ Mise à jour du contexte avec queueName et conversationName");
+                            if (onQueueNameReceived) {
+                                onQueueNameReceived(parsedMessage);
+                            }
+                        } else {
+                            console.warn("⚠️ Données manquantes dans le message WebSocket :", parsedMessage);
                         }
+                    } catch (error) {
+                        console.error("❌ Erreur lors du parsing du message WebSocket :", error);
+                    }
+                });
                         if(participants.length > 2){
-                            stompClient.subscribe(`/topic/${conversationName}/${sanitizeQueue}` , function (msg){
+                            stompClient.subscribe(`/topic/${queueData.conversationName}/${queueData.queueName}` , function (msg){
                                 handleIncommingMessage(msg)
                             })
                         }else{
-                            stompClient.subscribe(`/user/${userData.username}/messages/${sanitizeQueue}`, function (msg) {
+                            stompClient.subscribe(`/user/${userData.username}/messages/${queueData.queueName}`, function (msg) {
                                 handleIncommingMessage(msg);
                             });
                         }
-
                 });
-            },
+
             (error) => {
                 console.error("STOMP Error: " + error);
-            }
-        );
+            };
+
 
         stompClient.activate();
-        setClient(stompClient);
 
         return () => {
             console.log("Nettoyage du composant et déconnexion STOMP...");
             stompClient.deactivate();
         };
-    }, [userData.username , conversationID]);
+    }, [queueData.queueName , queueData.conversationName]);
 
 
     const sendMessageToWebSocket = (message) => {
-        if (client && client.connected && queueId) {
-            client.publish({
-                destination: `/app/chat/${queueId}/${conversationID}`,
+        if (clientRef.current && clientRef.current.connected && queueData) {
+            clientRef.current.publish({
+                destination: `/app/chat/${queueData.queueName}/${conversationID}`,
                 body: JSON.stringify(message),
             });
 
         }else {
             console.warn(
                 "Impossible d'envoyer le message : client non connecté ou queueId manquant.",
-                { clientConnected: client?.connected, queueId }
+                { clientConnected: clientRef.current?.connected, queueData }
             );
         }
     };
@@ -99,9 +102,9 @@ const WebSocketComponent = forwardRef(({
 
     React.useImperativeHandle(ref, () => ({
             sendMessage: sendMessageToWebSocket,
-            getQueueName: () => {
-                if (client && client.connected) {
-                    client.send("/app/queue_name", {}, JSON.stringify({ConversationID: conversationID}));
+            getQueueName: (conversationID) => {
+                if (clientRef.current && clientRef.current.connected) {
+                    clientRef.current.send("/app/queue_name", {}, JSON.stringify({ConversationID: conversationID}));
                 } else {console.warn("Impossible d'envoyer : WebSocket non connecté.");
                 }}}));
     return null;

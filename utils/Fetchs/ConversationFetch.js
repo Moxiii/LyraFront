@@ -8,12 +8,6 @@ export const fetchUserConversation = async ()=>{
     });
     return handleResponse(response);
 }
-export const fetchUserConversationByID = async (id)=>{
-    const response = await fetchWithAuth(BASE_URL+ `get/${id}` , {
-        method:"GET",
-    });
-    return handleResponse(response);
-}
 
 export const addUserConversation  =async (conversation)=>{
     const response = await fetchWithAuth(BASE_URL+"add",{

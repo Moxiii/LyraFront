@@ -6,26 +6,38 @@ import {useConversationContext} from "../../../utils/Context/ConversationContext
 import {useRef, useState} from "react";
 import WebSocketComponent from "../../Components/WebSocketComponent";
 const Conversations = ({ navigation }) => {
-    const { userData , userConversation } = useUserData();
-    const { fetchConversationByID } = useConversationContext();
+    const { userData  , userConversation} = useUserData();
+    const { queueData , updateQueueData , getConversationByID} = useConversationContext();
         const websocketRef = useRef(null);
-        const [queueName, setQueueName] = useState("");
-        const [conversationName, setConversationName] = useState("");
 
     const handleConversationClick = async (conversationID) => {
         try {
-            const conversation = await fetchConversationByID(conversationID);
-            if(!conversation){throw new Error("Conversation introuvable")}
+            const conversation = getConversationByID(conversationID);
             const messages = conversation.messages || [];
-            const participants = conversation.participants.filter(p => p !== userData.username);
-
+            const participants = conversation.participants;
+            console.log("Participants : " + participants)
             if(websocketRef.current){
                 websocketRef.current.getQueueName(conversationID);
             }
-            if (queueName && conversationName) {
-                navigation.navigate("Chat", { participants, conversationName, userData, messages, conversationID, queueName });
+            let attempts = 0;
+            while ((!queueData.queueName || !queueData.conversationName) && attempts < 10) {
+                await new Promise(resolve => setTimeout(resolve, 150));
+                attempts++;
+            }
+            console.log("QueueName: "+queueData.queueName)
+            console.log("ConversationName: "+queueData.conversationName)
+            if (queueData.queueName && queueData.conversationName) {
+
+                navigation.navigate("Chat", {
+                    participants,
+                    conversationName: queueData.conversationName,
+                    userData,
+                    messages,
+                    conversationID,
+                    queueName: queueData.queueName });
             } else {
-                console.error("Erreur : queueName ou conversationName non défini");
+                throw new Error("Conversation name : " + queueData.conversationName );
+                throw new Error("queue name : " + queueData.queueName );
             }
         } catch (error) {
             console.error("Erreur fetchConversationByID:", error);
@@ -33,19 +45,23 @@ const Conversations = ({ navigation }) => {
         }
     };
     const onQueueNameReceived = ({ queueName, conversationName }) => {
-        setQueueName(queueName);
-        setConversationName(conversationName);
+        if (queueName && conversationName) {
+            updateQueueData(queueName, conversationName);
+        } else {
+            console.error("Erreur : queueName ou conversationName manquant");
+        }
     };
 
     const renderConversation = ({ item }) => {
         const lastMessage = item.lastMessage || "Aucun message"
-        console.log("Item id : " + item.id)
         return(
                 <View style={styles.conversationItemContainer}>
                     <WebSocketComponent
                         ref={websocketRef}
                         userData={userData}
+                        participants={item.participants}
                         onQueueNameReceived={onQueueNameReceived}
+                        conversationID={item.id}
                     />
                     <TouchableOpacity
                         style={styles.conversationItem}
@@ -53,7 +69,7 @@ const Conversations = ({ navigation }) => {
                     >
                         <Image source={item.profileImage} style={styles.profileImage} />
                         <View style={styles.conversationDetails}>
-                            <Text style={styles.conversationName}>{item.name || item.participants}</Text>
+                            <Text style={styles.conversationName}>{item.name || item.participants.filter(p => p !== userData.username)}</Text>
                             <Text style={styles.lastMessage}>{lastMessage}</Text>
                         </View>
                         <Text style={styles.lastMessageTime}>{item.lastMessageTime || "00.00"}</Text>
