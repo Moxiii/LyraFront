@@ -2,7 +2,16 @@ import React, { forwardRef, useEffect, useState } from "react";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import {v4 as uuidv4} from "uuid";
-const WebSocketComponent = forwardRef(({ userData, setMessages , participants, time , conversationID}, ref ) => {
+const WebSocketComponent = forwardRef(({
+                                           userData,
+                                           setMessages ,
+                                           participants,
+                                           time ,
+                                           conversationID ,
+                                           conversationName,
+                                           onQueueNameReceived,
+                                       },
+                                       ref ) => {
     const [client, setClient] = useState(null);
     const [queueId, setQueueId] = useState();
 
@@ -20,12 +29,23 @@ const WebSocketComponent = forwardRef(({ userData, setMessages , participants, t
                         const QUEUEID = message.body;
                         const sanitizeQueue = QUEUEID.replace(/"/g, '')
                         setQueueId(sanitizeQueue);
-                        stompClient.subscribe(`/user/${userData.username}/queue/messages/${sanitizeQueue}`, function (msg) {
-                                console.log("Message brut reçu :", msg.body);
+                        if(onQueueNameReceived){
+                            onQueueNameReceived({
+                                queueName: sanitizeQueue,
+                                conversationName:conversationName
+                            })
+                        }
+                        if(participants.length > 2){
+                            stompClient.subscribe(`/topic/${conversationName}/${sanitizeQueue}` , function (msg){
+                                handleIncommingMessage(msg)
+                            })
+                        }else{
+                            stompClient.subscribe(`/user/${userData.username}/messages/${sanitizeQueue}`, function (msg) {
                                 handleIncommingMessage(msg);
                             });
+                        }
+
                 });
-                stompClient.send("/app/queue_name", {}, JSON.stringify({ ClientID: userData.username }));
             },
             (error) => {
                 console.error("STOMP Error: " + error);
@@ -39,7 +59,7 @@ const WebSocketComponent = forwardRef(({ userData, setMessages , participants, t
             console.log("Nettoyage du composant et déconnexion STOMP...");
             stompClient.deactivate();
         };
-    }, [userData.username]);
+    }, [userData.username , conversationID]);
 
 
     const sendMessageToWebSocket = (message) => {
@@ -56,6 +76,7 @@ const WebSocketComponent = forwardRef(({ userData, setMessages , participants, t
             );
         }
     };
+
     const handleIncommingMessage = (message)=>{
         console.log("Réception du message dans la ref :", message);
         try{
@@ -77,9 +98,12 @@ const WebSocketComponent = forwardRef(({ userData, setMessages , participants, t
     }
 
     React.useImperativeHandle(ref, () => ({
-        sendMessage: sendMessageToWebSocket,
-    }));
-
+            sendMessage: sendMessageToWebSocket,
+            getQueueName: () => {
+                if (client && client.connected) {
+                    client.send("/app/queue_name", {}, JSON.stringify({ConversationID: conversationID}));
+                } else {console.warn("Impossible d'envoyer : WebSocket non connecté.");
+                }}}));
     return null;
 });
 

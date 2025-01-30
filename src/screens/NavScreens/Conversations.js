@@ -3,31 +3,50 @@ import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-n
 import {useUserData} from "../../../utils/Context/UserContext";
 import Header from "../../Components/Header";
 import {useConversationContext} from "../../../utils/Context/ConversationContext";
-
+import {useRef, useState} from "react";
+import WebSocketComponent from "../../Components/WebSocketComponent";
 const Conversations = ({ navigation }) => {
     const { userData , userConversation } = useUserData();
     const { fetchConversationByID } = useConversationContext();
-    console.log("fetchConversationByID:", fetchConversationByID);
+        const websocketRef = useRef(null);
+        const [queueName, setQueueName] = useState("");
+        const [conversationName, setConversationName] = useState("");
+
     const handleConversationClick = async (conversationID) => {
         try {
             const conversation = await fetchConversationByID(conversationID);
             if(!conversation){throw new Error("Conversation introuvable")}
             const messages = conversation.messages || [];
             const participants = conversation.participants.filter(p => p !== userData.username);
-            const conversationName = conversation.name || participants.join(", ");
-            navigation.navigate("Chat", { participants, conversationName, userData, messages , conversationID });
+
+            if(websocketRef.current){
+                websocketRef.current.getQueueName(conversationID);
+            }
+            if (queueName && conversationName) {
+                navigation.navigate("Chat", { participants, conversationName, userData, messages, conversationID, queueName });
+            } else {
+                console.error("Erreur : queueName ou conversationName non défini");
+            }
         } catch (error) {
             console.error("Erreur fetchConversationByID:", error);
             throw error;
         }
     };
-
+    const onQueueNameReceived = ({ queueName, conversationName }) => {
+        setQueueName(queueName);
+        setConversationName(conversationName);
+    };
 
     const renderConversation = ({ item }) => {
         const lastMessage = item.lastMessage || "Aucun message"
         console.log("Item id : " + item.id)
         return(
                 <View style={styles.conversationItemContainer}>
+                    <WebSocketComponent
+                        ref={websocketRef}
+                        userData={userData}
+                        onQueueNameReceived={onQueueNameReceived}
+                    />
                     <TouchableOpacity
                         style={styles.conversationItem}
                         onPress={() => handleConversationClick(item.id )}

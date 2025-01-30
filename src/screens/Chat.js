@@ -1,5 +1,4 @@
 import React, {useRef, useState} from "react";
-import {sendMessageToMistral} from "../../utils/mistral";
 import WebSocketComponent from "../Components/WebSocketComponent";
 import {FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
