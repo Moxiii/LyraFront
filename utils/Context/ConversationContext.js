@@ -1,12 +1,23 @@
 import React, {createContext, useContext} from "react";
 import {useUserData} from "./UserContext";
-import {addUserConversation , deleteUserConversation , updateUserConversation} from "../Fetchs/ConversationFetch";
+import {addUserConversation , deleteUserConversation , updateUserConversation , fetchUserConversationByID} from "../Fetchs/ConversationFetch";
 
 const  ConversationContext = createContext();
 
 export  function ConversationProvider({children}){
 
     const {userConversation , setUserConversation} = useUserData();
+
+    const fetchConversationByID = async (id) => {
+        try {
+            const response = await fetchUserConversationByID(id);
+            setUserConversation(response);
+            return response;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    };
 
     const addConversationToContext = async (conversation) => {
         try{
@@ -38,7 +49,7 @@ export  function ConversationProvider({children}){
         return (
             <ConversationContext.Provider
                 value={{
-                addConversationToContext,updateConversationToContext,deleteConversationToContext,
+                addConversationToContext,updateConversationToContext,deleteConversationToContext,fetchConversationByID
             }}>
                 {children}
             </ConversationContext.Provider>

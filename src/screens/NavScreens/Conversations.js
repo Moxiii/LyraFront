@@ -1,29 +1,41 @@
-import {useState} from "react";
+
 import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {useUserData} from "../../../utils/Context/UserContext";
-import GeorgesImage from "../../../assets/img/georgesinvisible.png";
 import Header from "../../Components/Header";
+import {useConversationContext} from "../../../utils/Context/ConversationContext";
 
 const Conversations = ({ navigation }) => {
     const { userData , userConversation } = useUserData();
-
-
-    const handleConversationClick = (participants , conversationName) => {
-        navigation.navigate("Chat", { participants , conversationName , userData});
+    const { fetchConversationByID } = useConversationContext();
+    console.log("fetchConversationByID:", fetchConversationByID);
+    const handleConversationClick = async (conversationID) => {
+        try {
+            console.log(`Fetching conversation with ID: ${conversationID}`);
+            const conversation = await fetchConversationByID(conversationID);
+            if(!conversation){throw new Error("Conversation introuvable")}
+            const messages = conversation.messages || [];
+            const participants = conversation.participants.filter(p => p !== userData.username);
+            const conversationName = conversation.name || participants.join(", ");
+            navigation.navigate("Chat", { participants, conversationName, userData, messages , conversationID });
+        } catch (error) {
+            console.error("Erreur fetchConversationByID:", error);
+            throw error;
+        }
     };
 
+
     const renderConversation = ({ item }) => {
-        const participants = item.participants.filter(p=> p !== userData.username)
         const lastMessage = item.lastMessage || "Aucun message"
+        console.log("Item id : " + item.id)
         return(
                 <View style={styles.conversationItemContainer}>
                     <TouchableOpacity
                         style={styles.conversationItem}
-                        onPress={() => handleConversationClick(participants , participants.join(", "))}
+                        onPress={() => handleConversationClick(item.id )}
                     >
                         <Image source={item.profileImage} style={styles.profileImage} />
                         <View style={styles.conversationDetails}>
-                            <Text style={styles.conversationName}>{participants.join(", ")}</Text>
+                            <Text style={styles.conversationName}>{item.name || item.participants}</Text>
                             <Text style={styles.lastMessage}>{lastMessage}</Text>
                         </View>
                         <Text style={styles.lastMessageTime}>{item.lastMessageTime || "00.00"}</Text>

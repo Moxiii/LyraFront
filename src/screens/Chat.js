@@ -6,10 +6,11 @@ import {Ionicons} from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import {useNavigation} from "@react-navigation/native";
 import {v4 as uuidv4} from "uuid";
+import Header from "../Components/Header";
 const Chat = ({ route }) => {
-    const { participants, conversationName, userData } = route.params;
+    const { participants, conversationName, userData , messages: initialMessages , conversationID} = route.params;
     const navigation = useNavigation();
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState(initialMessages || []);
     const [inputText, setInputText] = useState("");
     const [image, setImage] = useState(null);
     const webSocketRef = useRef(null);
@@ -55,7 +56,8 @@ const Chat = ({ route }) => {
             const messageToSend = {
                 content:inputText,
                 sender:`${userData.username}`,
-                receiver:`${participants}`,
+                timestamp:new Date(),
+                conversationID:conversationID,
             };
             webSocketRef.current.sendMessage(messageToSend)
         }
@@ -65,10 +67,7 @@ const Chat = ({ route }) => {
         <View style={styles.container}>
             <WebSocketComponent ref={webSocketRef} userData={userData} setMessages={setMessages} participants={participants} time={getCurrentTime()}/>
             <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.navigate("Conversations")}>
-                    <Ionicons name="arrow-back" size={30} color="white" style={styles.backIcon} />
-                </TouchableOpacity>
-                <Text style={styles.headerText}>{conversationName}</Text>
+                <Header name={conversationName}/>
             </View>
             <FlatList
                 data={messages}
