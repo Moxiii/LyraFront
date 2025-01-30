@@ -10,7 +10,6 @@ const Conversations = ({ navigation }) => {
     console.log("fetchConversationByID:", fetchConversationByID);
     const handleConversationClick = async (conversationID) => {
         try {
-            console.log(`Fetching conversation with ID: ${conversationID}`);
             const conversation = await fetchConversationByID(conversationID);
             if(!conversation){throw new Error("Conversation introuvable")}
             const messages = conversation.messages || [];

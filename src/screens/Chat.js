@@ -57,7 +57,6 @@ const Chat = ({ route }) => {
                 content:inputText,
                 sender:`${userData.username}`,
                 timestamp:new Date(),
-                conversationID:conversationID,
             };
             webSocketRef.current.sendMessage(messageToSend)
         }
@@ -65,7 +64,13 @@ const Chat = ({ route }) => {
 
     return (
         <View style={styles.container}>
-            <WebSocketComponent ref={webSocketRef} userData={userData} setMessages={setMessages} participants={participants} time={getCurrentTime()}/>
+            <WebSocketComponent
+                ref={webSocketRef}
+                userData={userData}
+                setMessages={setMessages}
+                participants={participants}
+                time={getCurrentTime() }
+                conversationID={conversationID}/>
             <View style={styles.header}>
                 <Header name={conversationName}/>
             </View>

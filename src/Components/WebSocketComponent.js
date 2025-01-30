@@ -2,15 +2,15 @@ import React, { forwardRef, useEffect, useState } from "react";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import {v4 as uuidv4} from "uuid";
-const WebSocketComponent = forwardRef(({ userData, setMessages , participants, time}, ref ) => {
+const WebSocketComponent = forwardRef(({ userData, setMessages , participants, time , conversationID}, ref ) => {
     const [client, setClient] = useState(null);
     const [queueId, setQueueId] = useState();
+
 
     useEffect(() => {
         console.log("Initialisation du WebSocketComponent...");
         const socket = new SockJS("http://localhost:8080/ws");
         const stompClient = Stomp.over(socket);
-
         stompClient.connect(
             {},
             (frame) => {
@@ -45,7 +45,7 @@ const WebSocketComponent = forwardRef(({ userData, setMessages , participants, t
     const sendMessageToWebSocket = (message) => {
         if (client && client.connected && queueId) {
             client.publish({
-                destination: `/app/chat/${queueId}`,
+                destination: `/app/chat/${queueId}/${conversationID}`,
                 body: JSON.stringify(message),
             });
 
